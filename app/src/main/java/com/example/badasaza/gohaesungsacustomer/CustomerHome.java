@@ -24,7 +24,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class CustomerHome extends AppCompatActivity implements ActionBar.TabListener, View.OnClickListener {
+public class CustomerHome extends AppCompatActivity implements ActionBar.TabListener{
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -119,12 +119,6 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
 
-    @Override
-    public void onClick(View v) {
-        Intent i = new Intent(this, AlbumShow.class);
-        startActivity(i);
-    }
-
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -144,8 +138,8 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
 
         @Override
         public int getCount() {
-            // Show 4 total pages.
-            return 4;
+            // Show 3 total pages.
+            return 3;
         }
 
         @Override
@@ -158,14 +152,21 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
                     return getString(R.string.title_section2).toUpperCase(l);
                 case 2:
                     return getString(R.string.title_section3).toUpperCase(l);
-                case 3:
-                    return "Section 4".toUpperCase(l);
             }
             return null;
         }
 
         public int getPageIcon(int position){
-            return R.mipmap.ic_launcher;
+            switch (position){
+                case 0:
+                    return R.drawable.home_50;
+                case 1:
+                    return R.drawable.popular_topic_50;
+                case 2:
+                    return R.drawable.settings_50;
+                default:
+                    return R.mipmap.ic_launcher;
+            }
         }
     }
 
@@ -206,16 +207,15 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
 
                 ListView lv = (ListView) rootView.findViewById(R.id.album_list);
                 ArrayList<String> als = new ArrayList<>();
-                for(int i = 1; i < 6; i++)
-                    als.add("test"+i);
+                als.add("ddcut1");
+                als.add("rgcut1");
+                als.add("tblock1");
                 AlbumListAdapter ala = new AlbumListAdapter(getActivity(), als);
                 lv.setAdapter(ala);
             }
             else if(position == 2)
-                rootView = inflater.inflate(R.layout.fragment_customer_shop, container, false);
-            else if(position == 3)
                 rootView = inflater.inflate(R.layout.fragment_customer_rec, container, false);
-            else if(position == 4)
+            else if(position == 3)
                 rootView = inflater.inflate(R.layout.fragment_customer_settings, container, false);
             return rootView;
         }

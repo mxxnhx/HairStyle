@@ -11,7 +11,6 @@
     <string name="rec_middle">Recommendation comments</string>
     <string name="rec_bottom">Recommendation Image comes here</string>
     <string name="shop_rec">Shop Recommendation comes here</string>
-    <string name="shop_list">Shop List comes here! (ListView)</string>
     <string name="settings">Settings</string>
 
     <string name="hello_world">Hello world!</string>
@@ -20,4 +19,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_album_show">AlbumShow</string>
+
+    <string name="num_of_photo">앨범 내 사진: </string>
+    <string name="jang">장</string>
 </resources>

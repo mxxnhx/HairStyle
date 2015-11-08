@@ -2,11 +2,46 @@
 <items version="2" >
 
     <item
+        jar="C:\Users\Badasaza\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.0.1\support-annotations-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
+        <dex dex="C:\Users\Badasaza\AndroidStudioProjects\GoHaeSungSaCustomer\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.1-58e6108c0e8da3b171dacc1b5eb42ef69d428a26.jar" />
+    </item>
+    <item
         jar="C:\Users\Badasaza\AndroidStudioProjects\GoHaeSungSaCustomer\app\build\intermediates\exploded-aar\com.android.support\design\23.0.1\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="e5c61a3169221a89654ffcaaed47bba51cf071ad">
         <dex dex="C:\Users\Badasaza\AndroidStudioProjects\GoHaeSungSaCustomer\app\build\intermediates\pre-dexed\debug\classes-e642528b0bd844c1c6dcb2f1589c42c17074b3fb.jar" />
+    </item>
+    <item
+        jar="C:\Users\Badasaza\AndroidStudioProjects\GoHaeSungSaCustomer\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
+        <dex dex="C:\Users\Badasaza\AndroidStudioProjects\GoHaeSungSaCustomer\app\build\intermediates\pre-dexed\debug\classes-613f4a8a946161021a6caf2aa778cf363e35be66.jar" />
+    </item>
+    <item
+        jar="C:\Users\Badasaza\AndroidStudioProjects\GoHaeSungSaCustomer\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
+        <dex dex="C:\Users\Badasaza\AndroidStudioProjects\GoHaeSungSaCustomer\app\build\intermediates\pre-dexed\debug\classes-adf7413086d18a60f86f61f13acbcfde64f3b970.jar" />
+    </item>
+    <item
+        jar="C:\Users\Badasaza\AndroidStudioProjects\GoHaeSungSaCustomer\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
+        <dex dex="C:\Users\Badasaza\AndroidStudioProjects\GoHaeSungSaCustomer\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1-b6e3918ccd24cec2882610a8e846c5e9cb84b184.jar" />
+    </item>
+    <item
+        jar="C:\Users\Badasaza\AndroidStudioProjects\GoHaeSungSaCustomer\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\21.0.3\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="00b0b7233e1ec64acebfac40d4983d32d4712426">
+        <dex dex="C:\Users\Badasaza\AndroidStudioProjects\GoHaeSungSaCustomer\app\build\intermediates\pre-dexed\debug\classes-3930ef507d92e3486d857185bd8b1451361c6b2f.jar" />
     </item>
 
 </items>
