@@ -5,9 +5,7 @@
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
 
-    <string name="home_res_info">ReservationInfo Comes Here</string>
-    <string name="home_album_list">Album Shows Here</string>
-    <string name="rec_top">Recommendation on style graph or sth</string>
+    <string name="rec_top">이런 머리는 \n 어떠세요?</string>
     <string name="rec_middle">Recommendation comments</string>
     <string name="rec_bottom">Recommendation Image comes here</string>
     <string name="shop_rec">Shop Recommendation comes here</string>
@@ -16,10 +14,22 @@
     <string name="hello_world">Hello world!</string>
 
     <string name="album_showcase">Album Showcase comes here</string>
+    <string name="title_activity_album_show">Album Show</string>
 
     <string name="action_settings">Settings</string>
-    <string name="title_activity_album_show">AlbumShow</string>
 
     <string name="num_of_photo">앨범 내 사진: </string>
     <string name="jang">장</string>
+    <string name="title_activity_login">LoginAct</string>
+
+    <!-- Login page strings -->
+    <string name="login_hint">ID</string>
+    <string name="pw_hint">Password</string>
+    <string name="login">Login</string>
+    <string name="signup">SignUp</string>
+
+    <!-- Main page tab name strings -->
+    <string name="home_tab">GoHaeSungSaCustomer</string>
+    <string name="rec_tab">추천</string>
+    <string name="settings_tab">옵션</string>
 </resources>

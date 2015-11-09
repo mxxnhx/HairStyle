@@ -1,10 +1,9 @@
 package com.example.badasaza.gohaesungsacustomer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
-import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -13,16 +12,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 public class CustomerHome extends AppCompatActivity implements ActionBar.TabListener{
 
@@ -108,7 +103,22 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, switch to the corresponding page in
         // the ViewPager.
+        final ActionBar actBar = getSupportActionBar();
+
         mViewPager.setCurrentItem(tab.getPosition());
+        switch(tab.getPosition()){
+            case 0:
+                actBar.setTitle(getResources().getText(R.string.home_tab));
+                break;
+            case 1:
+                actBar.setTitle(getResources().getText(R.string.rec_tab));
+                break;
+            case 2:
+                actBar.setTitle(getResources().getText(R.string.settings_tab));
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -213,8 +223,14 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
                 AlbumListAdapter ala = new AlbumListAdapter(getActivity(), als);
                 lv.setAdapter(ala);
             }
-            else if(position == 2)
+            else if(position == 2) {
                 rootView = inflater.inflate(R.layout.fragment_customer_rec, container, false);
+
+                ListView lis = (ListView) rootView.findViewById(R.id.rec_list);
+                Integer[] temp = {R.drawable.rec1, R.drawable.rec2, R.drawable.rec3};
+                RecListAdapter rla = new RecListAdapter(getActivity(), Arrays.asList(temp));
+                lis.setAdapter(rla);
+            }
             else if(position == 3)
                 rootView = inflater.inflate(R.layout.fragment_customer_settings, container, false);
             return rootView;

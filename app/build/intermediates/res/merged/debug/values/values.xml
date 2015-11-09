@@ -22,6 +22,8 @@
     <!-- From: file:/C:/Users/Badasaza/AndroidStudioProjects/GoHaeSungSaCustomer/app/src/main/res/values/colors.xml -->
     <eat-comment/>
     <color name="b200">#90CAF9</color>
+    <color name="b500">#2196F3</color>
+    <color name="b800">#1565C0</color>
     <!-- From: file:/C:/Users/Badasaza/AndroidStudioProjects/GoHaeSungSaCustomer/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <color name="background_floating_material_dark">@color/material_grey_800</color>
@@ -61,8 +63,18 @@
     <color name="dim_foreground_material_light">#ff323232</color>
     <color name="foreground_material_dark">@android:color/white</color>
     <color name="foreground_material_light">@android:color/black</color>
+    <!-- From: file:/C:/Users/Badasaza/AndroidStudioProjects/GoHaeSungSaCustomer/app/src/main/res/values/colors.xml -->
+    <eat-comment/>
+    <color name="gray_background">#DBDBDB</color>
+    <!-- From: file:/C:/Users/Badasaza/AndroidStudioProjects/GoHaeSungSaCustomer/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
+    <eat-comment/>
     <color name="highlighted_text_material_dark">#6680cbc4</color>
     <color name="highlighted_text_material_light">#66009688</color>
+    <!-- From: file:/C:/Users/Badasaza/AndroidStudioProjects/GoHaeSungSaCustomer/app/src/main/res/values/colors.xml -->
+    <eat-comment/>
+    <color name="hint">#DDDDDD</color>
+    <!-- From: file:/C:/Users/Badasaza/AndroidStudioProjects/GoHaeSungSaCustomer/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
+    <eat-comment/>
     <color name="hint_foreground_material_dark">@color/bright_foreground_disabled_material_dark</color>
     <color name="hint_foreground_material_light">@color/bright_foreground_disabled_material_light</color>
     <color name="material_blue_grey_800">#ff37474f</color>
@@ -95,6 +107,9 @@
     <color name="switch_thumb_disabled_material_light">#ffbdbdbd</color>
     <color name="switch_thumb_normal_material_dark">#ffbdbdbd</color>
     <color name="switch_thumb_normal_material_light">#fff1f1f1</color>
+    <!-- From: file:/C:/Users/Badasaza/AndroidStudioProjects/GoHaeSungSaCustomer/app/src/main/res/values/colors.xml -->
+    <eat-comment/>
+    <color name="white">#FFFFFF</color>
     <declare-styleable name="ActionBar"><attr name="navigationMode"><enum name="normal" value="0"/><enum name="listMode" value="1"/><enum name="tabMode" value="2"/></attr><attr name="displayOptions"><flag name="none" value="0"/><flag name="useLogo" value="0x1"/><flag name="showHome" value="0x2"/><flag name="homeAsUp" value="0x4"/><flag name="showTitle" value="0x8"/><flag name="showCustom" value="0x10"/><flag name="disableHome" value="0x20"/></attr><attr name="title"/><attr format="string" name="subtitle"/><attr format="reference" name="titleTextStyle"/><attr format="reference" name="subtitleTextStyle"/><attr format="reference" name="icon"/><attr format="reference" name="logo"/><attr format="reference" name="divider"/><attr format="reference" name="background"/><attr format="reference|color" name="backgroundStacked"/><attr format="reference|color" name="backgroundSplit"/><attr format="reference" name="customNavigationLayout"/><attr name="height"/><attr format="reference" name="homeLayout"/><attr format="reference" name="progressBarStyle"/><attr format="reference" name="indeterminateProgressStyle"/><attr format="dimension" name="progressBarPadding"/><attr name="homeAsUpIndicator"/><attr format="dimension" name="itemPadding"/><attr format="boolean" name="hideOnContentScroll"/><attr format="dimension" name="contentInsetStart"/><attr format="dimension" name="contentInsetEnd"/><attr format="dimension" name="contentInsetLeft"/><attr format="dimension" name="contentInsetRight"/><attr format="dimension" name="elevation"/><attr format="reference" name="popupTheme"/></declare-styleable>
     <declare-styleable name="ActionBarLayout"><attr name="android:layout_gravity"/></declare-styleable>
     <declare-styleable name="ActionMenuItemView"><attr name="android:minWidth"/></declare-styleable>
@@ -136,6 +151,8 @@
     <declare-styleable name="View"><attr format="dimension" name="paddingStart"/><attr format="dimension" name="paddingEnd"/><attr name="android:focusable"/><attr format="reference" name="theme"/><attr name="android:theme"/></declare-styleable>
     <declare-styleable name="ViewBackgroundHelper"><attr name="android:background"/><attr format="color" name="backgroundTint"/><attr name="backgroundTintMode"><enum name="src_over" value="3"/><enum name="src_in" value="5"/><enum name="src_atop" value="9"/><enum name="multiply" value="14"/><enum name="screen" value="15"/></attr></declare-styleable>
     <declare-styleable name="ViewStubCompat"><attr name="android:layout"/><attr name="android:inflatedId"/><attr name="android:id"/></declare-styleable>
+    <!-- From: file:/C:/Users/Badasaza/AndroidStudioProjects/GoHaeSungSaCustomer/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
+    <eat-comment/>
     <dimen name="abc_action_bar_content_inset_material">16dp</dimen>
     <dimen name="abc_action_bar_default_height_material">56dp</dimen>
     <dimen name="abc_action_bar_default_padding_end_material">0dp</dimen>
@@ -317,21 +334,27 @@
     <!-- From: file:/C:/Users/Badasaza/AndroidStudioProjects/GoHaeSungSaCustomer/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="hello_world">Hello world!</string>
-    <string name="home_album_list">Album Shows Here</string>
-    <string name="home_res_info">ReservationInfo Comes Here</string>
+    <string name="home_tab">GoHaeSungSaCustomer</string>
     <string name="jang">장</string>
+    <string name="login">Login</string>
+    <string name="login_hint">ID</string>
     <string name="num_of_photo">앨범 내 사진: </string>
+    <string name="pw_hint">Password</string>
     <string name="rec_bottom">Recommendation Image comes here</string>
     <string name="rec_middle">Recommendation comments</string>
-    <string name="rec_top">Recommendation on style graph or sth</string>
+    <string name="rec_tab">추천</string>
+    <string name="rec_top">이런 머리는 \n 어떠세요?</string>
     <string name="settings">Settings</string>
+    <string name="settings_tab">옵션</string>
     <string name="shop_rec">Shop Recommendation comes here</string>
+    <string name="signup">SignUp</string>
     <!-- From: file:/C:/Users/Badasaza/AndroidStudioProjects/GoHaeSungSaCustomer/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <string name="status_bar_notification_info_overflow">999+</string>
     <!-- From: file:/C:/Users/Badasaza/AndroidStudioProjects/GoHaeSungSaCustomer/app/src/main/res/values/strings.xml -->
     <eat-comment/>
-    <string name="title_activity_album_show">AlbumShow</string>
+    <string name="title_activity_album_show">Album Show</string>
+    <string name="title_activity_login">LoginAct</string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
