@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/album_cover"
-    android:layout_width="480dp"
-    android:layout_height="270dp"
-    android:layout_margin="20dp"
-    android:layout_weight="0.70"    />
-<!-- From: file:/C:/Users/Badasaza/AndroidStudioProjects/GoHaeSungSaCustomer/app/src/main/res/layout/listview_albumshow.xml -->
