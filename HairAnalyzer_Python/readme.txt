@@ -10,5 +10,5 @@ https://github.com/fjean/pymeanshift/wiki/Install
 new compare function (현재는 흑백 사진에서 gray 값 차이로 결정. 참고자료 보면 색 히스토그램 뽑아서 비교하라는 것 같은데…)
 pms.segment parameter 값 조절?
 -그 외
-사진이 너무 고화질이면(=사이즈가 너무 크면) 처리가 오래 걸림. 서버에서 돌릴땐 downscaling이 필요할 듯?
-나중에 분석 쪽이랑 합쳐야 되니 branch 새로 파서 작업할 것. git checkout -b (branch_name)
+사진이 너무 고화질이면(=사이즈가 너무 크면) 처리가 오래 걸림. 속도 개선 못하는 이상 서버에서 돌릴땐 downscaling이 필요할 듯?
+나중에 분석 쪽이랑 합쳐야 되니 branch 새로 파서 작업할 것
