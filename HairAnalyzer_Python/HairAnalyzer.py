@@ -51,8 +51,7 @@ class HairAnalyzer:
     # area_hair[i][j]=1 if img[i][j] is a part of hair area, 0 otherwise
     # x,y : coordinate of the first hair area
     def getHairArea(self,x,y):
-        (segmented,labels,n)=pms.segment(self.img,spatial_radius=6,
-                              range_radius=4.5, min_density=50)
+        (segmented,labels,n)=pms.segment(self.img,spatial_radius=6,range_radius=4.5, min_density=50)
         cv2.imshow('segmented',segmented)
         mv = cv2.split(self.img)
         gray = cv2.cvtColor(segmented,cv2.COLOR_RGB2GRAY)
