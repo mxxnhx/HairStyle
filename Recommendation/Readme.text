@@ -7,12 +7,13 @@ sudo functions
 -categorize(item) : category
 -get_user_list() : list_of_user
 -get_categoey_rating(user, category) : double
--is_rated(item,user) : boolean
+-get_rating(user) : list_of_double
+-is_rated(user,item) : boolean
 -get_high_rated_item(user) : list_of_item
 
 //for recommendation
 -recommend(user) : list_of_item
--cosine_distance(user1, user2) : double
+-cosine_similarity(user1, user2) : double
 
 
 
