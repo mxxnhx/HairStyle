@@ -1,5 +1,9 @@
 import sqlite3
 import math
+import itertools
+import operator
+import random
+from Make_DB import make_DB
 
 #NUMBER OF CATEGORY
 NUMBER_OF_CATEGORY = 6
@@ -48,7 +52,7 @@ def add_item(item) :
 #GET item's CATEGORY
 #NEED_TO_UPDATE
 def categorize(item) : 
-	return len(item) % NUMBER_OF_CATEGORY
+	return int(item) % NUMBER_OF_CATEGORY
 
 #INCREASE item's USED COUNT
 def update_item_used(item) :
@@ -106,7 +110,7 @@ def get_categoey_rating(user, category) :
 		if(num == 0) :
 			return 0
 		else :
-			return rating/num
+			return rating / num
 
 #GET user's RATING LIST
 def get_rating(user) :
@@ -143,51 +147,88 @@ def recommend(user) :
 	if(is_user(user)) :
 		cursor = db.cursor()
 		cursor.execute("SELECT user_name FROM user WHERE user_name != ?", (user,))
-		d = cursor.fetchall()
+		#user_list
+		d = cursor.fetchall() 
+
+		#(user_name, similarity) sorted list
 		sim = [(tup[0], cosine_similarity(tup[0], user)) for tup in d]
-		m= max(sim,key=lambda item:item[1])[1]
-		max_user = [tup[0] for tup in sim if (tup[1] == m)]
-		l = []
-		for u in max_user:
-			l.extend(get_high_rated_item(u))
-		item_list = filter(lambda x : not is_rated(user, x), l)
-		print item_list
+		sim.sort(key = lambda item:item[1], reverse = True)
+		print "Similiarity : ", sim
+
+		#grouping by similarity
+		it = itertools.groupby(sim, operator.itemgetter(1))
+		
+		#check recommand value with each element
+		for i in it :
+			l = []
+			#get item with highest rating
+			for (u,v) in i[1]:
+				l.extend(get_high_rated_item(u))
+			#filter user used item 
+			item_list = filter(lambda x : not is_rated(user, x), l)
+			print "Highest Rated item :",item_list
+			if (len(item_list) == 0) :
+				continue
+			return pick_less_item(item_list)
+
+		#CANNOT RECOMMAND! -> RANDOM PICK
+
+
+#PICK SOME ITEM WITH SMALLEST used in item_list
+def pick_less_item(item_list) :
+	it = "("+",".join(item_list)+")"
+	cursor = db.cursor()
+	cursor.execute("SELECT item_name,used FROM item WHERE item_name IN %s" % (it))
+	d = cursor.fetchall()
+	d.sort(key = lambda item:item[1])
+	f = filter(lambda x : x[1] == d[0][1], d)
+	return random.choice(f)[0]
+
+
 
 #PRINT CURRENT DB
 def show_DB() :
+	print("----------DB----------")
 	cursor = db.cursor()
-	print("---item---")
+	print("| --- item ---")
 	item_select = cursor.execute("SELECT * from item")
        	for row in item_select :
-		print row
-	print("---user---")
+		print "|   ",row
+	print("| --- user ---")
 	user_select = cursor.execute("SELECT * from user")
        	for row in user_select :
-		print row
-	print("---rating---")
+		print "|   ",row
+	print("| ---rating---")
 	rating_select = cursor.execute("SELECT * from rating")
        	for row in rating_select :
-		print row
+		print "|   ",row
+	print("--------END DB--------")
 
 """
 very simple test code
 """
-add_item('1')
-add_item('22')
-add_item('333')
-add_item('4444')
-add_item('555')
-add_item('66666')
-add_item('777777')
-add_item('8')
-add_item('9999')
-add_item('00')
-add_user('A',['1','777777','66666'],[1,2,3])
-add_user('B',['22','333','9999'],[4,2,2.5])
-add_user('C',['1','333','00'],[1,3.5,2.5])
-update_rating('A','333',3.5)
-update_rating('C','22',3.5)
+make_DB()
+R = [0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5]
+L = map(lambda x : str(x), range(30))
 
+def select_random(lis, num) :
+	l = []
+	for i in range(num) : l.append(random.choice(lis))
+	return l
 
-recommend('C')
+for i in L :
+	add_item(i)
+
+add_user('A',select_random(L,20),select_random(R,20))
+add_user('B',select_random(L,20),select_random(R,20))
+add_user('C',select_random(L,20),select_random(R,20))
+add_user('D',select_random(L,20),select_random(R,20))
+add_user('E',select_random(L,20),select_random(R,20))
+add_user('F',select_random(L,20),select_random(R,20))
+add_user('G',select_random(L,20),select_random(R,20))
+add_user('H',select_random(L,20),select_random(R,20))
+add_user('I',select_random(L,20),select_random(R,20))
+add_user('J',select_random(L,20),select_random(R,20))
+
+print(recommend('C'))
 show_DB()
