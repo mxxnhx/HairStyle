@@ -36,19 +36,21 @@ class HairAnalyzer:
         cc = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
         gray = cv2.cvtColor(self.img,cv2.COLOR_RGB2GRAY)
         faces = cc.detectMultiScale(gray)
-        return faces
-    def detectEye(self,faces):
-        array_eyes=[]
         for face in faces:
-            img_face=self.img[face[1]:face[1]+face[3],face[0]:face[0]+face[2]]
-            cc = cv2.CascadeClassifier('haarcascade_eye.xml')
-            gray = cv2.cvtColor(img_face,cv2.COLOR_RGB2GRAY)
-            eyes = cc.detectMultiScale(gray)
-            for eye in eyes:
-                eye[0]+=face[0]
-                eye[1]+=face[1]
-            array_eyes.extend(eyes)
-        return array_eyes
+            eyes=self.detectEye(face)
+            if len(eyes)>0:
+                return face,eyes
+        print('No face region found')
+        return [0,0,0,0],[]
+    def detectEye(self,face):
+        img_face=self.img[face[1]:face[1]+face[3],face[0]:face[0]+face[2]]
+        cc = cv2.CascadeClassifier('haarcascade_eye.xml')
+        gray = cv2.cvtColor(img_face,cv2.COLOR_RGB2GRAY)
+        eyes = cc.detectMultiScale(gray)
+        for eye in eyes:
+            eye[0]+=face[0]
+            eye[1]+=face[1]
+        return eyes
 
     # Returns hair area from an image.
     # area_hair[i][j]=1 if img[i][j] is a part of hair area, 0 otherwise
