@@ -1,6 +1,8 @@
 import  sqlite3
 import math
 
+NUMBER_OF_FACTOR = 6
+
 db = sqlite3.connect("DB")
 
 def is_item(item) :
@@ -35,25 +37,39 @@ def is_rated(user, item) :
 def add_item(item) :
 	if(not is_item(item)) :
 		cursor = db.cursor()
-		cursor.execute("INSERT into item(item_name, type) values(?, ?)", (item, categorize(item)))
-     		db.commit()
+		cursor.execute("INSERT into item(item_name, type, used) values(?, ?, ?)", (item, categorize(item), 0))
+     	db.commit()
 
 def categorize(item) : 
-	return len(item) % 3
+	return len(item) % NUMBER_OF_FACTOR
+
+def update_item_used(item) :
+	if is_item(item) : 
+			cursor = db.cursor()
+			cursor.execute("SELECT used FROM item WHERE item_name = ?", (item,))
+			data = cursor.fetchall()
+			cursor.execute("UPDATE item SET used = ? WHERE item_name = ?", (data[0][0]+1,item))
+			db.commit()
 
 def add_user(user, list_of_item, list_of_rating) :
 	if(not is_user(user)) :
 		cursor = db.cursor()
-		k = [user, 0,0,0,0,0,0]
+		k = [0,0,0,0,0,0,0,0,0,0,0,0]
 
 		for (item, rating) in zip(list_of_item, list_of_rating) :
 			if(is_item(item)) :
 				if(not is_rated(user, item)) :
-					cursor.execute("INSERT into rating(user_name , item_name  , rate ) values (?, ?,?)", (user, item, rating))
-					k[categorize(item)*2 + 2]+= 1
-					k[categorize(item)*2 + 1] += rating
+					cursor.execute("INSERT into rating(user_name , item_name  , rate ) values (?,?,?)", (user, item, rating))
+					update_item_used(item)
+					k[categorize(item)*2 + 1]+= 1
+					k[categorize(item)*2] += rating
 
-		cursor.execute("INSERT into user(user_name, rating0, num0, rating1 , num1, rating2, num2 ) values (?, ?,?,?,?,?,?)", tuple(k))
+		cursor.execute("INSERT into user(user_name) values (?)", (user,))
+		db.commit()
+		for i in range(NUMBER_OF_FACTOR) :
+			S = "UPDATE user SET rating%d = ?, num%d = ? WHERE user_name = ?" % (i,i)
+			cursor.execute(S, (k[i*2],k[i*2+1],user))
+
 		db.commit()
 
 def update_rating(user, item, rating) :
@@ -67,10 +83,11 @@ def update_rating(user, item, rating) :
 			k[categorize(item)*2 + 1] += rating
 			S = "UPDATE user SET rating%d = ?, num%d = ? WHERE user_name = ?" % (categorize(item), categorize(item))
 			cursor.execute(S, (k[categorize(item)*2 + 1],k[categorize(item)*2 + 2],user))
+			update_item_used(item)
 			db.commit()
 
 def get_categoey_rating(user, category) :
-	if(is_user(user) and category < 3) :
+	if(is_user(user) and category < NUMBER_OF_FACTOR) :
 		cursor = db.cursor()
 		S = "SELECT num%s, rating%s FROM user WHERE user_name = ?" %(category, category)
 		cursor.execute(S, (user,))
@@ -83,7 +100,7 @@ def get_categoey_rating(user, category) :
 def get_rating(user) :
 	if(is_user(user)) :
 		l = []
-		for i in range(3) :
+		for i in range(NUMBER_OF_FACTOR) :
 			l.append(get_categoey_rating(user, i))
 		return l
 
@@ -149,10 +166,11 @@ add_item('777777')
 add_item('8')
 add_item('9999')
 add_item('00')
-
-add_user('A',['1','777777','666666'],[1,2,3])
+add_user('A',['1','777777','66666'],[1,2,3])
 add_user('B',['22','333','9999'],[4,2,2.5])
 add_user('C',['1','333','00'],[1,3.5,2.5])
+update_rating('A','333',3.5)
+update_rating('C','22',3.5)
 
 
 recommend('C')
