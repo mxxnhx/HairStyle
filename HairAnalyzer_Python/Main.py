@@ -3,15 +3,19 @@ import HairAnalyzer
 import numpy as np
 import random
 
-#ha = HairAnalyzer.HairAnalyzer('suit.jpg')
-#ha = HairAnalyzer.HairAnalyzer('man.jpeg')
-#ha = HairAnalyzer.HairAnalyzer('hurban-1.jpg')
-#ha = HairAnalyzer.HairAnalyzer('me.jpg')
-ha2 = HairAnalyzer.HairAnalyzer('me2.jpg')
-ha = HairAnalyzer.HairAnalyzer('suit2.jpg')
+#path1='suit.jpg'
+path1='man.jpg'
+#path1='hurban-1.jpg'
+#path1='me.jpg'
+#path1='suit2.jpg'
+#path1='asdf1.jpg'
+path2='me2.jpg'
+ha = HairAnalyzer.HairAnalyzer(path1)
+#ha2 = HairAnalyzer.HairAnalyzer(path2)
+
 
 img=ha.getImage()
-img2=ha2.getImage()
+#img2=ha2.getImage()
 #cv2.imshow('image',img)
 
 # Face&eye area
@@ -42,26 +46,28 @@ cv2.imshow('face',img_face)
 # Hair area
 
 #area=ha.getHairArea(424,94) # suit.jpg
-#area=ha.getHairArea(170,34) # man.jpeg
+area=ha.getHairArea(170,34) # man.jpeg
 #area=ha.getHairArea(78,37) # hurban-1.jpg
-area=ha.getHairArea(200,100) # me.jpg
+#area=ha.getHairArea(200,100) # me.jpg & suit2.jpg
+#area=ha.getHairArea(175,60) # asdf1&2.jpg
+#area=ha.getHairArea(251,71) # asdf3.jpg
 
 for i in range(img.shape[0]):
     for j in range(img.shape[1]):
-        if area[i][j] == 1:
+        if area[i][j] == 0:
             img[i][j]=np.array([255,255,255])
 cv2.imshow('hair_front',img)
 
-area2=ha2.getHairArea(200,100) #me2.jpg
+#area2=ha2.getHairArea(200,100) #me2.jpg
 
-for i in range(img2.shape[0]):
-    for j in range(img2.shape[1]):
-        if area2[i][j] == 0:
-            img2[i][j]=np.array([255,255,255])
-cv2.imshow('hair_side',img2)
+#for i in range(img2.shape[0]):
+#    for j in range(img2.shape[1]):
+#        if area2[i][j] == 0:
+#            img2[i][j]=np.array([255,255,255])
+#cv2.imshow('hair_side',img2)
 
 
-print(ha.getHairParams(faces,eyes,img,area,img2,area2))
+#print(ha.getHairParams(faces,eyes,img,area,img2,area2))
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()

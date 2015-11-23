@@ -3,8 +3,8 @@ import cv2
 import pymeanshift as pms
 
 # parameter for compare function
-diff=17
-
+diff=30
+diff2=20
 # Get first index of an integer from matrix.
 # m : matrix
 # n : an integer
@@ -16,7 +16,10 @@ def index_mat(m,n):
 # Compare function between factors.
 # Used for choosing neighboring area.
 def compare(n1,n2):
-    return abs(int(n1)-int(n2))<=diff
+    d1=abs(int(n1[0])-int(n2[0]))
+    d2=abs(int(n1[1])-int(n2[1]))
+    d3=abs(int(n1[2])-int(n2[2]))
+    return d1<diff and d2<diff and d3<diff and d1+d2+d3<diff*3-diff2
 
 class HairAnalyzer:
     # path : path of an image file
@@ -52,16 +55,15 @@ class HairAnalyzer:
     # x,y : coordinate of the first hair area
     def getHairArea(self,x,y):
         (segmented,labels,n)=pms.segment(self.img,spatial_radius=6,
-                              range_radius=4.5, min_density=50)
+                              range_radius=5, min_density=300)
         cv2.imshow('segmented',segmented)
         mv = cv2.split(self.img)
-        gray = cv2.cvtColor(segmented,cv2.COLOR_RGB2GRAY)
         hair = []
         hair_new = [labels[y][x]]
         not_hair = range(n)
         not_hair.remove(labels[y][x])
         neighbor=self.getNeighbor(labels,n)
-        factors=self.getFactor(gray,labels,n)
+        factors=self.getFactor(segmented,labels,n)
         # Run until new hair area is not detected
         while(hair!=hair_new):
             hair=hair_new[:]
