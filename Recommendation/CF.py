@@ -1,10 +1,12 @@
-import  sqlite3
+import sqlite3
 import math
 
-NUMBER_OF_FACTOR = 6
-
+#NUMBER OF CATEGORY
+NUMBER_OF_CATEGORY = 6
+#OUR DB
 db = sqlite3.connect("DB")
 
+#CHECK THE item IS ON THE TABLE
 def is_item(item) :
 	cursor = db.cursor()
 	cursor.execute("SELECT item_name FROM item WHERE item_name = ?", (item,))
@@ -14,6 +16,7 @@ def is_item(item) :
 	else :
 		return True;
 
+#CHECK THE user IS ON THE TABLE
 def is_user(user) :
 	cursor = db.cursor()
 	cursor.execute("SELECT user_name FROM user WHERE user_name = ?", (user,))
@@ -23,6 +26,7 @@ def is_user(user) :
 	else :
 		return True;
 
+#CHECK THE item IS RATED BY THE user
 def is_rated(user, item) :
 	cursor = db.cursor()
 	cursor.execute("SELECT rate FROM rating WHERE user_name = ? And item_name = ?", (user, item))
@@ -34,15 +38,19 @@ def is_rated(user, item) :
 
 	return True
 
+#ADD item ON THE TABLE
 def add_item(item) :
 	if(not is_item(item)) :
 		cursor = db.cursor()
 		cursor.execute("INSERT into item(item_name, type, used) values(?, ?, ?)", (item, categorize(item), 0))
      	db.commit()
 
+#GET item's CATEGORY
+#NEED_TO_UPDATE
 def categorize(item) : 
-	return len(item) % NUMBER_OF_FACTOR
+	return len(item) % NUMBER_OF_CATEGORY
 
+#INCREASE item's USED COUNT
 def update_item_used(item) :
 	if is_item(item) : 
 			cursor = db.cursor()
@@ -51,6 +59,7 @@ def update_item_used(item) :
 			cursor.execute("UPDATE item SET used = ? WHERE item_name = ?", (data[0][0]+1,item))
 			db.commit()
 
+#ADD user ON THE TABLE WITH RATED ITEMS AND RATINGS
 def add_user(user, list_of_item, list_of_rating) :
 	if(not is_user(user)) :
 		cursor = db.cursor()
@@ -66,12 +75,13 @@ def add_user(user, list_of_item, list_of_rating) :
 
 		cursor.execute("INSERT into user(user_name) values (?)", (user,))
 		db.commit()
-		for i in range(NUMBER_OF_FACTOR) :
+		for i in range(NUMBER_OF_CATEGORY) :
 			S = "UPDATE user SET rating%d = ?, num%d = ? WHERE user_name = ?" % (i,i)
 			cursor.execute(S, (k[i*2],k[i*2+1],user))
 
 		db.commit()
 
+#ADD user's NEW item rating 
 def update_rating(user, item, rating) :
 	if(is_user(user) and is_item(item)) :
 		if(not is_rated(user, item)) :
@@ -86,8 +96,9 @@ def update_rating(user, item, rating) :
 			update_item_used(item)
 			db.commit()
 
+#GET user's RATING AT category
 def get_categoey_rating(user, category) :
-	if(is_user(user) and category < NUMBER_OF_FACTOR) :
+	if(is_user(user) and category < NUMBER_OF_CATEGORY) :
 		cursor = db.cursor()
 		S = "SELECT num%s, rating%s FROM user WHERE user_name = ?" %(category, category)
 		cursor.execute(S, (user,))
@@ -97,13 +108,15 @@ def get_categoey_rating(user, category) :
 		else :
 			return rating/num
 
+#GET user's RATING LIST
 def get_rating(user) :
 	if(is_user(user)) :
 		l = []
-		for i in range(NUMBER_OF_FACTOR) :
+		for i in range(NUMBER_OF_CATEGORY) :
 			l.append(get_categoey_rating(user, i))
 		return l
 
+#GET user's ITEM LIST WITH HIGHEST RATING
 def get_high_rated_item(user) :
 	if(is_user(user)) :
 		cursor = db.cursor()
@@ -112,7 +125,7 @@ def get_high_rated_item(user) :
 		m= max(d,key=lambda item:item[1])[1]
 		return [tup[0] for tup in d if (tup[1] == m)]
 
-
+#GET COSINE SIMILARITY BETWEEN user1 AND user2
 def cosine_similarity(user1, user2) :
 	if(is_user(user1) and is_user(user2)) :
 		l1 = get_rating(user1)
@@ -124,6 +137,8 @@ def cosine_similarity(user1, user2) :
 		else :
 			return sum1/sum2
 
+#GET RECOMMANDED ITEM LIST WITH user
+#NEED_TO_UPDATE
 def recommend(user) :
 	if(is_user(user)) :
 		cursor = db.cursor()
@@ -138,6 +153,7 @@ def recommend(user) :
 		item_list = filter(lambda x : not is_rated(user, x), l)
 		print item_list
 
+#PRINT CURRENT DB
 def show_DB() :
 	cursor = db.cursor()
 	print("---item---")
