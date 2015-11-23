@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -18,8 +19,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.example.badasaza.gohaesungsaview.AlbumListAdapter;
+import com.example.badasaza.gohaesungsaview.RecListAdapter;
 
 public class CustomerHome extends AppCompatActivity implements ActionBar.TabListener{
+
+    private final long	FINSH_INTERVAL_TIME    = 2000;
+    private long		backPressedTime        = 0;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -127,6 +135,24 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
 
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
+    }
+
+    public void fabClick(View v){
+        Intent i = new Intent(this, TakePhoto.class);
+        startActivity(i);
+    }
+
+    @Override
+    public void onBackPressed() {
+        long tempTime        = System.currentTimeMillis();
+        long intervalTime    = tempTime - backPressedTime;
+
+        if ( 0 <= intervalTime && FINSH_INTERVAL_TIME >= intervalTime ) {
+            super.onBackPressed();
+        } else {
+            backPressedTime = tempTime;
+            Toast.makeText(getApplicationContext(),"'뒤로'버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**

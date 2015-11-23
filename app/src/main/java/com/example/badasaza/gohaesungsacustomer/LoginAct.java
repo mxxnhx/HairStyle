@@ -1,12 +1,14 @@
 package com.example.badasaza.gohaesungsacustomer;
 
 import android.content.Intent;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class LoginAct extends AppCompatActivity implements View.OnClickListener{
 
@@ -14,6 +16,10 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        if(!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
+            Toast.makeText(this, "External SD card not mounted", Toast.LENGTH_LONG).show();
+        }
 
         Button login = (Button) findViewById(R.id.login_button);
         login.setOnClickListener(this);

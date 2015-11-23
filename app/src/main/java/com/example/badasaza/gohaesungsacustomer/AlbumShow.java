@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.badasaza.gohaesungsaview.AlbumListAdapter;
+
 import java.util.ArrayList;
 
 public class AlbumShow extends AppCompatActivity {

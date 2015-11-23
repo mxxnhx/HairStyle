@@ -32,4 +32,12 @@
     <string name="home_tab">GoHaeSungSaCustomer</string>
     <string name="rec_tab">추천</string>
     <string name="settings_tab">옵션</string>
+    <string name="title_activity_take_photo">TakePhoto</string>
+    <string name="title_activity_camera">Camera</string>
+
+    <!-- Take Photo Strings -->
+    <string name="save">저장</string>
+    <string name="cancel">취소</string>
+    <string name="front">정면 머리:</string>
+    <string name="side">옆 머리:</string>
 </resources>

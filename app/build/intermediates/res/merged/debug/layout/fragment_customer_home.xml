@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:clickable="true"
+        android:onClick="fabClick"
         android:src="@android:drawable/ic_menu_camera"
         app:layout_anchor="@id/home_layout"
         app:layout_anchorGravity="bottom|right|end" />
