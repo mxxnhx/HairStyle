@@ -13,6 +13,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +23,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.badasaza.gohaesungsamodel.ItemModel;
 import com.example.badasaza.gohaesungsaview.AlbumListAdapter;
+import com.example.badasaza.gohaesungsaview.AlbumRecyclerAdapter;
 import com.example.badasaza.gohaesungsaview.RecListAdapter;
 
 public class CustomerHome extends AppCompatActivity implements ActionBar.TabListener{
@@ -241,13 +245,19 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
             if(position == 1) {
                 rootView = inflater.inflate(R.layout.fragment_customer_home, container, false);
 
-                ListView lv = (ListView) rootView.findViewById(R.id.album_list);
-                ArrayList<String> als = new ArrayList<>();
-                als.add("ddcut1");
-                als.add("rgcut1");
-                als.add("tblock1");
-                AlbumListAdapter ala = new AlbumListAdapter(getActivity(), als);
-                lv.setAdapter(ala);
+                RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.album_list);
+                //LayoutManager
+                GridLayoutManager glm = new GridLayoutManager(getActivity(), 2);
+                glm.setOrientation(GridLayoutManager.VERTICAL);
+                rv.setLayoutManager(glm);
+
+
+                ArrayList<ItemModel> als = new ArrayList<>();
+                als.add(new ItemModel(Arrays.asList("ddcut1","ddcut2","ddcut3"), "2015-07-22", true));
+                als.add(new ItemModel(Arrays.asList("rgcut1","rgcut2","rgcut3"), "2015-05-02", true));
+                als.add(new ItemModel(Arrays.asList("tblock1","tblock2","tblock3"), "2015-02-15", true));
+                AlbumRecyclerAdapter ara = new AlbumRecyclerAdapter(als);
+                rv.setAdapter(ara);
             }
             else if(position == 2) {
                 rootView = inflater.inflate(R.layout.fragment_customer_rec, container, false);

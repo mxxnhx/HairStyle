@@ -78,13 +78,13 @@ public class AlbumListAdapter extends ArrayAdapter<String> {
     private ArrayList<Integer> getPhotoArray(int pos){
         switch(pos){
             case 0:
-                Integer[] temp1 = {R.drawable.ddcut1, R.drawable.ddcut2, R.drawable.ddcut3, R.drawable.ddcut4};
+                Integer[] temp1 = {R.drawable.ddcut1, R.drawable.ddcut2, R.drawable.ddcut3};
                 return new ArrayList<Integer>(Arrays.asList(temp1));
             case 1:
-                Integer[] temp2 = {R.drawable.rgcut1, R.drawable.rgcut2, R.drawable.rgcut3, R.drawable.rgcut4};
+                Integer[] temp2 = {R.drawable.rgcut1, R.drawable.rgcut2, R.drawable.rgcut3};
                 return new ArrayList<Integer>(Arrays.asList(temp2));
             case 2:
-                Integer[] temp3 = {R.drawable.tblock1, R.drawable.tblock2, R.drawable.tblock3, R.drawable.tblock4};
+                Integer[] temp3 = {R.drawable.tblock1, R.drawable.tblock2, R.drawable.tblock3};
                 return new ArrayList<Integer>(Arrays.asList(temp3));
             default:
                 return null;

@@ -1,5 +1,6 @@
 package com.example.badasaza.gohaesungsacustomer;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -14,31 +15,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.badasaza.gohaesungsamodel.ItemModel;
 import com.example.badasaza.gohaesungsaview.AlbumListAdapter;
+import com.example.badasaza.gohaesungsaview.AlbumRecyclerAdapter;
 
 import java.util.ArrayList;
 
 public class AlbumShow extends AppCompatActivity {
 
     private ViewPager vp;
-    public ArrayList<Integer> abl;
-    public String date;
+    public ItemModel item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album_show);
-        date = getIntent().getStringExtra(AlbumListAdapter.DATE_KEY);
+
+        item = (ItemModel) getIntent().getSerializableExtra(AlbumRecyclerAdapter.ITEM_MODEL);
 
         ActionBar a = getSupportActionBar();
         a.setDisplayHomeAsUpEnabled(true);
-        a.setTitle(date);
+        a.setTitle(item.dateTime);
 
-        AlbumPager pa = new AlbumPager(getSupportFragmentManager());
+        AlbumPager pa = new AlbumPager(getSupportFragmentManager(), this);
         vp = (ViewPager) findViewById(R.id.album_show);
         vp.setAdapter(pa);
-        abl = getIntent().getIntegerArrayListExtra(AlbumListAdapter.IMG_KEY);
-
     }
 
     @Override
@@ -66,22 +67,36 @@ public class AlbumShow extends AppCompatActivity {
 
     public class AlbumPager extends FragmentPagerAdapter {
 
-        public AlbumPager(FragmentManager fm){
+        Context cxt;
+
+        public AlbumPager(FragmentManager fm, Context cxt){
             super(fm);
+            this.cxt = cxt;
         }
 
         @Override
         public Fragment getItem(int i){
             Fragment fg = new PhotoFrag();
             Bundle args = new Bundle();
-            args.putInt(PhotoFrag.STRING_KEY, abl.get(i).intValue());
-            fg.setArguments(args);
+
+            int resId = -1;
+
+            if(item.inApp){
+                resId = cxt.getResources().getIdentifier("@drawable/" + item.imgFiles.get(i), "drawable", cxt.getPackageName());
+            }else{
+                /* Take care of photo taken case here */
+            }
+
+            if(resId != -1) {
+                args.putInt(PhotoFrag.STRING_KEY, resId);
+                fg.setArguments(args);
+            }
             return fg;
         }
 
         @Override
         public int getCount(){
-            return 4;
+            return item.imgFiles.size();
         }
     }
 
@@ -90,8 +105,7 @@ public class AlbumShow extends AppCompatActivity {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-            View rootView = inflater.inflate(
-                    R.layout.fragment_photo, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_photo, container, false);
             Bundle args = getArguments();
             int imgId = -1;
             if(args != null)
