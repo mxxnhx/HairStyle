@@ -1,20 +1,21 @@
 sudo functions
 
-//for DB
--add_item(item) : void
--add_user(user, list_of_item,list_of_rating) : void
--update _rating(user, item, rating) : void
--categorize(item) : category
--get_user_list() : list_of_user
--get_categoey_rating(user, category) : double
--get_rating(user) : list_of_double
--is_rated(user,item) : boolean
--get_high_rated_item(user) : list_of_item
-
-//for recommendation
--recommend(user) : list_of_item
--cosine_similarity(user1, user2) : double
-
+def is_item(item)
+def is_user(user)
+def is_rated(user, item)
+def add_item(item)
+def categorize(item)
+def update_item_used(item)
+def add_user(user, list_of_item, list_of_rating)
+def update_rating(user, item, rating)
+def get_categoey_rating(user, category)
+def get_rating(user)
+def get_high_rated_item(user)
+def cosine_similarity(user1, user2)
+def recommend(user)
+def pick_less_item(item_list)
+def show_DB() 
+def get_item_list()
 
 
 ToDo...?

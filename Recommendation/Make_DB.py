@@ -16,7 +16,7 @@ def make_DB() :
 
 
     except sqlite3.Error, e:
-        print("ERR")
+        print("make_DB : DB ALREADY EXIST")
         if db:
             db.rollback
         else :

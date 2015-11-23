@@ -67,7 +67,7 @@ def update_item_used(item) :
 def add_user(user, list_of_item, list_of_rating) :
 	if(not is_user(user)) :
 		cursor = db.cursor()
-		k = [0,0,0,0,0,0,0,0,0,0,0,0]
+		k = [0,0] * NUMBER_OF_CATEGORY
 
 		for (item, rating) in zip(list_of_item, list_of_rating) :
 			if(is_item(item)) :
@@ -85,11 +85,11 @@ def add_user(user, list_of_item, list_of_rating) :
 
 		db.commit()
 
-#ADD user's NEW item rating 
+#ADD OR UPDATE user's item rating 
 def update_rating(user, item, rating) :
 	if(is_user(user) and is_item(item)) :
+		cursor = db.cursor()
 		if(not is_rated(user, item)) :
-			cursor = db.cursor()
 			cursor.execute("INSERT into rating(user_name , item_name  , rate ) values (?, ?,?)", (user, item, rating))
 			cursor.execute("SELECT * FROM user WHERE user_name = ?", (user,))
 			k = list(cursor.fetchall()[0])
@@ -98,6 +98,21 @@ def update_rating(user, item, rating) :
 			S = "UPDATE user SET rating%d = ?, num%d = ? WHERE user_name = ?" % (categorize(item), categorize(item))
 			cursor.execute(S, (k[categorize(item)*2 + 1],k[categorize(item)*2 + 2],user))
 			update_item_used(item)
+			db.commit()
+		else :
+			cursor.execute("SELECT rate FROM rating WHERE item_name = ? AND user_name = ?", (item, user))
+			previous_rating = cursor.fetchall()[0][0]
+			print previous_rating
+
+			cursor.execute("UPDATE rating SET rate = ? WHERE item_name = ? AND user_name = ?", (rating, item, user))
+
+			category = categorize(item)
+			S = "SELECT rating%s FROM user WHERE user_name = ?" %(categorize(item))
+			cursor.execute(S, (user,))
+			current_rating=cursor.fetchall()[0][0]
+
+			S = "UPDATE user SET rating%d = ? WHERE user_name = ?" % (categorize(item))
+			cursor.execute(S, (current_rating - previous_rating + rating , user))
 			db.commit()
 
 #GET user's RATING AT category
@@ -126,6 +141,8 @@ def get_high_rated_item(user) :
 		cursor = db.cursor()
 		cursor.execute("SELECT item_name, rate FROM rating WHERE user_name = ?", (user,))
 		d = cursor.fetchall()
+		if(len(d) == 0) :
+			return []
 		m= max(d,key=lambda item:item[1])[1]
 		return [tup[0] for tup in d if (tup[1] == m)]
 
@@ -140,6 +157,12 @@ def cosine_similarity(user1, user2) :
 			return -2
 		else :
 			return sum1/sum2
+
+#GET ITEM LIST
+def get_item_list() :
+	cursor = db.cursor()
+	cursor.execute("SELECT item_name FROM item")
+	return [tup[0] for tup in cursor.fetchall()]
 
 #GET RECOMMANDED ITEM LIST WITH user
 #NEED_TO_UPDATE
@@ -171,8 +194,8 @@ def recommend(user) :
 				continue
 			return pick_less_item(item_list)
 
-		#CANNOT RECOMMAND! -> RANDOM PICK
-
+		#CANNOT RECOMMEND! -> RANDOM PICK
+		return pick_less_item(filter(lambda x : not is_rated(user, x), get_item_list()))
 
 #PICK SOME ITEM WITH SMALLEST used in item_list
 def pick_less_item(item_list) :
@@ -204,18 +227,19 @@ def show_DB() :
 		print "|   ",row
 	print("--------END DB--------")
 
+
 """
 very simple test code
 """
 make_DB()
 R = [0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5]
-L = map(lambda x : str(x), range(30))
+L = map(lambda x : str(x), range(50))
 
 def select_random(lis, num) :
 	l = []
 	for i in range(num) : l.append(random.choice(lis))
 	return l
-
+	
 for i in L :
 	add_item(i)
 
@@ -231,4 +255,5 @@ add_user('I',select_random(L,20),select_random(R,20))
 add_user('J',select_random(L,20),select_random(R,20))
 
 print(recommend('C'))
+
 show_DB()
