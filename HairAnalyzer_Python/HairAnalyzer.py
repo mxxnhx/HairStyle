@@ -55,12 +55,14 @@ class HairAnalyzer:
     # Returns hair area from an image.
     # area_hair[i][j]=1 if img[i][j] is a part of hair area, 0 otherwise
     # x,y : coordinate of the first hair area
-    def getHairArea(self,x,y):
+    def getHairArea(self,face):
         (segmented,labels,n)=pms.segment(self.img,spatial_radius=6,
                               range_radius=5, min_density=300)
         cv2.imshow('segmented',segmented)
         mv = cv2.split(self.img)
         hair = []
+        x=face[0]+face[2]/2
+        y=face[1]-50
         hair_new = [labels[y][x]]
         not_hair = range(n)
         not_hair.remove(labels[y][x])

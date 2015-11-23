@@ -6,9 +6,9 @@ import random
 #path1='suit.jpg'
 #path1='man.jpg'
 #path1='hurban-1.jpg'
-path1='me.jpg'
+#path1='me.jpg'
 #path1='suit2.jpg'
-#path1='asdf1.jpg'
+path1='asdf1.jpg'
 path2='me2.jpg'
 ha = HairAnalyzer.HairAnalyzer(path1)
 #ha2 = HairAnalyzer.HairAnalyzer(path2)
@@ -46,10 +46,10 @@ cv2.imshow('face',img_face)
 #area=ha.getHairArea(424,94) # suit.jpg
 #area=ha.getHairArea(170,100) # man.jpeg
 #area=ha.getHairArea(78,37) # hurban-1.jpg
-area=ha.getHairArea(200,100) # me.jpg & suit2.jpg
+#area=ha.getHairArea(200,100) # me.jpg & suit2.jpg
 #area=ha.getHairArea(175,60) # asdf1&2.jpg
 #area=ha.getHairArea(251,71) # asdf3.jpg
-
+area=ha.getHairArea(face)
 for i in range(img.shape[0]):
     for j in range(img.shape[1]):
         if area[i][j] == 0:
