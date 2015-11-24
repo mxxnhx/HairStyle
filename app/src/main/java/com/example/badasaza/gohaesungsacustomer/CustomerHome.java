@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
+import android.content.ClipData;
 import android.content.Intent;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -15,23 +17,31 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.badasaza.gohaesungsamodel.ItemModel;
-import com.example.badasaza.gohaesungsaview.AlbumListAdapter;
 import com.example.badasaza.gohaesungsaview.AlbumRecyclerAdapter;
+import com.example.badasaza.gohaesungsaview.DragListener;
+import com.example.badasaza.gohaesungsaview.LongClickDragListener;
 import com.example.badasaza.gohaesungsaview.RecListAdapter;
 
 public class CustomerHome extends AppCompatActivity implements ActionBar.TabListener{
 
     private final long	FINSH_INTERVAL_TIME    = 2000;
     private long		backPressedTime        = 0;
+    public static final int PHOTO_REQUEST = 0;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -143,7 +153,7 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
 
     public void fabClick(View v){
         Intent i = new Intent(this, TakePhoto.class);
-        startActivity(i);
+        startActivityForResult(i, PHOTO_REQUEST);
     }
 
     @Override
@@ -156,6 +166,16 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
         } else {
             backPressedTime = tempTime;
             Toast.makeText(getApplicationContext(),"'뒤로'버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == PHOTO_REQUEST && resultCode == RESULT_OK && data != null && mViewPager.getCurrentItem() == 0) {
+            ArrayList<String> als = data.getStringArrayListExtra(TakePhoto.FILE_PATHS);
+            String date = data.getStringExtra(TakePhoto.DATE_STRING);
+            PlaceholderFragment phf = (PlaceholderFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + mViewPager.getCurrentItem());
+            phf.addItemToRecycler(new ItemModel(als, date, false));
         }
     }
 
@@ -226,6 +246,8 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
          */
         int position;
 
+        private View rootView;
+
         public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
@@ -240,7 +262,6 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = null;
             position = (this.getArguments() == null ? 0 : this.getArguments().getInt(ARG_SECTION_NUMBER));
             if(position == 1) {
                 rootView = inflater.inflate(R.layout.fragment_customer_home, container, false);
@@ -262,15 +283,39 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
             else if(position == 2) {
                 rootView = inflater.inflate(R.layout.fragment_customer_rec, container, false);
 
-                ListView lis = (ListView) rootView.findViewById(R.id.rec_list);
+                /*ListView lis = (ListView) rootView.findViewById(R.id.rec_list);
                 Integer[] temp = {R.drawable.rec1, R.drawable.rec2, R.drawable.rec3};
                 RecListAdapter rla = new RecListAdapter(getActivity(), Arrays.asList(temp));
-                lis.setAdapter(rla);
+                lis.setAdapter(rla);*/
+
+                LinearLayout cont = (LinearLayout) rootView.findViewById(R.id.rec_hair_container);
+                ImageView imgV = new ImageView(getActivity());
+                imgV.setImageResource(R.drawable.wig);
+                imgV.setLayoutParams(new ViewGroup.LayoutParams(dpToPx(80), dpToPx(80)));
+                imgV.setOnLongClickListener(new LongClickDragListener());
+                cont.addView(imgV);
+                cont.setOnDragListener(new DragListener());
+
+                FrameLayout bu = (FrameLayout) rootView.findViewById(R.id.bald_user);
+                bu.setOnDragListener(new DragListener());
             }
             else if(position == 3)
                 rootView = inflater.inflate(R.layout.fragment_customer_settings, container, false);
             return rootView;
         }
-    }
 
+        public int dpToPx(int dp) {
+            DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+            int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+            return px;
+        }
+
+        public void addItemToRecycler(ItemModel item){
+            if(rootView != null) {
+                AlbumRecyclerAdapter ara = (AlbumRecyclerAdapter) ((RecyclerView) rootView.findViewById(R.id.album_list)).getAdapter();
+                ara.addItem(item);
+                ara.notifyDataSetChanged();
+            }
+        }
+    }
 }

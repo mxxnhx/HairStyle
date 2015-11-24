@@ -1,6 +1,7 @@
 package com.example.badasaza.gohaesungsacustomer;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -16,10 +17,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.badasaza.gohaesungsamodel.ItemModel;
-import com.example.badasaza.gohaesungsaview.AlbumListAdapter;
 import com.example.badasaza.gohaesungsaview.AlbumRecyclerAdapter;
 
-import java.util.ArrayList;
+import java.util.Collections;
 
 public class AlbumShow extends AppCompatActivity {
 
@@ -32,6 +32,7 @@ public class AlbumShow extends AppCompatActivity {
         setContentView(R.layout.activity_album_show);
 
         item = (ItemModel) getIntent().getSerializableExtra(AlbumRecyclerAdapter.ITEM_MODEL);
+        item.imgFiles.removeAll(Collections.singleton(null));
 
         ActionBar a = getSupportActionBar();
         a.setDisplayHomeAsUpEnabled(true);
@@ -83,14 +84,13 @@ public class AlbumShow extends AppCompatActivity {
 
             if(item.inApp){
                 resId = cxt.getResources().getIdentifier("@drawable/" + item.imgFiles.get(i), "drawable", cxt.getPackageName());
+                if(resId != -1)
+                    args.putInt(PhotoFrag.STRING_KEY, resId);
             }else{
                 /* Take care of photo taken case here */
+                args.putString(PhotoFrag.FILE_KEY, item.imgFiles.get(i));
             }
-
-            if(resId != -1) {
-                args.putInt(PhotoFrag.STRING_KEY, resId);
-                fg.setArguments(args);
-            }
+            fg.setArguments(args);
             return fg;
         }
 
@@ -102,16 +102,22 @@ public class AlbumShow extends AppCompatActivity {
 
     public static class PhotoFrag extends Fragment{
         public static final String STRING_KEY = "asdfss";
+        public static final String FILE_KEY = "filekey";
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
             View rootView = inflater.inflate(R.layout.fragment_photo, container, false);
             Bundle args = getArguments();
             int imgId = -1;
-            if(args != null)
-                imgId = args.getInt(STRING_KEY);
+            String imgPath = null;
+            if(args != null) {
+                imgId = args.getInt(STRING_KEY, -1);
+                imgPath = args.getString(FILE_KEY, null);
+            }
             if(imgId != -1)
                 ((ImageView) rootView.findViewById(R.id.photo_slot)).setImageResource(imgId);
+            else if (imgPath != null)
+                ((ImageView) rootView.findViewById(R.id.photo_slot)).setImageBitmap(BitmapFactory.decodeFile(imgPath));
             return rootView;
         }
     }

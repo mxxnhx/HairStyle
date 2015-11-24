@@ -21,12 +21,16 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 public class TakePhoto extends AppCompatActivity implements View.OnClickListener{
 
     public static final int REQUEST_IMAGE_CAPTURE_FRONT = 1;
     public static final int REQUEST_IMAGE_CAPTURE_SIDE = 2;
+    public static final String FILE_PATHS= "fp";
+    public static final String DATE_STRING = "ds";
 
     private LinearLayout fc;
     private LinearLayout sc;
@@ -71,8 +75,10 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        }else if (id == android.R.id.home)
+        }else if (id == android.R.id.home) {
+            this.setResult(RESULT_CANCELED);
             finish();
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -95,10 +101,18 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         switch (v.getId()) {
             case R.id.save_button:
                 /* Do picture transfer here*/
-                delTempImages();
+                Intent b = new Intent();
+                ArrayList<String> dummy = new ArrayList<>();
+                dummy.addAll(Arrays.asList(front, side1, side2));
+                b.putStringArrayListExtra(FILE_PATHS, dummy);
+                Date now = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                b.putExtra(DATE_STRING, sdf.format(now));
+                this.setResult(RESULT_OK, b);
                 finish();
                 break;
             case R.id.cancel_button:
+                this.setResult(RESULT_CANCELED);
                 delTempImages();
                 finish();
                 break;

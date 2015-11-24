@@ -2,6 +2,8 @@ package com.example.badasaza.gohaesungsaview;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -50,16 +52,30 @@ public class AlbumRecyclerAdapter extends RecyclerView.Adapter {
                 if(iter.hasNext())
                     iter.next().setImageResource(resId);
             }
-            arvh.date.setText(i.dateTime);
-            arvh.card.setOnClickListener(new AlbumRecyclerListener(cxt, i));
         }else{
             /* Load bitmap from file directory and put it in the list */
+            for(String s : i.imgFiles){
+                if(s != null){
+                    Bitmap bm = BitmapFactory.decodeFile(s);
+                    if(iter.hasNext())
+                        iter.next().setImageBitmap(bm);
+                }
+            }
+            while(iter.hasNext())
+                iter.next().setImageResource(R.drawable.x);
+
         }
+        arvh.date.setText(i.dateTime);
+        arvh.card.setOnClickListener(new AlbumRecyclerListener(cxt, i));
     }
 
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    public void addItem(ItemModel im){
+        items.add(0, im);
     }
 
     public final static class AlbumRecyclerViewHolder extends RecyclerView.ViewHolder{

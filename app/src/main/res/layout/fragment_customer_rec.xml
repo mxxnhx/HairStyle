@@ -13,16 +13,46 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_vertical_margin"
         android:paddingBottom="@dimen/activity_horizontal_margin"
-        android:background="@color/b200"
+        android:background="@color/b300"
         android:text = "@string/rec_top"/>
 
-    <ListView
+    <!--<ListView
         android:id="@+id/rec_list"
         android:divider="@android:color/transparent"
         android:dividerHeight="8dp"
         android:padding="@dimen/interval"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"/> -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        
+        <FrameLayout
+            android:id="@+id/bald_user"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="0.7">
+
+            <ImageView
+                android:id="@+id/user_photo"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_gravity="center" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/rec_hair_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:orientation="vertical"
+            android:background="@color/b100"
+            android:padding="@dimen/activity_content_margin"/>
+
+    </LinearLayout>
 
 
 </LinearLayout>
