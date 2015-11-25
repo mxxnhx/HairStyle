@@ -1,7 +1,9 @@
 import numpy as np
 import cv2
 import pymeanshift as pms
+import sqlite3
 
+db=sqlite3.connect("DB")
 # parameter for compare function
 diff=30
 diff2=20
@@ -20,6 +22,31 @@ def compare(n1,n2):
     d2=abs(int(n1[1])-int(n2[1]))
     d3=abs(int(n1[2])-int(n2[2]))
     return d1<diff and d2<diff and d3<diff and d1+d2+d3<diff*3-diff2
+
+# From parameters, get category which is defined in DB.
+def getCategory(list_parameter):
+    lf=parameter['l_forehair']
+    ls=parameter['l_sidehair']
+    lr=parameter['l_rearhair']
+    ef=parameter['e_forehead']
+    ee=parameter['e_ear']
+    v=parameter['volume']
+    c=paramter['color']
+    cursor=db.cursor()
+    cursor.execute("SELECT * FROM category")
+    category=cursor.fetchall()
+    # category=[item1,item2,...]
+    # item=(index,p1_min,p1_max,p2_min,p2_max,...)
+    for item in category:
+        if item[1]<=lf and lf<=item[2]\
+           and item[3]<=ls and ls<=item[4]\
+           and item[5]<=lr and lr<=item[6]\
+           and item[7]<=ef and ef<=item[8]\
+           and item[9]<=ee and ee<=item[10]\
+           and item[11]<=v and v<=item[12]\
+           and item[13]<=c and c<=item[14]:
+            return item[0]
+    return -1
 
 class HairAnalyzer:
     # path : path of an image file
