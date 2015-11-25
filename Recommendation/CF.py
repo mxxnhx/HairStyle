@@ -190,9 +190,11 @@ def recommend(user) :
 			#filter user used item 
 			item_list = filter(lambda x : not is_rated(user, x), l)
 			print "Highest Rated item :",item_list
+			#if there are no item, do again
 			if (len(item_list) == 0) :
 				continue
-			return pick_less_item(item_list)
+			#pick item with highest rating
+			return pick_highest_rating_item(item_list)
 
 		#CANNOT RECOMMEND! -> RANDOM PICK
 		return pick_less_item(filter(lambda x : not is_rated(user, x), get_item_list()))
@@ -207,7 +209,21 @@ def pick_less_item(item_list) :
 	f = filter(lambda x : x[1] == d[0][1], d)
 	return random.choice(f)[0]
 
+#RETURM item's AVERAGE RATING FOR ALL USER
+def item_rating(item) :
+	if (is_item(item)) :
+		cursor = db.cursor()
+		d = map(lambda x : x[0], cursor.execute("SELECT  rate FROM rating WHERE item_name == ?", (item,)).fetchall())
+		if(len(d) == 0) :
+			return 0;
+		return sum(d) / len(d)
 
+#RETURN HIGHEST RATING ITEM IN item_list
+def pick_highest_rating_item(item_list) :
+	l = map(lambda x : (x, item_rating(x)), item_list)
+	l.sort(key = lambda item:item[1], reverse = True)
+	f = filter(lambda x : x[1] == l[0][1], l)
+	return random.choice(f)[0]
 
 #PRINT CURRENT DB
 def show_DB() :
@@ -253,6 +269,8 @@ add_user('G',select_random(L,20),select_random(R,20))
 add_user('H',select_random(L,20),select_random(R,20))
 add_user('I',select_random(L,20),select_random(R,20))
 add_user('J',select_random(L,20),select_random(R,20))
+
+pick_highest_rating_item(L)
 
 print(recommend('C'))
 

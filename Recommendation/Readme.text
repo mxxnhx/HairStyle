@@ -16,6 +16,8 @@ def recommend(user)
 def pick_less_item(item_list)
 def show_DB() 
 def get_item_list()
+def item_rating(item)
+def pick_highest_rating_item(item_list)
 
 
 ToDo...?
