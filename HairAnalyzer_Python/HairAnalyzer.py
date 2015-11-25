@@ -6,7 +6,6 @@ import sqlite3
 db=sqlite3.connect("DB")
 # parameter for compare function
 diff=30
-diff2=20
 # Get first index of an integer from matrix.
 # m : matrix
 # n : an integer
@@ -21,7 +20,7 @@ def compare(n1,n2):
     d1=abs(int(n1[0])-int(n2[0]))
     d2=abs(int(n1[1])-int(n2[1]))
     d3=abs(int(n1[2])-int(n2[2]))
-    return d1<diff and d2<diff and d3<diff and d1+d2+d3<diff*3-diff2
+    return d1*d1+d2*d2+d3*d3<diff*diff*2
 
 # From parameters, get category which is defined in DB.
 def getCategory(list_parameter):
@@ -65,7 +64,7 @@ class HairAnalyzer:
         faces = cc.detectMultiScale(gray)
         for face in faces:
             eyes=self.detectEye(face)
-            if len(eyes)>0:
+            if len(eyes)>1:
                 return face,eyes
         print('No face region found')
         return [0,0,0,0],[]
@@ -88,7 +87,7 @@ class HairAnalyzer:
         mv = cv2.split(self.img)
         hair = []
         x=face[0]+face[2]/2
-        y=face[1]-50
+        y=face[1]-self.img.shape[0]/8
         hair_new = [labels[y][x]]
         not_hair = range(n)
         not_hair.remove(labels[y][x])
@@ -110,6 +109,18 @@ class HairAnalyzer:
                 if labels[i][j] in hair:
                     area_hair[i][j]=1
         return area_hair
+
+    def getHairArea_side(self,face_front,img_front):
+        xp=face_front[0]+face_front[2]/2
+        yp=face_front[1]-img_front.shape[0]/8
+        c=img_front[yp][xp]
+        x=self.img.shape[1]/2
+        h=self.img.shape[0]/8
+        while not compare(self.img[h][img_front.shape[1]/2],c):
+            h=h+5
+        face_side=[x,h+20+self.img.shape[1]/8,0,0]
+        print(x,h)
+        return self.getHairArea(face_side)
 
     # Returns matrix of neighbor relations between segmented areas.
     # neighbor[i][j]=1 if area i and j neighbors, 0 otherwise.
@@ -141,7 +152,7 @@ class HairAnalyzer:
         return factors
 
     # Returns list of hair parameters from hair region
-    def getHairParams(self,faces,eyes,img_front,hair_front,img_side,hair_side):
+    def getHairParams(self,face,eyes,img_front,hair_front,img_side,hair_side):
         face=None
         dic={}
         #first hair point
@@ -229,11 +240,6 @@ class HairAnalyzer:
         dic['volume']=v
         dic['color']=c/v
         
-            
-        for item in faces:
-            if eyes[0][1]>item[1] and eyes[0][1]<item[1]+item[3]\
-               and eyes[0][0]>item[0] and eyes[0][0]<item[0]+item[2]:
-                face=item
         
             
         h_eye=0
