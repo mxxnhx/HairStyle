@@ -155,22 +155,65 @@ class HairAnalyzer:
     def getHairParams(self,face,eyes,img_front,hair_front,img_side,hair_side):
         face=None
         dic={}
-        #first hair point
-        x_firsthair=hair_side.shape[1]-1
-        y_firsthair=0
+        #first hair point for front hair
+        xff=0
+        yff=-1
+        for h in range(hair_front.shape[0]):
+            for i in range(hair_front.shape[1]):
+                if hair_front[h][i]==1:
+                    xff=i
+                    yff=h
+                    break
+            if yff!=-1:
+                break
+        #forehair
+        h_forehair_front=yff
+        #for loop continues until passing hair region twice
+        for h in range(yff,hair_front.shape[0]):
+            change_point=0
+            flag=0
+            for i in range(hair_front.shape[1]-1):
+                if hair_front[h][i]==0 and hair_front[h][i+1]==1:
+                    if flag==1 and i-change_point>=hair_front.shape[1]/4:
+                        h_forehair_front=h
+                elif hair_front[h][i]==1 and hair_front[h][i+1]==0:
+                    if flag!=1:
+                        change_point=i
+                    flag=1
+            if h_forehair_front!=yff:
+                break
+
+        #sidehair
+        h_sidehair_front=h_forehair_front
+        for h in range(h_forehair_front,hair_front.shape[0]):
+            flag=0
+            for i in range(hair_front.shape[1]):
+                if hair_front[h][i]==1:
+                    flag=1
+                    break
+            if flag==0:
+                h_sidehair_front=h
+                break
+        #print(yff,h_forehair_front,h_sidehair_front)
+        dic['l_forehair']=(h_forehair_front-yff)/2
+        dic['l_sidehair']=h_sidehair_front-h_forehair_front
+        
+        #first hair point for side hair
+        xfs=hair_side.shape[1]-1
+        yfs=0
         for i in range(hair_side.shape[1]-1,0,-1):
             for h in range(hair_side.shape[0]):
                 if hair_side[h][i]==1:
-                    x_firsthair=i
-                    y_firsthair=h
+                    xfs=i
+                    yfs=h
                     break
-            if y_firsthair!=0:
+            if yfs!=0:
                 break
     
         #forehair
         h_forehair=0
-        for i in range(x_firsthair,x_firsthair-20,-5):
-            for h in range(y_firsthair,hair_side.shape[0]):
+        for i in range(xfs,xfs-20,-5):
+            for h in range(yfs,hair_side.shape[0]):
                 if hair_side[h][i]==1:
                     h_forehair=h
                 else:
@@ -216,7 +259,7 @@ class HairAnalyzer:
         while hair_side[h][i]==0:
             h-=1
         h_head=h
-        while i<x_firsthair:
+        while i<xfs:
             while hair_side[h][i]==0:
                 h+=1
             while hair_side[h][i]==1:
@@ -226,17 +269,17 @@ class HairAnalyzer:
             i=i+5
         #print('h_head',h_head)
         h_forehead=(h_forehair+h_head)/2
-        dic['l_forehair']=h_forehair-h_forehead
-        dic['l_sidehair']=h_sidehair-h_forehair
+        #dic['l_forehair']=h_forehair-h_forehead
+        #dic['l_sidehair']=h_sidehair-h_forehair
         dic['l_rearhair']=h_rearhair-h_sidehair
 
         v=0
         c=np.array([0,0,0])
-        for i in range(x_lasthair,x_firsthair):
-            for h in range(h_head,h_rearhair):
-                if hair_side[h][i]==1:
+        for h in range(yff,h_sidehair_front):
+            for i in range(hair_front.shape[1]):
+                if hair_front[h][i]==1:
                     v=v+1
-                    c=c+img_side[h][i]
+                    c=c+img_front[h][i]
         dic['volume']=v
         dic['color']=c/v
         
@@ -247,7 +290,7 @@ class HairAnalyzer:
             for eye in eyes:
                 h_eye+=eye[1]
             h_eye/=len(eyes)
-            print(h_eye,h_forehair,h_forehead)
+            #print(h_eye,h_forehair,h_forehead)
             e_forehead=float(h_eye-h_forehair)/(h_eye-h_forehead)
         dic['e_forehead']=round(e_forehead,2)
         dic['e_ear']=1
