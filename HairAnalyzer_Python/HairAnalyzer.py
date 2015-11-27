@@ -291,6 +291,7 @@ class HairAnalyzer:
                     v=v+1
                     c=c+img_front[h][i]
         d_eye=abs((eyes[1][0]-eyes[0][0])+(eyes[1][2]-eyes[1][2])/2)
+        dic['d_eye']=d_eye
         dic['volume']=round(float(v)/d_eye/d_eye,2)
         dic['color']=c/v
         
@@ -299,6 +300,7 @@ class HairAnalyzer:
         h_eye=0
         for eye in eyes:
             h_eye+=eye[1]
+            h_eye+=eye[3]/2
         h_eye/=len(eyes)
             #print(h_eye,h_forehair,h_forehead)
         e_forehead=float(h_eye-h_forehair_front)/(h_eye-h_forehair_front+dic['l_forehair'])
