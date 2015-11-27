@@ -86,7 +86,7 @@ class HairAnalyzer:
     def getHairArea(self,face):
         (segmented,labels,n)=pms.segment(self.img,spatial_radius=6,
                               range_radius=5, min_density=300)
-        cv2.imshow('segmented',segmented)
+        #cv2.imshow('segmented',segmented)
         mv = cv2.split(self.img)
         hair = []
         x=face[0]+face[2]/2
@@ -206,79 +206,80 @@ class HairAnalyzer:
         dic['l_sidehair']=h_sidehair_front-h_forehair_front
         
         #first hair point for side hair
-        xfs=hair_side.shape[1]-1
-        yfs=0
-        for i in range(hair_side.shape[1]-1,0,-1):
-            for h in range(hair_side.shape[0]):
-                if hair_side[h][i]==1:
-                    xfs=i
-                    yfs=h
+        if(hair_side != None):
+            xfs=hair_side.shape[1]-1
+            yfs=0
+            for i in range(hair_side.shape[1]-1,0,-1):
+                for h in range(hair_side.shape[0]):
+                    if hair_side[h][i]==1:
+                        xfs=i
+                        yfs=h
+                        break
+                if yfs!=0:
                     break
-            if yfs!=0:
-                break
-    
-        #forehair
-        h_forehair=0
-        for i in range(xfs,xfs-20,-5):
-            for h in range(yfs,hair_side.shape[0]):
-                if hair_side[h][i]==1:
-                    h_forehair=h
-                else:
+        
+            #forehair
+            h_forehair=0
+            for i in range(xfs,xfs-20,-5):
+                for h in range(yfs,hair_side.shape[0]):
+                    if hair_side[h][i]==1:
+                        h_forehair=h
+                    else:
+                        break
+            #print('h_forehair',h_forehair)
+
+            #sidehair
+            h_sidehair=h_forehair
+            x_sidehair=0
+            h=h_sidehair
+            while h-h_sidehair>-55 or h_sidehair==h_forehair:
+                while hair_side[h][i]==0:
+                    h-=1
+                while hair_side[h][i]==1:
+                    h+=1
+                if h>h_sidehair:
+                    h_sidehair=h
+                    x_sidehair=i
+                i=i-5
+                if i<0:
                     break
-        #print('h_forehair',h_forehair)
+            #print('h_sidehair',h_sidehair)
 
-        #sidehair
-        h_sidehair=h_forehair
-        x_sidehair=0
-        h=h_sidehair
-        while h-h_sidehair>-55 or h_sidehair==h_forehair:
-            while hair_side[h][i]==0:
-                h-=1
-            while hair_side[h][i]==1:
-                h+=1
-            if h>h_sidehair:
-                h_sidehair=h
-                x_sidehair=i
-            i=i-5
-            if i<0:
-                break
-        #print('h_sidehair',h_sidehair)
+            #rearhair
+            h=h_sidehair
+            h_rearhair=h
+            while i>0:
+                while hair_side[h][i]==0 and h>0:
+                    h-=1
+                while hair_side[h][i]==1:
+                    h+=1
+                if h>h_rearhair:
+                    h_rearhair=h
+                elif h==0:
+                    break
+                i=i-5
+            #print('h_rearhair',h_rearhair)
 
-        #rearhair
-        h=h_sidehair
-        h_rearhair=h
-        while i>0:
-            while hair_side[h][i]==0 and h>0:
-                h-=1
-            while hair_side[h][i]==1:
-                h+=1
-            if h>h_rearhair:
-                h_rearhair=h
-            elif h==0:
-                break
-            i=i-5
-        #print('h_rearhair',h_rearhair)
-
-        #head
-        i=i+5
-        x_lasthair=i
-        h=h_rearhair
-        while hair_side[h][i]==0:
-            h-=1
-        h_head=h
-        while i<xfs:
-            while hair_side[h][i]==0:
-                h+=1
-            while hair_side[h][i]==1:
-                h-=1
-            if h<h_head:
-                h_head=h
+            #head
             i=i+5
-        #print('h_head',h_head)
-        h_forehead=(h_forehair+h_head)/2
-        #dic['l_forehair']=h_forehair-h_forehead
-        #dic['l_sidehair']=h_sidehair-h_forehair
-        dic['l_rearhair']=h_rearhair-h_sidehair
+            x_lasthair=i
+            h=h_rearhair
+            while hair_side[h][i]==0:
+                h-=1
+            h_head=h
+            while i<xfs:
+                while hair_side[h][i]==0:
+                    h+=1
+                while hair_side[h][i]==1:
+                    h-=1
+                if h<h_head:
+                    h_head=h
+                i=i+5
+            #print('h_head',h_head)
+            h_forehead=(h_forehair+h_head)/2
+            #dic['l_forehair']=h_forehair-h_forehead
+            #dic['l_sidehair']=h_sidehair-h_forehair
+            dic['l_rearhair']=h_rearhair-h_sidehair
 
         v=0
         c=np.array([0,0,0])
