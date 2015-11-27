@@ -66,6 +66,8 @@ class HairAnalyzer:
             eyes=self.detectEye(face)
             if len(eyes)>1:
                 return face,eyes
+        if len(faces)!=0:
+            return faces[len(faces)-1],np.asarray([])           
         print('No face region found')
         return [0,0,0,0],[]
     def detectEye(self,face):
@@ -84,14 +86,14 @@ class HairAnalyzer:
     # Returns hair area from an image.
     # area_hair[i][j]=1 if img[i][j] is a part of hair area, 0 otherwise
     def getHairArea(self,face):
-        (segmented,labels,n)=pms.segment(self.img,spatial_radius=6,
-                              range_radius=5, min_density=300)
+        scale=float(self.img.shape[1])/400
+        (segmented,labels,n)=pms.segment(self.img,spatial_radius=int(scale*6),
+                              range_radius=scale*5, min_density=300)
         #cv2.imshow('segmented',segmented)
         mv = cv2.split(self.img)
         hair = []
         x=face[0]+face[2]/2
         y=face[1]-self.img.shape[1]/8
-        print('(x,y)=(%s,%s)'%(str(x),str(y)))
         hair_new = [labels[y][x]]
         not_hair = range(n)
         not_hair.remove(labels[y][x])
@@ -288,7 +290,8 @@ class HairAnalyzer:
                 if hair_front[h][i]==1:
                     v=v+1
                     c=c+img_front[h][i]
-        dic['volume']=v
+        d_eye=abs((eyes[1][0]-eyes[0][0])+(eyes[1][2]-eyes[1][2])/2)
+        dic['volume']=round(float(v)/d_eye/d_eye,2)
         dic['color']=c/v
         
         
