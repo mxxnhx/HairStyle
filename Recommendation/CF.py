@@ -3,10 +3,11 @@ import math
 import itertools
 import operator
 import random
+from Main import check_hair_front
 from Make_DB import make_DB
 
 #NUMBER OF CATEGORY
-NUMBER_OF_CATEGORY = 6
+NUMBER_OF_CATEGORY = 5
 #OUR DB
 db = sqlite3.connect("DB")
 
@@ -43,16 +44,40 @@ def is_rated(user, item) :
 	return True
 
 #ADD item ON THE TABLE
-def add_item(item) :
+def add_item(item,item_dictionary) :
 	if(not is_item(item)) :
 		cursor = db.cursor()
-		cursor.execute("INSERT into item(item_name, type, used) values(?, ?, ?)", (item, categorize(item), 0))
+		cursor.execute("INSERT into item(item_name, type, used) values(?, ?, ?)", (item, categorize(item_dictionary), 0))
      	db.commit()
 
 #GET item's CATEGORY
-#NEED_TO_UPDATE
-def categorize(item) : 
-	return int(item) % NUMBER_OF_CATEGORY
+#Ver.1
+def categorize(item_dictionary) : 
+	
+	if(item_dictionary['e_forehead']  < 0.5) :
+		#NON_TWO_BLOCK
+		if(item_dictionary['side_volume']  >= 0.4) :
+			return 0
+		#TWO_BLOCK
+		else:
+			return 1
+	else :
+		#MOHICAN_LIKE_HAIR
+		if(item_dictionary['l_forehair']  > 0.7) :
+			return 2
+		else :
+			#STRONG_TWO_BLOCK
+			if(item_dictionary['volume'] < 2.5) :
+				return 3
+			#WEAK_TWO_BLOCK
+			else :
+				return 4
+
+def get_category_item(item) :
+	if is_item(item) : 
+		cursor = db.cursor()
+		cursor.execute("SELECT type FROM item WHERE item_name = ?", (item,))
+		return cursor.fetchall()[0][0]
 
 #INCREASE item's USED COUNT
 def update_item_used(item) :
@@ -74,8 +99,8 @@ def add_user(user, list_of_item, list_of_rating) :
 				if(not is_rated(user, item)) :
 					cursor.execute("INSERT into rating(user_name , item_name  , rate ) values (?,?,?)", (user, item, rating))
 					update_item_used(item)
-					k[categorize(item)*2 + 1]+= 1
-					k[categorize(item)*2] += rating
+					k[get_category_item(item)*2 + 1]+= 1
+					k[get_category_item(item)*2] += rating
 
 		cursor.execute("INSERT into user(user_name) values (?)", (user,))
 		db.commit()
@@ -106,7 +131,7 @@ def update_rating(user, item, rating) :
 
 			cursor.execute("UPDATE rating SET rate = ? WHERE item_name = ? AND user_name = ?", (rating, item, user))
 
-			category = categorize(item)
+			category = get_category_item(item)
 			S = "SELECT rating%s FROM user WHERE user_name = ?" %(categorize(item))
 			cursor.execute(S, (user,))
 			current_rating=cursor.fetchall()[0][0]
@@ -245,30 +270,35 @@ def show_DB() :
 
 
 """
-very simple test code
+simple test code
 """
-make_DB()
+#useful picture number in /hair
+L = [1,4,5,6,14,17,19,22,23,24,28,35,36,40,43,46,48,50,51,56,57,58,60,61,62,63,64,68,69,70,74,75,77,78,80,83,84,85]
+#rating 
 R = [0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5]
-L = map(lambda x : str(x), range(50))
 
 def select_random(lis, num) :
 	l = []
 	for i in range(num) : l.append(random.choice(lis))
 	return l
-	
-for i in L :
-	add_item(i)
 
-add_user('A',select_random(L,20),select_random(R,20))
-add_user('B',select_random(L,20),select_random(R,20))
-add_user('C',select_random(L,20),select_random(R,20))
-add_user('D',select_random(L,20),select_random(R,20))
-add_user('E',select_random(L,20),select_random(R,20))
-add_user('F',select_random(L,20),select_random(R,20))
-add_user('G',select_random(L,20),select_random(R,20))
-add_user('H',select_random(L,20),select_random(R,20))
-add_user('I',select_random(L,20),select_random(R,20))
-add_user('J',select_random(L,20),select_random(R,20))
+make_DB()
+for i in L :
+	d  = check_hair_front("hair/t%d.jpg"%(i))
+	add_item(str(i), d)
+
+TEST_SIZE = 7
+
+add_user('A',select_random(L,TEST_SIZE),select_random(R,TEST_SIZE))
+add_user('B',select_random(L,TEST_SIZE),select_random(R,TEST_SIZE))
+add_user('C',select_random(L,TEST_SIZE),select_random(R,TEST_SIZE))
+add_user('D',select_random(L,TEST_SIZE),select_random(R,TEST_SIZE))
+add_user('E',select_random(L,TEST_SIZE),select_random(R,TEST_SIZE))
+add_user('F',select_random(L,TEST_SIZE),select_random(R,TEST_SIZE))
+add_user('G',select_random(L,TEST_SIZE),select_random(R,TEST_SIZE))
+add_user('H',select_random(L,TEST_SIZE),select_random(R,TEST_SIZE))
+add_user('I',select_random(L,TEST_SIZE),select_random(R,TEST_SIZE))
+add_user('J',select_random(L,TEST_SIZE),select_random(R,TEST_SIZE))
 
 pick_highest_rating_item(L)
 

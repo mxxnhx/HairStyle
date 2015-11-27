@@ -1,38 +1,69 @@
-sudo functions
+functions
 
-def is_item(item)
-def is_user(user)
-def is_rated(user, item)
-def add_item(item)
-def categorize(item)
-def update_item_used(item)
-def add_user(user, list_of_item, list_of_rating)
-def update_rating(user, item, rating)
-def get_categoey_rating(user, category)
-def get_rating(user)
-def get_high_rated_item(user)
-def cosine_similarity(user1, user2)
-def recommend(user)
-def pick_less_item(item_list)
-def show_DB() 
-def get_item_list()
-def item_rating(item)
-def pick_highest_rating_item(item_list)
+CF.py
+	def is_item(item)
+		//intput : item name[String]
+		//return : bool
+	def is_user(user)
+		//intput : user name[String]
+		//return : bool
+	def is_rated(user, item)
+		//intput : user name[String], item name[String]
+		//return : bool
+	def add_item(item,item_dictionary)
+		//intput : item name[String], item dictonary [dictionary](use check_hair_front)
+		//return : None
+	def get_category_item(item)
+		//intput : item name[String]
+		//return : int
+	def categorize(item_dictionary)
+		//intput : item dictonary[dictionary](use check_hair_front)
+		//return : int
+	def update_item_used(item)
+		//intput : item name [String]
+		//return : None
+	def add_user(user, list_of_item, list_of_rating)
+		//intput : use name [String], item name list [String list], rating list[float list]
+		//return : None
+	def update_rating(user, item, rating)
+		//intput : user name, item name [String], rating [float]
+		//return : None
+	def get_categoey_rating(user, category)
+		//intput : user name [String], category [int]
+		//return : float
+	def get_rating(user)
+		//intput : user name [String]
+		//return : float list
+	def get_high_rated_item(user)
+		//intput : user name [String]
+		//return : String list
+	def cosine_similarity(user1, user2)
+		//intput : user1 name [String], user2 name [String]
+		//return : float
+	def recommend(user)
+		//intput : user name [String]
+		//print someting
+		//return : String
+	def pick_less_item(item_list)
+		//intput : item list[String list]
+		//return : String
+	def show_DB() 
+		//intput : None
+		//show current DB state
+		//return : None
+	def get_item_list()
+		//intput : None
+		//return : String list
+	def item_rating(item)
+		//intput : item name[String]
+		//return : float
+	def pick_highest_rating_item(item_list)
+		//intput :  item list[String list]
+		//return : String
 
 
-ToDo...?
-
-1.  hair segmentation 완성...when?
-2.  많은 hair style 사진 구하기 (정면 사진) - 100장 이상
-3.  hair analyse algorithm으로 사진들 분석하기
-4.  실제 사람들에게 평가 받기 - 임의의 사진들 평점 받기 (평점 : 0~5, 반개 허용으로 11단계)
-5.  평점을 통해 비슷한 hairstyle끼리 묶기 - hair style category기준 세우기(6~10개쯤 예상)
-6.  가능하면 사람들의 헤어스타일도 수집해 보자
-
-
-Recommmendation Algorithm
-- User based CF
-- hairstyle  category별 평균 평점 Cosine 유사도를 사용해 유사한 user를 찾는다
-	- 각 유저마다 평점을 주는 정도(후하게, 박하게)가 있을 수 있기 때문이다
-	- 각 카테고리마다 최소 하나의 hairstyle이 평가되어 있어야 함 ->선행으로 몇개 제시
-- 유사한 user가 가장 높게 평가한 hairstyle을 제시
+Main.py
+	check_hair_front(filepath)
+		//intput : image's filepath[String]
+		//make new image at the same path in filepath
+		//return : item_dictionary from the filepath image[dictionary]

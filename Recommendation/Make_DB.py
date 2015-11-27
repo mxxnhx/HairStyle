@@ -7,7 +7,7 @@ def make_DB() :
 
         cursor.execute("create table item (item_name text, type integer, used integer)")
 
-        cursor.execute("create table user (user_name text, rating0 real, num0 integer, rating1 real, num1 integer, rating2 real, num2 integer, rating3 real, num3 integer, rating4 real, num4 integer, rating5 real, num5 integer)")
+        cursor.execute("create table user (user_name text, rating0 real, num0 integer, rating1 real, num1 integer, rating2 real, num2 integer, rating3 real, num3 integer, rating4 real, num4 integer)")
 
         cursor.execute("create table rating (user_name text, item_name text , rate real)")
 

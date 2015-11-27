@@ -22,31 +22,6 @@ def compare(n1,n2):
     d3=abs(int(n1[2])-int(n2[2]))
     return d1*d1+d2*d2+d3*d3<diff*diff*2
 
-# From parameters, get category which is defined in DB.
-def getCategory(list_parameter):
-    lf=parameter['l_forehair']
-    ls=parameter['l_sidehair']
-    lr=parameter['l_rearhair']
-    ef=parameter['e_forehead']
-    ee=parameter['e_ear']
-    v=parameter['volume']
-    c=paramter['color']
-    cursor=db.cursor()
-    cursor.execute("SELECT * FROM category")
-    category=cursor.fetchall()
-    # category=[item1,item2,...]
-    # item=(index,p1_min,p1_max,p2_min,p2_max,...)
-    for item in category:
-        if item[1]<=lf and lf<=item[2]\
-           and item[3]<=ls and ls<=item[4]\
-           and item[5]<=lr and lr<=item[6]\
-           and item[7]<=ef and ef<=item[8]\
-           and item[9]<=ee and ee<=item[10]\
-           and item[11]<=v and v<=item[12]\
-           and item[13]<=c and c<=item[14]:
-            return item[0]
-    return -1
-
 class HairAnalyzer:
     # path : path of an image file
     def __init__(self,path):
@@ -60,6 +35,8 @@ class HairAnalyzer:
     # elements in faces : [x,y,width,height]
     def detectFace(self):
         cc = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
+        if(cc.empty()):
+            print("!")
         gray = cv2.cvtColor(self.img,cv2.COLOR_RGB2GRAY)
         faces = cc.detectMultiScale(gray,1.3,5)
         for face in faces:
@@ -70,6 +47,7 @@ class HairAnalyzer:
             return faces[len(faces)-1],np.asarray([])           
         print('No face region found')
         return [0,0,0,0],[]
+
     def detectEye(self,face):
         img_face=self.img[face[1]:face[1]+face[3],face[0]:face[0]+face[2]]
         cc = cv2.CascadeClassifier('haarcascade_eye.xml')
@@ -109,7 +87,7 @@ class HairAnalyzer:
                         not_hair.remove(j)
         #print(hair)
         area_hair=np.zeros(shape=labels.shape,dtype=np.int)
-        print('making array of hair area...')
+        #print('making array of hair area...')
         for i in range(area_hair.shape[0]):
             for j in range(area_hair.shape[1]):
                 if labels[i][j] in hair:
@@ -125,7 +103,7 @@ class HairAnalyzer:
         while not compare(self.img[h][img_front.shape[1]/2],c):
             h=h+5
         face_side=[x,h+20+self.img.shape[1]/8,0,0]
-        print(x,h)
+        #print(x,h)
         return self.getHairArea(face_side)
 
     # Returns matrix of neighbor relations between segmented areas.
@@ -161,6 +139,8 @@ class HairAnalyzer:
     def getHairParams(self,face,eyes,img_front,hair_front,img_side,hair_side):
         face=None
         dic={}
+        d_eye=abs((eyes[1][0]-eyes[0][0])+(eyes[1][2]-eyes[1][2])/2)
+        dic['d_eye']=d_eye
         #first hair point for front hair
         xff=0
         yff=-1
@@ -181,7 +161,7 @@ class HairAnalyzer:
             for i in range(hair_front.shape[1]-1):
                 if hair_front[h][i]==0 and hair_front[h][i+1]==1:
                     if flag==1 and i-change_point>=hair_front.shape[1]/4:
-                        print(i,change_point,h)
+                        #print(i,change_point,h)
                         h_forehair_front=h
                     else:
                         flag=0
@@ -204,8 +184,8 @@ class HairAnalyzer:
                 h_sidehair_front=h
                 break
         #print(yff,h_forehair_front,h_sidehair_front)
-        dic['l_forehair']=(h_forehair_front-yff)/2
-        dic['l_sidehair']=h_sidehair_front-h_forehair_front
+        dic['l_forehair']=(float) (h_forehair_front-yff)/2 
+        dic['l_sidehair']=(float) (h_sidehair_front-h_forehair_front)
         
         #first hair point for side hair
         if(hair_side != None):
@@ -284,16 +264,18 @@ class HairAnalyzer:
             dic['l_rearhair']=h_rearhair-h_sidehair
 
         v=0
-        c=np.array([0,0,0])
         for h in range(yff,h_sidehair_front):
             for i in range(hair_front.shape[1]):
                 if hair_front[h][i]==1:
                     v=v+1
-                    c=c+img_front[h][i]
-        d_eye=abs((eyes[1][0]-eyes[0][0])+(eyes[1][2]-eyes[1][2])/2)
-        dic['d_eye']=d_eye
+
         dic['volume']=round(float(v)/d_eye/d_eye,2)
-        dic['color']=c/v
+        v=0
+        for h in range( h_forehair_front,h_sidehair_front):
+            for i in range(hair_front.shape[1]):
+                if hair_front[h][i]==1:
+                    v=v+1
+        dic['side_volume']=round(float(v)/d_eye/d_eye,2)
         
         
             
@@ -303,7 +285,9 @@ class HairAnalyzer:
             h_eye+=eye[3]/2
         h_eye/=len(eyes)
             #print(h_eye,h_forehair,h_forehead)
-        e_forehead=float(h_eye-h_forehair_front)/(h_eye-h_forehair_front+dic['l_forehair'])
+        e_forehead=float(h_eye-h_forehair_front)/(h_eye-(h_forehair_front+yff)/2)
+        dic['l_forehair']=dic['l_forehair']/d_eye
+        dic['l_sidehair']=dic['l_sidehair']/d_eye
         dic['e_forehead']=round(e_forehead,2)
         dic['e_ear']=1
         return dic

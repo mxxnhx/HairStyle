@@ -8,10 +8,12 @@ import random
 #path1='hurban-1.jpg'
 def check_hair_front(filename) :
     try:
+
         ha = HairAnalyzer.HairAnalyzer(filename)
 
 
         img=ha.getImage()
+
         #cv2.imshow('image',img)
 
         # Face&eye area
@@ -52,7 +54,8 @@ def check_hair_front(filename) :
                     img[i][j]=np.array([255,255,255])
         #cv2.imshow('hair_front',img)
         cv2.imwrite(filename+'_a.png',img)
-        print(filename, ha.getHairParams(face,eyes,img,area,None,None))
+        d = ha.getHairParams(face,eyes,img,area,None,None)
+        return d
     except:
         return
 
@@ -122,8 +125,11 @@ print(ha.getHairParams(face,eyes,img,area,img2,None))
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+    """
 """
+L = [1,4,5,6,14,17,19,22,23,24,28,35,36,40,43,46,48,50,51,56,57,58,60,61,62,63,64,68,69,70,74,75,77,78,80,83,84,85]
 
-for i in range(72) :
-    string ="hair/t%d.jpg"%(i+1)
+for i in L :
+    string ="hair/t%d.jpg"%(i)
     check_hair_front(string)
+"""
