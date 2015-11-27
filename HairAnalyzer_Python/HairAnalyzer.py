@@ -59,9 +59,9 @@ class HairAnalyzer:
     # Detects face from an image.
     # elements in faces : [x,y,width,height]
     def detectFace(self):
-        cc = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+        cc = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
         gray = cv2.cvtColor(self.img,cv2.COLOR_RGB2GRAY)
-        faces = cc.detectMultiScale(gray)
+        faces = cc.detectMultiScale(gray,1.3,5)
         for face in faces:
             eyes=self.detectEye(face)
             if len(eyes)>1:
@@ -72,11 +72,14 @@ class HairAnalyzer:
         img_face=self.img[face[1]:face[1]+face[3],face[0]:face[0]+face[2]]
         cc = cv2.CascadeClassifier('haarcascade_eye.xml')
         gray = cv2.cvtColor(img_face,cv2.COLOR_RGB2GRAY)
-        eyes = cc.detectMultiScale(gray)
-        for eye in eyes:
-            eye[0]+=face[0]
-            eye[1]+=face[1]
-        return eyes
+        eyes_candidate = cc.detectMultiScale(gray)
+        eyes=[]
+        for eye in eyes_candidate:
+            if eye[1]<=face[3]/2:
+                eye[0]+=face[0]
+                eye[1]+=face[1]
+                eyes.append(eye)
+        return np.asarray(eyes)
 
     # Returns hair area from an image.
     # area_hair[i][j]=1 if img[i][j] is a part of hair area, 0 otherwise
@@ -87,7 +90,8 @@ class HairAnalyzer:
         mv = cv2.split(self.img)
         hair = []
         x=face[0]+face[2]/2
-        y=face[1]-self.img.shape[0]/8
+        y=face[1]-self.img.shape[1]/8
+        print('(x,y)=(%s,%s)'%(str(x),str(y)))
         hair_new = [labels[y][x]]
         not_hair = range(n)
         not_hair.remove(labels[y][x])
@@ -175,7 +179,10 @@ class HairAnalyzer:
             for i in range(hair_front.shape[1]-1):
                 if hair_front[h][i]==0 and hair_front[h][i+1]==1:
                     if flag==1 and i-change_point>=hair_front.shape[1]/4:
+                        print(i,change_point,h)
                         h_forehair_front=h
+                    else:
+                        flag=0
                 elif hair_front[h][i]==1 and hair_front[h][i+1]==0:
                     if flag!=1:
                         change_point=i
@@ -286,12 +293,11 @@ class HairAnalyzer:
         
             
         h_eye=0
-        if len(eyes)!=0:
-            for eye in eyes:
-                h_eye+=eye[1]
-            h_eye/=len(eyes)
+        for eye in eyes:
+            h_eye+=eye[1]
+        h_eye/=len(eyes)
             #print(h_eye,h_forehair,h_forehead)
-            e_forehead=float(h_eye-h_forehair)/(h_eye-h_forehead)
+        e_forehead=float(h_eye-h_forehair_front)/(h_eye-h_forehair_front+dic['l_forehair'])
         dic['e_forehead']=round(e_forehead,2)
         dic['e_ear']=1
         return dic
