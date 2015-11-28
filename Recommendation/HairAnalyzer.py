@@ -157,7 +157,7 @@ class HairAnalyzer:
                     xright=i
                     break
             if xright>=0:
-            break
+                break
         width_front=xright-xleft
         dic['width_front']=width_front
         
