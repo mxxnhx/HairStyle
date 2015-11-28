@@ -141,6 +141,26 @@ class HairAnalyzer:
         dic={}
         d_eye=abs((eyes[1][0]-eyes[0][0])+(eyes[1][2]-eyes[1][2])/2)
         dic['d_eye']=d_eye
+        #hair width for front hair
+        xleft=-1
+        for i in range(hair_front.shape[1]):
+            for h in range(hair_front.shape[0]):
+                if hair_front[h][i]==1:
+                    xleft=i
+                    break
+            if xleft>=0:
+                break
+        xright=-1
+        for i in range(hair_front.shape[1]-1,0,-1):
+            for h in range(hair_front.shape[0]):
+                if hair_front[h][i]==1:
+                    xright=i
+                    break
+            if xright>=0:
+            break
+        width_front=xright-xleft
+        dic['width_front']=width_front
+        
         #first hair point for front hair
         xff=0
         yff=-1
@@ -269,13 +289,13 @@ class HairAnalyzer:
                 if hair_front[h][i]==1:
                     v=v+1
 
-        dic['volume']=round(float(v)/d_eye/d_eye,2)
+        dic['volume']=round(float(v)/width_front/width_front,2)
         v=0
         for h in range( h_forehair_front,h_sidehair_front):
             for i in range(hair_front.shape[1]):
                 if hair_front[h][i]==1:
                     v=v+1
-        dic['side_volume']=round(float(v)/d_eye/d_eye,2)
+        dic['side_volume']=round(float(v)/width_front/width_front,2)
         
         
             
@@ -286,8 +306,8 @@ class HairAnalyzer:
         h_eye/=len(eyes)
             #print(h_eye,h_forehair,h_forehead)
         e_forehead=float(h_eye-h_forehair_front)/(h_eye-(h_forehair_front+yff)/2)
-        dic['l_forehair']=dic['l_forehair']/d_eye
-        dic['l_sidehair']=dic['l_sidehair']/d_eye
+        dic['l_forehair']=dic['l_forehair']/width_front
+        dic['l_sidehair']=dic['l_sidehair']/width_front
         dic['e_forehead']=round(e_forehead,2)
         dic['e_ear']=1
         return dic
