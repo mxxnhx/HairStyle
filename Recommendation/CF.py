@@ -118,10 +118,10 @@ def update_rating(user, item, rating) :
 			cursor.execute("INSERT into rating(user_name , item_name  , rate ) values (?, ?,?)", (user, item, rating))
 			cursor.execute("SELECT * FROM user WHERE user_name = ?", (user,))
 			k = list(cursor.fetchall()[0])
-			k[categorize(item)*2 + 2]+= 1
-			k[categorize(item)*2 + 1] += rating
-			S = "UPDATE user SET rating%d = ?, num%d = ? WHERE user_name = ?" % (categorize(item), categorize(item))
-			cursor.execute(S, (k[categorize(item)*2 + 1],k[categorize(item)*2 + 2],user))
+			k[get_category_item(item)*2 + 2]+= 1
+			k[get_category_item(item)*2 + 1] += rating
+			S = "UPDATE user SET rating%d = ?, num%d = ? WHERE user_name = ?" % (get_category_item(item), get_category_item(item))
+			cursor.execute(S, (k[get_category_item(item)*2 + 1],k[get_category_item(item)*2 + 2],user))
 			update_item_used(item)
 			db.commit()
 		else :
@@ -273,7 +273,7 @@ def show_DB() :
 simple test code
 """
 #useful picture number in /hair
-L = [1,4,5,6,14,17,19,22,23,24,28,35,36,40,43,46,48,50,51,56,57,58,60,61,62,63,64,68,69,70,74,75,77,78,80,83,84,85]
+L = [0, 1,4,5,6,14,17,19,22,23,24,28,35,36,40,43,46,48,50,51,56,57,58,60,61,62,63,64,68,69,70,74,75,77,78,80,83,84,85]
 #rating 
 R = [0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5]
 
@@ -283,12 +283,13 @@ def select_random(lis, num) :
 	return l
 
 make_DB()
+"""
 for i in L :
 	d  = check_hair_front("hair/t%d.jpg"%(i))
-	add_item(str(i), d)
+	print d, categorize(d)
+"""
 
 TEST_SIZE = 7
-
 add_user('A',select_random(L,TEST_SIZE),select_random(R,TEST_SIZE))
 add_user('B',select_random(L,TEST_SIZE),select_random(R,TEST_SIZE))
 add_user('C',select_random(L,TEST_SIZE),select_random(R,TEST_SIZE))
@@ -299,9 +300,9 @@ add_user('G',select_random(L,TEST_SIZE),select_random(R,TEST_SIZE))
 add_user('H',select_random(L,TEST_SIZE),select_random(R,TEST_SIZE))
 add_user('I',select_random(L,TEST_SIZE),select_random(R,TEST_SIZE))
 add_user('J',select_random(L,TEST_SIZE),select_random(R,TEST_SIZE))
+add_user('K',[62,69,77,84],[2.5,3.5,3,4])
+update_rating('K','0',3.5)
 
-pick_highest_rating_item(L)
-
-print(recommend('C'))
+print(recommend('K'))
 
 show_DB()
