@@ -132,11 +132,11 @@ def update_rating(user, item, rating) :
 			cursor.execute("UPDATE rating SET rate = ? WHERE item_name = ? AND user_name = ?", (rating, item, user))
 
 			category = get_category_item(item)
-			S = "SELECT rating%s FROM user WHERE user_name = ?" %(categorize(item))
+			S = "SELECT rating%s FROM user WHERE user_name = ?" %(get_category_item(item))
 			cursor.execute(S, (user,))
 			current_rating=cursor.fetchall()[0][0]
 
-			S = "UPDATE user SET rating%d = ? WHERE user_name = ?" % (categorize(item))
+			S = "UPDATE user SET rating%d = ? WHERE user_name = ?" % (get_category_item(item))
 			cursor.execute(S, (current_rating - previous_rating + rating , user))
 			db.commit()
 
@@ -301,7 +301,7 @@ add_user('H',select_random(L,TEST_SIZE),select_random(R,TEST_SIZE))
 add_user('I',select_random(L,TEST_SIZE),select_random(R,TEST_SIZE))
 add_user('J',select_random(L,TEST_SIZE),select_random(R,TEST_SIZE))
 add_user('K',[62,69,77,84],[2.5,3.5,3,4])
-update_rating('K','0',3.5)
+update_rating('K','0', 3)
 
 print(recommend('K'))
 
