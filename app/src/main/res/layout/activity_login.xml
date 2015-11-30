@@ -24,16 +24,7 @@
         android:textColor="@color/white"
         android:textColorHint="@color/hint"
         android:hint="@string/login_hint"/>
-
-    <EditText android:id="@+id/pw_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/interval"
-        android:layout_marginBottom="@dimen/interval"
-        android:textSize="@dimen/subheading_text"
-        android:textColor="@color/white"
-        android:textColorHint="@color/hint"
-        android:hint="@string/pw_hint"/>
+    
 
     <Button android:id="@+id/login_button"
         android:layout_width="match_parent"
