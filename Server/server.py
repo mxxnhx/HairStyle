@@ -1,4 +1,4 @@
-# -*- coding:utf-8 -*-
+#-*- coding:utf-8 -*-
 import os
 from werkzeug import secure_filename
 import sys
@@ -11,6 +11,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 
 import cv2
+import HairAnalyzer
 import numpy
 import random
 
@@ -62,16 +63,28 @@ class img_rec(Base):
         self.idcode = idcode
         self.pathname = pathname
 
+class img_face(Base):
+    __tablename__ = 'face'
+    id = Column(Integer, primary_key=True)
+    idcode = Column(Integer, unique=True, nullable=False)
+    pathname = Column(String(100), unique=True)
+
+    def __init__(self, idcode=None, pathname=None):
+        self.idcode = idcode
+        self.pathname = pathname
+
 def init_db():
     Base.metadata.create_all(bind=engine)
 init_db();
 
 UPLOAD_FOLDER = '/home/moonhc/workspace/HairStyle/Server/imgs'
 REC_FOLDER = '/home/moonhc/workspace/HairStyle/Server/imgs_rec'
+FACE_FOLDER = '/home/moonhc/workspace/HairStyle/Server/imgs_face'
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['REC_FOLDER'] = REC_FOLDER
+app.config['FACE_FOLDER'] = FACE_FOLDER
 
 @app.route('/test')
 def test():
@@ -82,6 +95,7 @@ def signup():
     if request.method == 'POST':
         name = request.form['name']
         tel = request.form['tel']
+        face = requeest.files['face']
         user = User.query.filter_by(tel = tel).first()
         if(user):
             return "-2" # already exists
@@ -92,8 +106,20 @@ def signup():
         else:
             _id = idcode['idcode'] + 1
         result.close()
+
+        pn = os.path.join(app.config['UPLOAD_FILE'], _id + ".jpg")
+        face.save(pn)
+        ha = HairAnalyzer.HairAnalyzer(pn)
+        face, eyes = ha.detectFace()
+        if (len(eyes)<2):
+            os.remove(pn)
+            return "-3"
+        face.save(os.path.join(app.config['UPLOAD_FILE'], _id+"_face.jpg"))
+
+        facedata = img_face(_id, _id+"_face.jpg")
         user = User(name,_id,tel)
         db_session.add(user)
+        db_session.add(facedata)
         db_session.commit()
         return str(_id)
     else:
@@ -105,6 +131,7 @@ def login():
         _id = request.form['idcode']
         result = engine.execute("select idcode from users where idcode = %s"% _id)
         user = result.fetchone()
+        result.close()
         if(user == None):
             return "-2"
         else:
@@ -121,30 +148,23 @@ def rating():
     else:
         return "-1"
 
-@app.route('/upload_file', methods=['POST'])
-def upload_file():
-    if request.method == 'POST':
-        file = request.files['file']
-        if file:
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
-            print file.filename
-            return file.filename
-        else:
-            return '-2'
-    else:
-        return '-1'
-
 @app.route('/upload', methods=['POST'])
 def upload():
     # Have to add code here for hair process
     if request.method == 'POST':
         idcode = request.form['idcode']
         pn1 = request.form['pathname1']
-        file1 = request.form['file1']
+        file1 = request.files['file1']
         pn2 = request.form['pathname2']
-        file2 = request.form['file2']
+        file2 = request.files['file2']
         pn3 = request.form['pathname3']
-        file3 = request.form['file3']
+        file3 = request.files['file3']
+        
+        result = engine.execute("select idcode from users where idcode = %s", idcode)
+        _id = result.fetchone()
+        result.close()
+        if (_id == None):
+            return "-2"
 
         if file1 and file2 and file3:
             file1.save(os.path.join(app.config['UPLOAD_FOLDER'], pn1))
@@ -155,6 +175,7 @@ def upload():
 
         result = engine.execute("select albumnum from imgs where idcode = %s", idcode)
         albumnum = result.fetchone()
+        result.close()
         if(albumnum == None):
             albumnum = 1
         else:
@@ -162,20 +183,34 @@ def upload():
         imgs = img(idcode, pn1, pn2, pn3, albumnum)
         db_session.add(imgs)
         db_session.commit()
+        
+        ha1 = HairAnalyzer.HairAnalyzer(os.path.join(app.config['UPLOAD_FILE'], pn1))
+        ha2 = HairAnalyzer.HairAnalyzer(os.path.join(app.config['UPLOAD_FILE'], pn2))
+        img1 = ha1.getImage()
+        img2 = ha2.getImage()
+
+        face, eyes = ha1.detectFace()
+        area1 = ha1.getHairArea(face)
+        area2 = ha2.getHairArea_side(face, img1)
+
+        dic = ha1.getHairParams(face, eyes, img1, area1, img2, area2)
+        
+        face.save(os.path.join(app.config['REC_FOLDER'], pn1))
+        
         return str(idcode)
     else:
         return '-1'
 
-@app.route('/sendhome/<filename>', methods=['POST'])
+@app.route('/sendhome/<filename>', methods=['GET', 'POST'])
 def send_home(filename):
-    if os.path.isfile(app.config['UPLOAD_FOLDER']+filename):
+    if os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'], filename)):
         return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
     else:
         return "-2"
 
-@app.route('/sendrec/<filename>', methods=['POST'])
+@app.route('/sendrec/<filename>', methods=['GET', 'POST'])
 def send_rec(filename):
-    if os.path.isfile(app.config['REC_FOLDER']+filename):
+    if os.path.isfile(os.path.join(app.config['REC_FOLDER'], filename)):
         return send_from_directory(app.config['REC_FOLDER'], filename)
     else:
         return "-2"
