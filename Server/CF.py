@@ -9,7 +9,7 @@ from Make_DB import make_DB
 #NUMBER OF CATEGORY
 NUMBER_OF_CATEGORY = 5
 #OUR DB
-db = sqlite3.connect("DB")
+db = sqlite3.connect("DB", check_same_thread=False)
 
 #CHECK THE item IS ON THE TABLE
 def is_item(item) :
@@ -271,8 +271,7 @@ def show_DB() :
 
 """
 simple test code
-"""
-'''
+
 #useful picture number in /hair
 L = [0, 1,4,5,6,14,17,19,22,23,24,28,35,36,40,43,46,48,50,51,56,57,58,60,61,62,63,64,68,69,70,74,75,77,78,80,83,84,85]
 #rating 
@@ -284,11 +283,11 @@ def select_random(lis, num) :
 	return l
 
 make_DB()
-"""
+
 for i in L :
 	d  = check_hair_front("hair/t%d.jpg"%(i))
 	print d, categorize(d)
-"""
+
 
 TEST_SIZE = 7
 add_user('A',select_random(L,TEST_SIZE),select_random(R,TEST_SIZE))
@@ -307,4 +306,4 @@ update_rating('K','0', 3)
 print(recommend('K'))
 
 show_DB()
-'''
+"""

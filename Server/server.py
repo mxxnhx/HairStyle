@@ -14,6 +14,7 @@ import cv2
 import HairAnalyzer
 import numpy
 import random
+import CF
 
 engine = create_engine('mysql://root:qlqjs1@127.0.0.1/hairstyle?charset=utf8',
         convert_unicode=True)
@@ -57,6 +58,7 @@ class img_rec(Base):
     __tablename__ = 'imgs_rec'
     id = Column(Integer, primary_key=True)
     idcode = Column(Integer, unique=False, nullable=False)
+
     pathname = Column(String(100), unique=True)
     
     def __init__(self, idcode=None, pathname=None):
@@ -101,26 +103,36 @@ def signup():
             return "-2" # already exists
         result = engine.execute("select idcode from users order by idcode desc")
         idcode = result.fetchone()
-        if(not idcode['idcode']):
+        if(idcode == None):
             _id = 0
         else:
             _id = idcode['idcode'] + 1
         result.close()
+        '''
+        pn = os.path.join(app.config['FACE_FOLDER'], str(_id) + ".jpg")
+        face.save(pn)
+        ha = HairAnalyzer.HairAnalyzer(pn)
+        img = ha.getImage()
+        face, eyes = ha.detectFace()
+        if (len(eyes)<2):
+            os.remove(pn)
+            return "-3"
 
-        #pn = os.path.join(app.config['UPLOAD_FOLDER'], str(_id) + ".jpg")
-        #face.save(pn)
-        #ha = HairAnalyzer.HairAnalyzer(pn)
-        #face, eyes = ha.detectFace()
-        #if (len(eyes)<2):
-         #   os.remove(pn)
-          #  return "-3"
-        #face.save(os.path.join(app.config['UPLOAD_FILE'], _id+"_face.jpg"))
+        area = ha.getHairArea(face)
+        for i in range(img.shape[0]):
+            for j in range(img.shape[1]):
+                if area[i][j] == 1:
+                    img[i][j]=numpy.array([255,255,255])
+        cv2.imwrite(os.path.join(app.config['FACE_FOLDER'], str(_id) + '_face.jpg'), img)
 
-        #facedata = img_face(_id, _id+"_face.jpg")
+        facedata = img_face(_id, str(_id) +"_face.jpg")
         user = User(name,_id,tel)
         db_session.add(user)
-        #db_session.add(facedata)
+        db_session.add(facedata)
         db_session.commit()
+        '''
+        CF.add_user(str(_id), [], [])
+        CF.show_DB()
         return str(_id)
     else:
         return "-1"
@@ -144,12 +156,27 @@ def login():
     else:
         return "-1"
 
-
-@app.route('/rating', methods=['POST'])
-def rating():
+@app.route('/rating_signup', methods=['POST'])
+def rating_signup():
     if request.method == 'POST':
+        idcode = request.form['idcode']
         rate = request.form['rate']
-        return str(rate)
+        filename = request.form['filename']
+        CF.update_rating(idcode, filename, float(rate))
+        CF.show_DB()
+        return "1"
+    else:
+        return "-1"
+
+@app.route('/rating_rec', methods=['POST'])
+def rating_rec():
+    if request.method == 'POST':
+        idcode = request.form['idcode']
+        rate = request.form['rate']
+        filename = request.form['filename']
+        CF.update_rating(idcode, filename, float(rate))
+        CF.show_DB()
+        return "1"
     else:
         return "-1"
 
@@ -189,19 +216,22 @@ def upload():
         db_session.add(imgs)
         db_session.commit()
         
-        ha1 = HairAnalyzer.HairAnalyzer(os.path.join(app.config['UPLOAD_FILE'], pn1))
-        ha2 = HairAnalyzer.HairAnalyzer(os.path.join(app.config['UPLOAD_FILE'], pn2))
+        ha1 = HairAnalyzer.HairAnalyzer(os.path.join(app.config['UPLOAD_FOLDER'], pn1))
+        ha2 = HairAnalyzer.HairAnalyzer(os.path.join(app.config['UPLOAD_FOLDER'], pn2))
         img1 = ha1.getImage()
         img2 = ha2.getImage()
 
         face, eyes = ha1.detectFace()
         area1 = ha1.getHairArea(face)
         area2 = ha2.getHairArea_side(face, img1)
-
-        dic = ha1.getHairParams(face, eyes, img1, area1, img2, area2)
         
-        face.save(os.path.join(app.config['REC_FOLDER'], pn1))
+        for i in range(img1.shape[0]):
+            for j in range(img1.shape[1]):
+                if area1[i][j] == 0:
+                    img1[i][j]=numpy.array([255,255,255])
         
+        cv2.imwrite(os.path.join(app.config['REC_FOLDER'], pn1)) 
+        # To add recomend code
         return str(idcode)
     else:
         return '-1'
@@ -219,6 +249,21 @@ def send_rec(filename):
         return send_from_directory(app.config['REC_FOLDER'], filename)
     else:
         return "-2"
+
+@app.route('/sendface/<idcode>', methods=['GET', 'POST'])
+def send_face(idcode):
+    result = engine.execute("select pathname from face where idcode = %s", idcode)
+    user = result.fetchone()
+    result.close()
+    if user == None:
+        return "-1"
+    pathname = user['pathname']
+    if os.path.isfile(os.path.join(app.config['FACE_FOLDER'], pathname)):
+        return send_from_directory(app.config['FACE_FOLDER'], pathname)
+    else:
+        return "-2"
+
+
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')
