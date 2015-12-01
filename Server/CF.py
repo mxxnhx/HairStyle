@@ -50,6 +50,12 @@ def add_item(item,item_dictionary) :
 		cursor.execute("INSERT into item(item_name, type, used) values(?, ?, ?)", (item, categorize(item_dictionary), 0))
      	db.commit()
 
+def add_item_with_category(item,category) :
+	if(not is_item(item)) :
+		cursor = db.cursor()
+		cursor.execute("INSERT into item(item_name, type, used) values(?, ?, ?)", (item, category, 0))
+     	db.commit()
+
 #GET item's CATEGORY
 #Ver.1
 def categorize(item_dictionary) : 
@@ -250,6 +256,15 @@ def pick_highest_rating_item(item_list) :
 	f = filter(lambda x : x[1] == l[0][1], l)
 	return random.choice(f)[0]
 
+#RETURN RANDOM ITEM WITH category_num
+def select_random_item_with_category(category_num) :
+	cursor = db.cursor()
+	cursor.execute("SELECT item_name FROM item WHERE type != ?", (category_num,))
+	d = map(lambda x : x[0],list(cursor.fetchall()))
+	if(len(d) > 0) :
+		return pick_less_item(d)
+
+
 #PRINT CURRENT DB
 def show_DB() :
 	print("----------DB----------")
@@ -268,9 +283,9 @@ def show_DB() :
 		print "|   ",row
 	print("--------END DB--------")
 
-
 """
 simple test code
+
 
 #useful picture number in /hair
 L = [0, 1,4,5,6,14,17,19,22,23,24,28,35,36,40,43,46,48,50,51,56,57,58,60,61,62,63,64,68,69,70,74,75,77,78,80,83,84,85]
@@ -285,8 +300,9 @@ def select_random(lis, num) :
 make_DB()
 
 for i in L :
-	d  = check_hair_front("hair/t%d.jpg"%(i))
-	print d, categorize(d)
+	add_item_with_category(i, i%5)
+
+
 
 
 TEST_SIZE = 7
@@ -306,4 +322,5 @@ update_rating('K','0', 3)
 print(recommend('K'))
 
 show_DB()
+
 """
