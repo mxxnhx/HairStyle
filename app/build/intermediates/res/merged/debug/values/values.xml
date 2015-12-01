@@ -381,6 +381,10 @@
     <string name="signup_title">신규 등록</string>
     <string name="signup_wait_text">연결중</string>
     <string name="signup_wait_title">잠시만요...</string>
+    <string name="signup_warning_re">다시 찍어주세요.</string>
+    <string name="signup_warning_tel">이미 있는 전화번호 입니다.</string>
+    <string name="signup_warning_text">지금 찍는 사진으로 머리스타일을 추천해 드립니다.\n다음을 유의해 주세요!\n • 배경이 머리색과 다르게 해주세요\n • 머리에 빛이 비치게 하지 말아주세요\n • 안경을 벗어 주세요.</string>
+    <string name="signup_warning_title">사진을 찍어 볼까요...</string>
     <!-- From: file:/C:/Users/Badasaza/AndroidStudioProjects/GoHaeSungSaCustomer/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <string name="status_bar_notification_info_overflow">999+</string>

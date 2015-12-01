@@ -1,11 +1,15 @@
 package com.example.badasaza.gohaesungsacustomer;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +31,9 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 
 public class LoginAct extends AppCompatActivity implements View.OnClickListener{
+
+    public static String IDCODE = "idcode";
+    public static String ALBUMNUM = "album_num";
 
     private LoginTask lt;
     private EditText et;
@@ -51,6 +58,10 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener{
         signUp.setOnClickListener(this);
 
         getSupportActionBar().hide();
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            boolean permissionGranted = (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE )== PackageManager.PERMISSION_GRANTED);
+        }
     }
 
     @Override
@@ -79,7 +90,7 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener{
     public void onClick(View v) {
         if(v.getId() == R.id.login_button) {
             lt = new LoginTask();
-            String str = et.getText().toString();
+            final String str = et.getText().toString();
             if(str != null)
                 lt.execute(str);
             final AppCompatActivity a = this;
@@ -95,11 +106,28 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener{
                         }
                     }
                     pd.dismiss();
-                    if(taskFinished()) {
-                        Log.i(DEBUG_TAG, "in task finished");
+                    if(lt.isCancelled()){
+                        Log.i(DEBUG_TAG, "in task cancelled");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                AlertDialog.Builder ab = new AlertDialog.Builder(cxt);
+                                ab.setTitle(R.string.error).setMessage(R.string.server_connection_error).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                ab.create().show();
+                            }
+                        });
+                    }else if(taskFinished()) {
                         int res = lt.resultCode;
+                        Log.i(DEBUG_TAG, "in task finished" + res);
                         if (res == 1) {
                             Intent i = new Intent(a, CustomerHome.class);
+                            i.putExtra(IDCODE, str);
+                            i.putExtra(ALBUMNUM, res);
                             startActivity(i);
                             finish();
                         } else if (res == -2) {
@@ -133,21 +161,6 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener{
                                 }
                             });
                         }
-                    }else if(lt.isCancelled()){
-                        Log.i(DEBUG_TAG, "in task cancelled");
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                AlertDialog.Builder ab = new AlertDialog.Builder(cxt);
-                                ab.setTitle(R.string.error).setMessage(R.string.server_connection_error).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                                ab.create().show();
-                            }
-                        });
                     }else { Log.i(DEBUG_TAG, "out of if");}
                 }
             }).start();
@@ -198,6 +211,7 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener{
 
 
                 String contentAsString = readIt(is, len);
+                Log.i(DEBUG_TAG, contentAsString);
                 return contentAsString;
 
             }catch(SocketTimeoutException e){

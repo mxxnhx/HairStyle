@@ -14,12 +14,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.badasaza.gohaesungsamodel.ServerTask;
+import com.example.badasaza.gohaesungsaview.SignUpFragment;
 import com.example.badasaza.gohaesungsaview.SignUpHomeFrag;
 
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
@@ -45,19 +49,14 @@ public class SignUpAct extends AppCompatActivity{
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_sign_up, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -81,18 +80,7 @@ public class SignUpAct extends AppCompatActivity{
         return false;
     }
 
-    public String getIdcode(){
-        if(sut.result == null)
-            return "";
-        else if(sut.result.matches("-2"))
-            return "tel";
-        else if(sut.result.matches("-1"))
-            return "internal";
-        return sut.result;
-    }
-
     public void notifyFinished(){
-        /* ToDo: take care of error cases */
         final ProgressDialog pd = ProgressDialog.show(this, getText(R.string.signup_wait_title), getText(R.string.signup_wait_text), true, false);
         new Thread(new Runnable() {
             @Override
@@ -119,24 +107,56 @@ public class SignUpAct extends AppCompatActivity{
                         }
                     });
                 }else if(taskFinished()) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            AlertDialog.Builder ab = new AlertDialog.Builder(cxt);
-                            ab.setTitle(R.string.signup_idcode_title).setMessage(getText(R.string.signup_idcode_text1) + getIdcode() + getText(R.string.signup_idcode_text2));
-                            ab.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    finish();
-                                }
-                            });
-                            ab.create().show();
-                        }
-                    });
+                    if(sut.result.matches("-1")) {
+                        quickBuilder(R.string.error, R.string.server_internal_error, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create().show();
+                    }else if(sut.result.matches("-2")){
+                        /* ToDo: Existing telephone */
+                    }else if(sut.result.matches("-3")){
+                        quickBuilder(R.string.error, R.string.signup_warning_re, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create().show();
+                    }else {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                SignUpFragment suf = new SignUpFragment();
+                                Bundle args = new Bundle();
+                                args.putInt(SignUpFragment.PAGE_KEY, 0);
+                                suf.setArguments(args);
+                                getSupportFragmentManager().beginTransaction().replace(R.id.signup_frag_container, suf).addToBackStack(null).commit();
+                            }
+                        });
+                    }
                 }
             }
         }).start();
+    }
+
+    public AlertDialog.Builder finisherDialog(){
+        AlertDialog.Builder ab = new AlertDialog.Builder(cxt);
+        ab.setTitle(R.string.signup_idcode_title).setMessage(getText(R.string.signup_idcode_text1) + sut.result + getText(R.string.signup_idcode_text2));
+        ab.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+        return ab;
+    }
+
+    private AlertDialog.Builder quickBuilder(int titleId, int contentId, AlertDialog.OnClickListener ocl){
+        AlertDialog.Builder ab = new AlertDialog.Builder(this);
+        ab.setTitle(titleId).setMessage(contentId).setPositiveButton(R.string.ok, ocl);
+        return ab;
     }
 
     private class SignUpTask extends AsyncTask<String, Void, String> {
@@ -146,22 +166,56 @@ public class SignUpAct extends AppCompatActivity{
         @Override
         protected String doInBackground(String... params) {
             InputStream is = null;
-            // Only display the first 500 characters of the retrieved
-            // web page content.
             int len = 10;
 
-            String postData = "name="+params[0]+"&tel="+params[1];
+            String lineEnd = "\r\n";
+            String twoHyphens = "--";
+            String boundary =  "*****";
+            File f = new File(params[2]);
 
             try {
+                FileInputStream fis = new FileInputStream(f);
+                byte[] bytes = new byte[(int) f.length()];
+                fis.read(bytes);
+                fis.close();
                 URL url = new URL("http://143.248.57.222:80/signup");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(10000);
                 conn.setConnectTimeout(15000);
                 conn.setRequestMethod("POST");
+                conn.setRequestProperty("Connection", "Keep-Alive");
+                conn.setRequestProperty("Cache-Control", "no-cache");
+                conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
                 conn.setDoInput(true);
                 conn.setDoOutput(true);
-                OutputStream output = conn.getOutputStream();
-                output.write(postData.getBytes("euc-kr"));
+                conn.setUseCaches(false);
+                DataOutputStream output = new DataOutputStream(conn.getOutputStream());
+                output.writeBytes(twoHyphens + boundary + lineEnd);
+                output.writeBytes("Content-Disposition: form-data; name=\"name\"" + lineEnd);
+                output.writeBytes(lineEnd);
+                output.write(params[0].getBytes("euc-kr"));
+                output.writeBytes(lineEnd);
+                output.writeBytes(twoHyphens + boundary + lineEnd);
+                output.writeBytes("Content-Disposition: form-data; name=\"tel\"" + lineEnd);
+                output.writeBytes(lineEnd);
+                output.write(params[1].getBytes("euc-kr"));
+                output.writeBytes(lineEnd);
+                output.writeBytes(twoHyphens + boundary + lineEnd);
+                Log.i("TTest", f.getName());
+                output.writeBytes("Content-Disposition: form-data; name=\"face\";filename=\"" + f.getName()+"\"" + lineEnd);
+                output.writeBytes(lineEnd);
+
+                int bufferLength = 1024;
+                for (int i = 0; i < bytes.length; i += bufferLength) {
+
+                    if (bytes.length - i >= bufferLength) {
+                        output.write(bytes, i, bufferLength);
+                    } else {
+                        output.write(bytes, i, bytes.length - i);
+                    }
+                }
+                output.writeBytes(lineEnd);
+                output.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
                 output.flush();
                 output.close();
 

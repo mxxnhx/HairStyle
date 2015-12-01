@@ -11,12 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.badasaza.gohaesungsacustomer.R;
 import com.example.badasaza.gohaesungsacustomer.SignUpAct;
 
-
+/* ToDo: Optional: if time allows, do snackbar instead of dialog */
 /**
  * Created by Badasaza on 2015-11-30.
  */
@@ -38,11 +39,13 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
             TextView tv = (TextView) rootView.findViewById(R.id.signup_eval_text);
             tv.setText(getActivity().getText(R.string.signup_eval) + " ("+(pageNum+1)+"/5)");
         }
+
         Button b = (Button) rootView.findViewById(R.id.signup_to_next2);
         b.setText((pageNum < 4 ? getText(R.string.signup_next) : getText(R.string.signup_end)));
         b.setOnClickListener(this);
-        /* ToDo: Communicate with server and get damn pictures showing!
-         */
+        /* ToDo: Communicate with server and get damn pictures showing! */
+        ImageView img = (ImageView) rootView.findViewById(R.id.signup_sample_image);
+        img.setImageResource(R.drawable.ex);
         return rootView;
     }
 
@@ -57,22 +60,8 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
             suf.setArguments(a);
             fm.beginTransaction().replace(R.id.signup_frag_container, suf).addToBackStack(null).commit();
         }else{
-            /* ToDo: take care of error cases! */
-            final SignUpAct sua = (SignUpAct) getActivity();
-            if(sua.taskFinished()){
-                AlertDialog.Builder ab = new AlertDialog.Builder(sua);
-                ab.setTitle(R.string.signup_idcode_title).setMessage(getText(R.string.signup_idcode_text1)+sua.getIdcode()+getText(R.string.signup_idcode_text2));
-                ab.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        sua.finish();
-                    }
-                });
-                ab.create().show();
-            }else {
-                sua.notifyFinished();
-            }
+            SignUpAct sua = (SignUpAct) getActivity();
+            sua.finisherDialog().create().show();
         }
     }
 }

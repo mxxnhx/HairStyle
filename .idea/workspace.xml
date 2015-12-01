@@ -40,46 +40,70 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="CustomerHome.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsacustomer/CustomerHome.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.14525993">
+              <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="SignUpAct.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsacustomer/SignUpAct.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="144" column="44" selection-start-line="144" selection-start-column="44" selection-end-line="144" selection-end-column="44" />
+              <caret line="165" column="17" selection-start-line="165" selection-start-column="17" selection-end-line="165" selection-end-column="17" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1170#1191#0" expanded="true" />
-                <element signature="e#3103#3138#0" expanded="true" />
-                <element signature="e#3140#3174#0" expanded="true" />
-                <element signature="e#3209#5300#0" expanded="true" />
-                <element signature="e#3633#4329#0" expanded="true" />
-                <element signature="e#3851#3865#0" expanded="true" />
-                <element signature="e#3878#3910#0" expanded="true" />
-                <element signature="e#3930#3941#0" expanded="true" />
-                <element signature="e#3943#4231#0" expanded="true" />
-                <element signature="e#4230#4231#0" expanded="true" />
-                <element signature="e#4328#4329#0" expanded="true" />
-                <element signature="e#4409#5256#0" expanded="true" />
-                <element signature="e#4627#4655#0" expanded="true" />
-                <element signature="e#4668#4705#0" expanded="true" />
-                <element signature="e#4722#4759#0" expanded="true" />
-                <element signature="e#4811#4822#0" expanded="true" />
-                <element signature="e#4824#5158#0" expanded="true" />
-                <element signature="e#5157#5158#0" expanded="true" />
-                <element signature="e#5255#5256#0" expanded="true" />
-                <element signature="e#5299#5300#0" expanded="true" />
+                <element signature="e#1344#1365#0" expanded="true" />
+                <element signature="e#2639#2674#0" expanded="true" />
+                <element signature="e#2676#2710#0" expanded="true" />
+                <element signature="e#2745#5574#0" expanded="true" />
+                <element signature="e#3387#3401#0" expanded="true" />
+                <element signature="e#3414#3446#0" expanded="true" />
+                <element signature="e#3466#3477#0" expanded="true" />
+                <element signature="e#3999#4013#0" expanded="true" />
+                <element signature="e#4015#4045#0" expanded="true" />
+                <element signature="e#4047#4315#0" expanded="true" />
+                <element signature="e#4314#4315#0" expanded="true" />
+                <element signature="e#4538#4552#0" expanded="true" />
+                <element signature="e#4554#4580#0" expanded="true" />
+                <element signature="e#4582#4850#0" expanded="true" />
+                <element signature="e#4849#4850#0" expanded="true" />
+                <element signature="e#4935#5508#0" expanded="true" />
+                <element signature="e#5507#5508#0" expanded="true" />
+                <element signature="e#5573#5574#0" expanded="true" />
+                <element signature="e#5724#5752#0" expanded="true" />
+                <element signature="e#5765#5802#0" expanded="true" />
+                <element signature="e#5818#5855#0" expanded="true" />
+                <element signature="e#5887#5898#0" expanded="true" />
+                <element signature="e#5900#6114#0" expanded="true" />
+                <element signature="e#6113#6114#0" expanded="true" />
+                <element signature="e#6383#6394#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="activity_sign_up.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_sign_up.xml">
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
+      <file leaf-file-name="ServerTask.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsamodel/ServerTask.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.5333333">
-              <caret line="4" column="45" selection-start-line="4" selection-start-column="45" selection-end-line="4" selection-end-column="45" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="17" column="35" selection-start-line="17" selection-start-column="35" selection-end-line="17" selection-end-column="35" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TakePhoto.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsacustomer/TakePhoto.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="146" column="33" selection-start-line="146" selection-start-column="33" selection-end-line="146" selection-end-column="33" />
               <folding />
             </state>
           </provider>
@@ -89,87 +113,68 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsaview/SignUpFragment.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="73" column="37" selection-start-line="73" selection-start-column="37" selection-end-line="73" selection-end-column="37" />
+              <caret line="45" column="11" selection-start-line="45" selection-start-column="11" selection-end-line="45" selection-end-column="11" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1354#1397#0" expanded="true" />
-                <element signature="e#1541#1570#0" expanded="true" />
-                <element signature="e#1573#1601#0" expanded="true" />
-                <element signature="e#2472#2500#0" expanded="true" />
-                <element signature="e#2513#2550#0" expanded="true" />
-                <element signature="e#2567#2604#0" expanded="true" />
-                <element signature="e#2644#2655#0" expanded="true" />
-                <element signature="e#2657#2923#0" expanded="true" />
-                <element signature="e#2922#2923#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoginAct.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsacustomer/LoginAct.java">
+      <file leaf-file-name="SignUpWarnFrag.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsaview/SignUpWarnFrag.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.51428574">
-              <caret line="175" column="25" selection-start-line="175" selection-start-column="25" selection-end-line="175" selection-end-column="25" />
-              <folding>
-                <element signature="e#2768#2803#0" expanded="true" />
-                <element signature="e#2805#2839#0" expanded="true" />
-                <element signature="e#2878#6493#0" expanded="true" />
-                <element signature="e#3731#4554#0" expanded="true" />
-                <element signature="e#3981#3995#0" expanded="true" />
-                <element signature="e#4008#4031#0" expanded="true" />
-                <element signature="e#4091#4102#0" expanded="true" />
-                <element signature="e#4104#4432#0" expanded="true" />
-                <element signature="e#4431#4432#0" expanded="true" />
-                <element signature="e#4553#4554#0" expanded="true" />
-                <element signature="e#4647#5477#0" expanded="true" />
-                <element signature="e#4897#4911#0" expanded="true" />
-                <element signature="e#4924#4954#0" expanded="true" />
-                <element signature="e#5014#5025#0" expanded="true" />
-                <element signature="e#5027#5355#0" expanded="true" />
-                <element signature="e#5354#5355#0" expanded="true" />
-                <element signature="e#5476#5477#0" expanded="true" />
-                <element signature="e#5655#6399#0" expanded="true" />
-                <element signature="e#5889#5903#0" expanded="true" />
-                <element signature="e#5916#5948#0" expanded="true" />
-                <element signature="e#5968#5979#0" expanded="true" />
-                <element signature="e#5981#6289#0" expanded="true" />
-                <element signature="e#6288#6289#0" expanded="true" />
-                <element signature="e#6398#6399#0" expanded="true" />
-                <element signature="e#6492#6493#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="activity_login.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml">
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-22.433332">
-              <caret line="44" column="40" selection-start-line="44" selection-start-column="40" selection-end-line="44" selection-end-column="40" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="2" column="28" selection-start-line="2" selection-start-column="28" selection-end-line="2" selection-end-column="28" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="fragment_sign_up.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_sign_up.xml">
+      <file leaf-file-name="SignUpHomeFrag.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsaview/SignUpHomeFrag.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="13" column="50" selection-start-line="13" selection-start-column="50" selection-end-line="13" selection-end-column="50" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1709#1720#0" expanded="true" />
+                <element signature="e#1722#1930#0" expanded="true" />
+                <element signature="e#1929#1930#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="fragment_sign_up_warning.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_sign_up_warning.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-16.1">
+              <caret line="31" column="61" selection-start-line="31" selection-start-column="61" selection-end-line="31" selection-end-column="61" />
+              <folding>
+                <element signature="e#355#385#0" expanded="true" />
+                <element signature="e#451#483#0" expanded="true" />
+                <element signature="e#520#537#0" expanded="true" />
+                <element signature="e#563#585#0" expanded="true" />
+                <element signature="e#764#793#0" expanded="true" />
+                <element signature="e#819#841#0" expanded="true" />
+                <element signature="e#870#902#0" expanded="true" />
+                <element signature="e#1022#1043#0" expanded="true" />
+                <element signature="e#1157#1174#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
           <provider editor-type-id="android-designer">
             <state />
           </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LoginAct.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsacustomer/LoginAct.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-12.033334">
-              <caret line="19" column="39" selection-start-line="19" selection-start-column="39" selection-end-line="19" selection-end-column="39" />
-              <folding>
-                <element signature="e#360#382#0" expanded="true" />
-                <element signature="e#407#439#0" expanded="true" />
-                <element signature="e#689#706#0" expanded="true" />
-                <element signature="e#907#939#0" expanded="true" />
-                <element signature="e#988#1020#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0">
+              <caret line="43" column="13" selection-start-line="43" selection-start-column="13" selection-end-line="43" selection-end-column="13" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -177,18 +182,8 @@
       <file leaf-file-name="strings.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.178572">
-              <caret line="15" column="61" selection-start-line="15" selection-start-column="61" selection-end-line="15" selection-end-column="61" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="dimens.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
+            <state vertical-scroll-proportion="-16.642857">
+              <caret line="65" column="46" selection-start-line="65" selection-start-column="46" selection-end-line="65" selection-end-column="46" />
               <folding />
             </state>
           </provider>
@@ -200,8 +195,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="valueResourceFile" />
-        <option value="layoutResourceFile_vertical" />
         <option value="layoutResourceFile" />
+        <option value="layoutResourceFile_vertical" />
         <option value="Class" />
       </list>
     </option>
@@ -1695,23 +1690,26 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsamodel/ItemModel.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_customer_home.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsaview/LongClickDragListener.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_customer_rec.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsaview/DragListener.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsacustomer/TakePhoto.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsaview/AlbumRecyclerAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsacustomer/AlbumShow.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsacustomer/CustomerHome.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_sign_up_home.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_sign_up.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_sign_up.xml" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsaview/SignUpHomeFrag.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsaview/SimpleAlert.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_customer_rec.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsacustomer/TakePhoto.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_sign_up_warning.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsamodel/ServerTask.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsaview/SignUpFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsacustomer/SignUpAct.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsaview/SignUpFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsaview/SignUpWarnFrag.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsaview/SignUpHomeFrag.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsacustomer/LoginAct.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsacustomer/CustomerHome.java" />
       </list>
     </option>
   </component>
@@ -1728,7 +1726,7 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1932" />
+    <option name="width" value="1936" />
     <option name="height" value="1176" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -1758,9 +1756,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
-      <pane id="ProjectPane" />
-      <pane id="Scratches" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -1876,6 +1871,10 @@
               <option name="myItemId" value="badasaza" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gohaesungsamodel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -1908,19 +1907,18 @@
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="manifests" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidManifestsGroupNode" />
-            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="recentsLimit" value="5" />
     <property name="FullScreen" value="false" />
-    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="0a823858" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="015d49062c4ff60a" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="Nexus_5_API_23_x86" />
     <property name="OverrideImplement.combined" value="true" />
     <property name="OverrideImplement.overriding.sorted" value="false" />
@@ -2136,14 +2134,14 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1932" height="1176" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1176" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32995737" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907662" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32907662" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -2152,13 +2150,13 @@
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907662" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31827113" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31827113" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15811966" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15778251" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907662" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -2186,54 +2184,36 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsaview/RecListAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="29" column="27" selection-start-line="29" selection-start-column="27" selection-end-line="29" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="32" column="28" selection-start-line="32" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsacustomer/CustomerHome.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="227" column="0" selection-start-line="227" selection-start-column="0" selection-end-line="227" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#3153#3361#0" expanded="true" />
-            <element signature="e#3360#3361#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_customer_rec.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="22" column="41" selection-start-line="22" selection-start-column="41" selection-end-line="22" selection-end-column="41" />
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/listview_reclist.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/listview_reclist.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="27" column="38" selection-start-line="27" selection-start-column="38" selection-end-line="27" selection-end-column="38" />
           <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsacustomer/LoginAct.java">
@@ -2245,14 +2225,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_customer_home.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="26" column="29" selection-start-line="26" selection-start-column="29" selection-end-line="26" selection-end-column="29" />
           <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsaview/RecListAdapter.java">
@@ -2277,8 +2257,6 @@
           <caret line="104" column="0" selection-start-line="104" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#3153#3361#0" expanded="true" />
-            <element signature="e#3360#3361#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2291,36 +2269,36 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_album_show.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="20" column="33" selection-start-line="20" selection-start-column="33" selection-end-line="20" selection-end-column="33" />
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_customer_home.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_customer_home.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="30" column="29" selection-start-line="30" selection-start-column="29" selection-end-line="30" selection-end-column="29" />
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_customer_home.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_customer_home.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="33" />
           <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsacustomer/CustomerHome.java">
@@ -2329,32 +2307,30 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#3153#3361#0" expanded="true" />
-            <element signature="e#3360#3361#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_customer_home.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_customer_settings.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_customer_settings.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/home_50.png">
@@ -2370,9 +2346,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_photo.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-5.0666666">
           <caret line="8" column="62" selection-start-line="8" selection-start-column="62" selection-end-line="8" selection-end-column="62" />
@@ -2382,27 +2355,30 @@
           </folding>
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_album_show.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_album_show.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-6.9666667">
           <caret line="11" column="47" selection-start-line="11" selection-start-column="47" selection-end-line="11" selection-end-column="47" />
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/listview_reclist.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/listview_reclist.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="27" column="38" selection-start-line="27" selection-start-column="38" selection-end-line="27" selection-end-column="38" />
           <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/styles.xml">
@@ -2429,49 +2405,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_take_photo.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.66442955">
-          <caret line="67" column="48" selection-start-line="67" selection-start-column="48" selection-end-line="67" selection-end-column="48" />
-          <folding>
-            <element signature="e#377#410#0" expanded="true" />
-            <element signature="e#621#654#0" expanded="true" />
-            <element signature="e#689#722#0" expanded="true" />
-            <element signature="e#755#788#0" expanded="true" />
-            <element signature="e#915#937#0" expanded="true" />
-            <element signature="e#963#978#0" expanded="true" />
-            <element signature="e#1081#1114#0" expanded="true" />
-            <element signature="e#1149#1182#0" expanded="true" />
-            <element signature="e#1215#1248#0" expanded="true" />
-            <element signature="e#1334#1351#0" expanded="true" />
-            <element signature="e#1591#1624#0" expanded="true" />
-            <element signature="e#1659#1692#0" expanded="true" />
-            <element signature="e#1725#1758#0" expanded="true" />
-            <element signature="e#1885#1907#0" expanded="true" />
-            <element signature="e#1933#1947#0" expanded="true" />
-            <element signature="e#2049#2082#0" expanded="true" />
-            <element signature="e#2117#2150#0" expanded="true" />
-            <element signature="e#2183#2216#0" expanded="true" />
-            <element signature="e#2302#2319#0" expanded="true" />
-            <element signature="e#2659#2694#0" expanded="true" />
-            <element signature="e#2733#2768#0" expanded="true" />
-            <element signature="e#2899#2916#0" expanded="true" />
-            <element signature="e#2942#2956#0" expanded="true" />
-            <element signature="e#3156#3191#0" expanded="true" />
-            <element signature="e#3230#3265#0" expanded="true" />
-            <element signature="e#3381#3397#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6681957">
           <caret line="23" column="41" selection-start-line="23" selection-start-column="41" selection-end-line="23" selection-end-column="41" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2494,14 +2431,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/recyclerview_albumshow.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
           <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsaview/LongClickDragListener.java">
@@ -2511,36 +2448,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_customer_rec.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="35" column="39" selection-start-line="35" selection-start-column="39" selection-end-line="35" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsacustomer/TakePhoto.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="110" column="45" selection-start-line="110" selection-start-column="45" selection-end-line="110" selection-end-column="45" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_customer_home.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.06022187">
           <caret line="2" column="76" selection-start-line="2" selection-start-column="76" selection-end-line="2" selection-end-column="76" />
           <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsaview/AlbumRecyclerAdapter.java">
@@ -2562,14 +2478,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_customer_home.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.18700476">
           <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
           <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsaview/DragListener.java">
@@ -2578,62 +2494,6 @@
           <caret line="28" column="142" selection-start-line="28" selection-start-column="142" selection-end-line="28" selection-end-column="142" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsacustomer/CustomerHome.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="210" column="17" selection-start-line="210" selection-start-column="17" selection-end-line="210" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.17142858">
-          <caret line="11" column="78" selection-start-line="11" selection-start-column="78" selection-end-line="11" selection-end-column="78" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_sign_up_home.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.05984252">
-          <caret line="2" column="4" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="4" />
-          <folding>
-            <element signature="e#215#250#0" expanded="true" />
-            <element signature="e#276#311#0" expanded="true" />
-            <element signature="e#335#368#0" expanded="true" />
-            <element signature="e#395#428#0" expanded="true" />
-            <element signature="e#501#522#0" expanded="true" />
-            <element signature="e#584#606#0" expanded="true" />
-            <element signature="e#643#660#0" expanded="true" />
-            <element signature="e#918#942#0" expanded="true" />
-            <element signature="e#1067#1087#0" expanded="true" />
-            <element signature="e#1149#1171#0" expanded="true" />
-            <element signature="e#1208#1225#0" expanded="true" />
-            <element signature="e#1488#1512#0" expanded="true" />
-            <element signature="e#1634#1655#0" expanded="true" />
-            <element signature="e#1769#1786#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsaview/SignUpHomeFrag.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.45714286">
-          <caret line="48" column="80" selection-start-line="48" selection-start-column="80" selection-end-line="48" selection-end-column="80" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1894#1905#0" expanded="true" />
-            <element signature="e#2114#2115#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2647,23 +2507,20 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-22.433332">
           <caret line="44" column="40" selection-start-line="44" selection-start-column="40" selection-end-line="44" selection-end-column="40" />
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_sign_up.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_sign_up.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-12.033334">
-          <caret line="19" column="39" selection-start-line="19" selection-start-column="39" selection-end-line="19" selection-end-column="39" />
+        <state vertical-scroll-proportion="-3.4333334">
+          <caret line="17" column="40" selection-start-line="17" selection-start-column="40" selection-end-line="17" selection-end-column="40" />
           <folding>
             <element signature="e#360#382#0" expanded="true" />
             <element signature="e#407#439#0" expanded="true" />
@@ -2673,11 +2530,140 @@
           </folding>
         </state>
       </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_sign_up.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.11968504">
+          <caret line="4" column="45" selection-start-line="4" selection-start-column="45" selection-end-line="4" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.51428574">
+          <caret line="18" column="17" selection-start-line="18" selection-start-column="17" selection-end-line="18" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_take_photo.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="66" column="47" selection-start-line="66" selection-start-column="47" selection-end-line="66" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_sign_up_home.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.2566929">
+          <caret line="42" column="47" selection-start-line="35" selection-start-column="8" selection-end-line="42" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_customer_rec.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_sign_up_warning.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-16.1">
+          <caret line="31" column="61" selection-start-line="31" selection-start-column="61" selection-end-line="31" selection-end-column="61" />
+          <folding>
+            <element signature="e#355#385#0" expanded="true" />
+            <element signature="e#451#483#0" expanded="true" />
+            <element signature="e#520#537#0" expanded="true" />
+            <element signature="e#563#585#0" expanded="true" />
+            <element signature="e#764#793#0" expanded="true" />
+            <element signature="e#819#841#0" expanded="true" />
+            <element signature="e#870#902#0" expanded="true" />
+            <element signature="e#1022#1043#0" expanded="true" />
+            <element signature="e#1157#1174#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.178572">
-          <caret line="15" column="61" selection-start-line="15" selection-start-column="61" selection-end-line="15" selection-end-column="61" />
+        <state vertical-scroll-proportion="-16.642857">
+          <caret line="65" column="46" selection-start-line="65" selection-start-column="46" selection-end-line="65" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsamodel/ServerTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="35" selection-start-line="17" selection-start-column="35" selection-end-line="17" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsacustomer/SignUpAct.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="165" column="17" selection-start-line="165" selection-start-column="17" selection-end-line="165" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1344#1365#0" expanded="true" />
+            <element signature="e#2639#2674#0" expanded="true" />
+            <element signature="e#2676#2710#0" expanded="true" />
+            <element signature="e#2745#5574#0" expanded="true" />
+            <element signature="e#3387#3401#0" expanded="true" />
+            <element signature="e#3414#3446#0" expanded="true" />
+            <element signature="e#3466#3477#0" expanded="true" />
+            <element signature="e#3999#4013#0" expanded="true" />
+            <element signature="e#4015#4045#0" expanded="true" />
+            <element signature="e#4047#4315#0" expanded="true" />
+            <element signature="e#4314#4315#0" expanded="true" />
+            <element signature="e#4538#4552#0" expanded="true" />
+            <element signature="e#4554#4580#0" expanded="true" />
+            <element signature="e#4582#4850#0" expanded="true" />
+            <element signature="e#4849#4850#0" expanded="true" />
+            <element signature="e#4935#5508#0" expanded="true" />
+            <element signature="e#5507#5508#0" expanded="true" />
+            <element signature="e#5573#5574#0" expanded="true" />
+            <element signature="e#5724#5752#0" expanded="true" />
+            <element signature="e#5765#5802#0" expanded="true" />
+            <element signature="e#5818#5855#0" expanded="true" />
+            <element signature="e#5887#5898#0" expanded="true" />
+            <element signature="e#5900#6114#0" expanded="true" />
+            <element signature="e#6113#6114#0" expanded="true" />
+            <element signature="e#6383#6394#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsacustomer/TakePhoto.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="146" column="33" selection-start-line="146" selection-start-column="33" selection-end-line="146" selection-end-column="33" />
           <folding />
         </state>
       </provider>
@@ -2685,94 +2671,47 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsaview/SignUpFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="73" column="37" selection-start-line="73" selection-start-column="37" selection-end-line="73" selection-end-column="37" />
+          <caret line="45" column="11" selection-start-line="45" selection-start-column="11" selection-end-line="45" selection-end-column="11" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1354#1397#0" expanded="true" />
-            <element signature="e#1541#1570#0" expanded="true" />
-            <element signature="e#1573#1601#0" expanded="true" />
-            <element signature="e#2472#2500#0" expanded="true" />
-            <element signature="e#2513#2550#0" expanded="true" />
-            <element signature="e#2567#2604#0" expanded="true" />
-            <element signature="e#2644#2655#0" expanded="true" />
-            <element signature="e#2657#2923#0" expanded="true" />
-            <element signature="e#2922#2923#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_sign_up.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsaview/SignUpWarnFrag.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.5333333">
-          <caret line="4" column="45" selection-start-line="4" selection-start-column="45" selection-end-line="4" selection-end-column="45" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2" column="28" selection-start-line="2" selection-start-column="28" selection-end-line="2" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsacustomer/SignUpAct.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsaview/SignUpHomeFrag.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="144" column="44" selection-start-line="144" selection-start-column="44" selection-end-line="144" selection-end-column="44" />
+          <caret line="13" column="50" selection-start-line="13" selection-start-column="50" selection-end-line="13" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1170#1191#0" expanded="true" />
-            <element signature="e#3103#3138#0" expanded="true" />
-            <element signature="e#3140#3174#0" expanded="true" />
-            <element signature="e#3209#5300#0" expanded="true" />
-            <element signature="e#3633#4329#0" expanded="true" />
-            <element signature="e#3851#3865#0" expanded="true" />
-            <element signature="e#3878#3910#0" expanded="true" />
-            <element signature="e#3930#3941#0" expanded="true" />
-            <element signature="e#3943#4231#0" expanded="true" />
-            <element signature="e#4230#4231#0" expanded="true" />
-            <element signature="e#4328#4329#0" expanded="true" />
-            <element signature="e#4409#5256#0" expanded="true" />
-            <element signature="e#4627#4655#0" expanded="true" />
-            <element signature="e#4668#4705#0" expanded="true" />
-            <element signature="e#4722#4759#0" expanded="true" />
-            <element signature="e#4811#4822#0" expanded="true" />
-            <element signature="e#4824#5158#0" expanded="true" />
-            <element signature="e#5157#5158#0" expanded="true" />
-            <element signature="e#5255#5256#0" expanded="true" />
-            <element signature="e#5299#5300#0" expanded="true" />
+            <element signature="e#1709#1720#0" expanded="true" />
+            <element signature="e#1722#1930#0" expanded="true" />
+            <element signature="e#1929#1930#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsacustomer/LoginAct.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.51428574">
-          <caret line="175" column="25" selection-start-line="175" selection-start-column="25" selection-end-line="175" selection-end-column="25" />
-          <folding>
-            <element signature="e#2768#2803#0" expanded="true" />
-            <element signature="e#2805#2839#0" expanded="true" />
-            <element signature="e#2878#6493#0" expanded="true" />
-            <element signature="e#3731#4554#0" expanded="true" />
-            <element signature="e#3981#3995#0" expanded="true" />
-            <element signature="e#4008#4031#0" expanded="true" />
-            <element signature="e#4091#4102#0" expanded="true" />
-            <element signature="e#4104#4432#0" expanded="true" />
-            <element signature="e#4431#4432#0" expanded="true" />
-            <element signature="e#4553#4554#0" expanded="true" />
-            <element signature="e#4647#5477#0" expanded="true" />
-            <element signature="e#4897#4911#0" expanded="true" />
-            <element signature="e#4924#4954#0" expanded="true" />
-            <element signature="e#5014#5025#0" expanded="true" />
-            <element signature="e#5027#5355#0" expanded="true" />
-            <element signature="e#5354#5355#0" expanded="true" />
-            <element signature="e#5476#5477#0" expanded="true" />
-            <element signature="e#5655#6399#0" expanded="true" />
-            <element signature="e#5889#5903#0" expanded="true" />
-            <element signature="e#5916#5948#0" expanded="true" />
-            <element signature="e#5968#5979#0" expanded="true" />
-            <element signature="e#5981#6289#0" expanded="true" />
-            <element signature="e#6288#6289#0" expanded="true" />
-            <element signature="e#6398#6399#0" expanded="true" />
-            <element signature="e#6492#6493#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0">
+          <caret line="43" column="13" selection-start-line="43" selection-start-column="13" selection-end-line="43" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/badasaza/gohaesungsacustomer/CustomerHome.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14525993">
+          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

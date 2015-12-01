@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.badasaza.gohaesungsacustomer.R;
-import com.example.badasaza.gohaesungsacustomer.SignUpAct;
 
 /**
  * Created by Badasaza on 2015-11-30.
@@ -35,12 +34,9 @@ public class SignUpHomeFrag extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         FragmentManager fm = getFragmentManager();
-        SignUpFragment suf = new SignUpFragment();
+        SignUpWarnFrag suf = new SignUpWarnFrag();
         Bundle a = new Bundle();
-        a.putInt(SignUpFragment.PAGE_KEY, 0);
-        suf.setArguments(a);
         /* ToDo: gotta put animator later */
-        SignUpAct sua = (SignUpAct) getActivity();
         String n = name.getText().toString();
         String t = tel.getText().toString();
         if(n == null || n.matches("") || t == null || t.matches("")){
@@ -54,7 +50,9 @@ public class SignUpHomeFrag extends Fragment implements View.OnClickListener {
             });
             ab.create().show();
         }else {
-            sua.initTask(name.getText().toString(), tel.getText().toString());
+            a.putString(SignUpWarnFrag.NAME_KEY, n);
+            a.putString(SignUpWarnFrag.TEL_KEY, t);
+            suf.setArguments(a);
             fm.beginTransaction().replace(R.id.signup_frag_container, suf).addToBackStack(null).commit();
         }
     }

@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
-import android.content.ClipData;
 import android.content.Intent;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -18,8 +16,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,20 +24,21 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.badasaza.gohaesungsamodel.ItemModel;
 import com.example.badasaza.gohaesungsaview.AlbumRecyclerAdapter;
 import com.example.badasaza.gohaesungsaview.DragListener;
 import com.example.badasaza.gohaesungsaview.LongClickDragListener;
-import com.example.badasaza.gohaesungsaview.RecListAdapter;
 
 public class CustomerHome extends AppCompatActivity implements ActionBar.TabListener{
 
     private final long	FINSH_INTERVAL_TIME    = 2000;
     private long		backPressedTime        = 0;
     public static final int PHOTO_REQUEST = 0;
+
+    private String idcode;
+    private int albumNum;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -62,6 +59,9 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_home);
+
+        idcode = getIntent().getStringExtra(LoginAct.IDCODE);
+        albumNum = getIntent().getIntExtra(LoginAct.ALBUMNUM, -1);
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
@@ -272,7 +272,7 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
                 glm.setOrientation(GridLayoutManager.VERTICAL);
                 rv.setLayoutManager(glm);
 
-
+                /* ToDo: receive img from server */
                 ArrayList<ItemModel> als = new ArrayList<>();
                 als.add(new ItemModel(Arrays.asList("ddcut1","ddcut2","ddcut3"), "2015-07-22", true));
                 als.add(new ItemModel(Arrays.asList("rgcut1","rgcut2","rgcut3"), "2015-05-02", true));
@@ -288,10 +288,11 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
                 RecListAdapter rla = new RecListAdapter(getActivity(), Arrays.asList(temp));
                 lis.setAdapter(rla);*/
 
+                /* ToDo: get server working here! (Get thumb image and recimage)*/
                 LinearLayout cont = (LinearLayout) rootView.findViewById(R.id.rec_hair_container);
                 ImageView imgV = new ImageView(getActivity());
                 imgV.setImageResource(R.drawable.wig);
-                imgV.setLayoutParams(new ViewGroup.LayoutParams(dpToPx(80), dpToPx(80)));
+                imgV.setLayoutParams(new ViewGroup.LayoutParams(dpToPx(140), dpToPx(140)));
                 imgV.setOnLongClickListener(new LongClickDragListener());
                 cont.addView(imgV);
                 cont.setOnDragListener(new DragListener());

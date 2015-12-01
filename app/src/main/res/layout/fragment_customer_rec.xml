@@ -16,13 +16,6 @@
         android:background="@color/b300"
         android:text = "@string/rec_top"/>
 
-    <!--<ListView
-        android:id="@+id/rec_list"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="8dp"
-        android:padding="@dimen/interval"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/> -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,6 +33,14 @@
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:layout_gravity="center" />
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:stepSize="0.5"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="@dimen/activity_content_margin"/>
 
         </FrameLayout>
 

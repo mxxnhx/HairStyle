@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -100,7 +102,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
     public void onClick(View v){
         switch (v.getId()) {
             case R.id.save_button:
-                /* Do picture transfer here*/
+                /* ToDo: picture transfer to server here*/
                 Intent b = new Intent();
                 ArrayList<String> dummy = new ArrayList<>();
                 dummy.addAll(Arrays.asList(front, side1, side2));
@@ -154,6 +156,9 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = Environment.getExternalStorageDirectory();
+
+
+        /* ToDo: optional: runtime permissions for Android 6.0+ */
         File image = File.createTempFile(
                 imageFileName,
                 ".jpg",
@@ -171,21 +176,17 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
     }
 
     private Bitmap setPic(String path) {
-        // Get the dimensions of the View
         int targetW = 256;
         int targetH = 256;
 
-        // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(path, bmOptions);
         int photoW = bmOptions.outWidth;
         int photoH = bmOptions.outHeight;
 
-        // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
+        int scaleFactor = Math.max(photoW / targetW, photoH / targetH);
 
-        // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
         bmOptions.inSampleSize = scaleFactor;
         bmOptions.inPurgeable = true;
@@ -210,11 +211,10 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                     else
                         photoFile = createImageFile(2);
                 }
-            } catch (IOException ex) {
+            } catch (IOException e) {
                 // Error occurred while creating the File
                 Log.e("Error: ", "can't create directory");
             }
-            // Continue only if the File was successfully created
             if (photoFile != null) {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                         Uri.fromFile(photoFile));
