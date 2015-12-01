@@ -141,6 +141,26 @@ class HairAnalyzer:
         dic={}
         d_eye=abs((eyes[1][0]-eyes[0][0])+(eyes[1][2]-eyes[1][2])/2)
         dic['d_eye']=d_eye
+        #hair width for front hair
+        xleft=-1
+        for i in range(hair_front.shape[1]):
+            for h in range(hair_front.shape[0]):
+                if hair_front[h][i]==1:
+                    xleft=i
+                    break
+            if xleft>=0:
+                break
+        xright=-1
+        for i in range(hair_front.shape[1]-1,0,-1):
+            for h in range(hair_front.shape[0]):
+                if hair_front[h][i]==1:
+                    xright=i
+                    break
+            if xright>=0:
+                break
+        width_front=xright-xleft
+        dic['width_front']=width_front
+        
         #first hair point for front hair
         xff=0
         yff=-1

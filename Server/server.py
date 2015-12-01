@@ -95,7 +95,7 @@ def signup():
     if request.method == 'POST':
         name = request.form['name']
         tel = request.form['tel']
-        face = requeest.files['face']
+        face = request.files['face']
         user = User.query.filter_by(tel = tel).first()
         if(user):
             return "-2" # already exists
@@ -107,19 +107,19 @@ def signup():
             _id = idcode['idcode'] + 1
         result.close()
 
-        pn = os.path.join(app.config['UPLOAD_FILE'], _id + ".jpg")
-        face.save(pn)
-        ha = HairAnalyzer.HairAnalyzer(pn)
-        face, eyes = ha.detectFace()
-        if (len(eyes)<2):
-            os.remove(pn)
-            return "-3"
-        face.save(os.path.join(app.config['UPLOAD_FILE'], _id+"_face.jpg"))
+        #pn = os.path.join(app.config['UPLOAD_FOLDER'], str(_id) + ".jpg")
+        #face.save(pn)
+        #ha = HairAnalyzer.HairAnalyzer(pn)
+        #face, eyes = ha.detectFace()
+        #if (len(eyes)<2):
+         #   os.remove(pn)
+          #  return "-3"
+        #face.save(os.path.join(app.config['UPLOAD_FILE'], _id+"_face.jpg"))
 
-        facedata = img_face(_id, _id+"_face.jpg")
+        #facedata = img_face(_id, _id+"_face.jpg")
         user = User(name,_id,tel)
         db_session.add(user)
-        db_session.add(facedata)
+        #db_session.add(facedata)
         db_session.commit()
         return str(_id)
     else:
@@ -129,13 +129,18 @@ def signup():
 def login():
     if request.method == 'POST':
         _id = request.form['idcode']
-        result = engine.execute("select idcode from users where idcode = %s"% _id)
+        result = engine.execute("select idcode from users where idcode = %s", _id)
         user = result.fetchone()
         result.close()
         if(user == None):
             return "-2"
         else:
-            return "1"
+            result = engine.execute("select * from imgs where idcode = %s", _id)
+            album = result.fetchone()
+            if (album==None):
+                return "0"
+            else:
+                return str(album['albumnum'])
     else:
         return "-1"
 
