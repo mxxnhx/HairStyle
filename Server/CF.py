@@ -197,7 +197,7 @@ def get_item_list() :
 
 #GET RECOMMANDED ITEM LIST WITH user
 #NEED_TO_UPDATE
-def recommend(user) :
+def recommend(user, num) :
 	if(is_user(user)) :
 		cursor = db.cursor()
 		cursor.execute("SELECT user_name FROM user WHERE user_name != ?", (user,))
@@ -207,7 +207,7 @@ def recommend(user) :
 		#(user_name, similarity) sorted list
 		sim = [(tup[0], cosine_similarity(tup[0], user)) for tup in d]
 		sim.sort(key = lambda item:item[1], reverse = True)
-		print "Similiarity : ", sim
+		#print "Similiarity : ", sim
 
 		#grouping by similarity
 		it = itertools.groupby(sim, operator.itemgetter(1))

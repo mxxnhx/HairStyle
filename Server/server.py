@@ -16,8 +16,6 @@ import numpy
 import random
 import CF
 
-CF.make_DB()
-
 engine = create_engine('mysql://root:qlqjs1@127.0.0.1/hairstyle?charset=utf8',
         convert_unicode=True)
 db_session = scoped_session(
@@ -256,6 +254,7 @@ def send_test(catenum):
 @app.route('/sendrec/<idcode>', methods=['GET', 'POST'])
 def send_rec(idcode):
     filename = CF.recommend(idcode)
+    filename = filename + "_a.png"
     if os.path.isfile(os.path.join(app.config['REC_FOLDER'], filename)):
         return send_from_directory(app.config['REC_FOLDER'], filename)
     else:
