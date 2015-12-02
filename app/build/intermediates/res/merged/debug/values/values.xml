@@ -398,6 +398,7 @@
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
+    <string name="upload_failed">업로드 실패</string>
     <!-- From: file:/C:/Users/Badasaza/AndroidStudioProjects/GoHaeSungSaCustomer/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <style name="AlertDialog.AppCompat" parent="Base.AlertDialog.AppCompat"/>

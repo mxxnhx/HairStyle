@@ -2,7 +2,11 @@ package com.example.badasaza.gohaesungsaview;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -12,10 +16,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.badasaza.gohaesungsacustomer.R;
 import com.example.badasaza.gohaesungsacustomer.SignUpAct;
+
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
+import java.net.URL;
 
 /* ToDo: Optional: if time allows, do snackbar instead of dialog */
 /**
@@ -25,6 +40,11 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     private int pageNum = -1;
 
     public static final String PAGE_KEY = "pgkey";
+    private final String DEBUG_TAG = "SignUpFragment";
+    private TestTask tt;
+    private RatingBar rtb;
+    private String fileName;
+    private String idcode;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -40,19 +60,31 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
             tv.setText(getActivity().getText(R.string.signup_eval) + " ("+(pageNum+1)+"/5)");
         }
 
+        SignUpAct sua = (SignUpAct) getActivity();
+        idcode = sua.getIdcode();
+
+        rtb = (RatingBar) rootView.findViewById(R.id.signup_rate);
         Button b = (Button) rootView.findViewById(R.id.signup_to_next2);
         b.setText((pageNum < 4 ? getText(R.string.signup_next) : getText(R.string.signup_end)));
         b.setOnClickListener(this);
-        /* ToDo: Communicate with server and get damn pictures showing! */
+        /* Check: Communicate with server and get damn pictures showing!*/
         ImageView img = (ImageView) rootView.findViewById(R.id.signup_sample_image);
+        /* Ver1 */
         img.setImageResource(R.drawable.ex);
+        /* Ver 2
+        tt = new TestTask();
+        tt.execute((pageNum+1).toString());
+        img.setImageBitmap(tt.result);
+         */
         return rootView;
     }
 
     @Override
     public void onClick(View v) {
-        /* ToDo: send ratings! */
+        /* Check: send ratings! */
         if(pageNum < 4) {
+            /* Ver 2
+            new Thread(new RatingSender()).start(); */
             FragmentManager fm = getFragmentManager();
             SignUpFragment suf = new SignUpFragment();
             Bundle a = new Bundle();
@@ -62,6 +94,118 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         }else{
             SignUpAct sua = (SignUpAct) getActivity();
             sua.finisherDialog().create().show();
+        }
+    }
+
+    private class TestTask extends AsyncTask<String, Void, Bitmap> {
+        public Bitmap result;
+        /* ToDo: consider while loop here */
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            InputStream is = null;
+            Bitmap btm = null;
+
+            try {
+                URL url = new URL("http://143.248.57.222:80/sendtest/"+params[0]);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(10000);
+                conn.setConnectTimeout(15000);
+                conn.setRequestMethod("GET");
+                conn.setDoInput(true);
+                conn.setDoOutput(false);
+                conn.connect();
+                int response = conn.getResponseCode();
+                Log.d(DEBUG_TAG, "The response is: " + response);
+                is = conn.getInputStream();
+                String raw = conn.getHeaderField("Content-Disposition");
+                if(raw != null && raw.indexOf('=') != -1)
+                    fileName = raw.split("=")[1];
+                else
+                    Log.i(DEBUG_TAG, "not found file name");
+                btm = BitmapFactory.decodeStream(is);
+
+                return btm;
+
+            }catch(SocketTimeoutException e){
+                Log.i(DEBUG_TAG, "Socket Timeout Exception");
+                cancel(true);
+                return null;
+            }
+            catch(IOException e){e.printStackTrace();}
+            finally {
+                if (is != null) {
+                    try {
+                        is.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result){
+            Log.i(DEBUG_TAG, "got "+result.getByteCount()+" amount of data");
+            this.result = result;
+        }
+    }
+
+    private class RatingSender implements Runnable {
+
+        public String result;
+
+        @Override
+        public void run() {
+
+            String sending = "idcode="+idcode+"&rate="+rtb.getRating()+"&filename="+fileName;
+            InputStream is = null;
+            try {
+                URL url = new URL("http://143.248.57.222:80/rating_signup");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(10000);
+                conn.setConnectTimeout(15000);
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+                conn.setUseCaches(false);
+                OutputStream output = conn.getOutputStream();
+                output.write(sending.getBytes("euc-kr"));
+                conn.connect();
+                int response = conn.getResponseCode();
+                Log.d(DEBUG_TAG, "The response is: " + response);
+                is = conn.getInputStream();
+
+                result = readIt(is, 10);
+
+            }catch(SocketTimeoutException e){
+                Log.i(DEBUG_TAG, "Socket Timeout Exception");
+            }
+            catch(IOException e){e.printStackTrace();}
+            finally {
+                if (is != null) {
+                    try {
+                        is.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            /* ToDo: error case */
+        }
+
+        private String readIt(InputStream stream, int len) throws IOException {
+            Reader reader = null;
+            reader = new InputStreamReader(stream, "euc-kr");
+            char[] buffer = new char[len];
+            reader.read(buffer);
+            String str = new String(buffer);
+            if(str.charAt(0) == '-') {
+                str = str.replaceAll("[^\\d.]", "");
+                str = "-" + str;
+            }else
+                str = str.replaceAll("[^\\d.]", "");
+            return str;
         }
     }
 }

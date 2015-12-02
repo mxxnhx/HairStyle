@@ -876,6 +876,7 @@ int string title_activity_take_photo 0x7f060043
 int string title_section1 0x7f060044
 int string title_section2 0x7f060045
 int string title_section3 0x7f060046
+int string upload_failed 0x7f060047
 int style AlertDialog_AppCompat 0x7f08007b
 int style AlertDialog_AppCompat_Light 0x7f08007c
 int style Animation_AppCompat_Dialog 0x7f08007d

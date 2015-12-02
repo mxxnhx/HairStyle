@@ -2585,6 +2585,7 @@ containing a value of this type.
         public static final int title_section1=0x7f060044;
         public static final int title_section2=0x7f060045;
         public static final int title_section3=0x7f060046;
+        public static final int upload_failed=0x7f060047;
     }
     public static final class style {
         public static final int AlertDialog_AppCompat=0x7f08007b;

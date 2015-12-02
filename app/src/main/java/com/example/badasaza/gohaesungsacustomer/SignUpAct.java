@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.badasaza.gohaesungsamodel.ServerTask;
 import com.example.badasaza.gohaesungsaview.SignUpFragment;
 import com.example.badasaza.gohaesungsaview.SignUpHomeFrag;
 
@@ -80,6 +79,10 @@ public class SignUpAct extends AppCompatActivity{
         return false;
     }
 
+    public String getIdcode(){
+        return sut.result;
+    }
+
     public void notifyFinished(){
         final ProgressDialog pd = ProgressDialog.show(this, getText(R.string.signup_wait_title), getText(R.string.signup_wait_text), true, false);
         new Thread(new Runnable() {
@@ -108,21 +111,31 @@ public class SignUpAct extends AppCompatActivity{
                     });
                 }else if(taskFinished()) {
                     if(sut.result.matches("-1")) {
-                        quickBuilder(R.string.error, R.string.server_internal_error, new DialogInterface.OnClickListener() {
+                        runOnUiThread(new Runnable() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+                            public void run() {
+                                quickBuilder(R.string.error, R.string.server_internal_error, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).create().show();
                             }
-                        }).create().show();
+                        });
                     }else if(sut.result.matches("-2")){
                         /* ToDo: Existing telephone */
                     }else if(sut.result.matches("-3")){
-                        quickBuilder(R.string.error, R.string.signup_warning_re, new DialogInterface.OnClickListener() {
+                        runOnUiThread(new Runnable() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+                            public void run() {
+                                quickBuilder(R.string.error, R.string.signup_warning_re, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).create().show();
                             }
-                        }).create().show();
+                        });
                     }else {
                         runOnUiThread(new Runnable() {
                             @Override
@@ -180,8 +193,8 @@ public class SignUpAct extends AppCompatActivity{
                 fis.close();
                 URL url = new URL("http://143.248.57.222:80/signup");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(10000);
-                conn.setConnectTimeout(15000);
+                conn.setReadTimeout(30000);
+                conn.setConnectTimeout(30000);
                 conn.setRequestMethod("POST");
                 conn.setRequestProperty("Connection", "Keep-Alive");
                 conn.setRequestProperty("Cache-Control", "no-cache");
@@ -252,7 +265,11 @@ public class SignUpAct extends AppCompatActivity{
             char[] buffer = new char[len];
             reader.read(buffer);
             String str = new String(buffer);
-            str = str.replaceAll("[^\\d.]", "");
+            if(str.charAt(0) == '-') {
+                str = str.replaceAll("[^\\d.]", "");
+                str = "-" + str;
+            }else
+                str = str.replaceAll("[^\\d.]", "");
             return str;
         }
 

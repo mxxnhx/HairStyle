@@ -16,6 +16,7 @@
     <string name="server_connection_error">서버 연결시간이 초과되었네요...</string>
     <string name="server_internal_error">서버 내부 오류</string>
     <string name="invalid_idcode">IdCode 입력 오류</string>
+    <string name="upload_failed">업로드 실패</string>
 
     <!-- Recommendation tab strings -->
     <string name="rec_top">이런 머리는 \n 어떠세요?</string>

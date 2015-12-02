@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -53,6 +54,16 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener{
         Button login = (Button) findViewById(R.id.login_button);
         Button signUp = (Button) findViewById(R.id.signup_button);
         et = (EditText) findViewById(R.id.id_input);
+
+        File imageDirectory = new File(Environment.getExternalStorageDirectory(), "GHSS/Image/");
+        if(!imageDirectory.exists()){
+            if(!imageDirectory.mkdirs())
+                Log.e(DEBUG_TAG, "can't create directory");
+            else
+                Log.i(DEBUG_TAG, "Image directory created!");
+        }else{
+            Log.i(DEBUG_TAG, "Image directory exists!");
+        }
 
         login.setOnClickListener(this);
         signUp.setOnClickListener(this);
@@ -124,13 +135,7 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener{
                     }else if(taskFinished()) {
                         int res = lt.resultCode;
                         Log.i(DEBUG_TAG, "in task finished" + res);
-                        if (res == 1) {
-                            Intent i = new Intent(a, CustomerHome.class);
-                            i.putExtra(IDCODE, str);
-                            i.putExtra(ALBUMNUM, res);
-                            startActivity(i);
-                            finish();
-                        } else if (res == -2) {
+                        if (res == -2) {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -160,6 +165,12 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener{
                                     ab.create().show();
                                 }
                             });
+                        } else{
+                            Intent i = new Intent(a, CustomerHome.class);
+                            i.putExtra(IDCODE, str);
+                            i.putExtra(ALBUMNUM, res);
+                            startActivity(i);
+                            finish();
                         }
                     }else { Log.i(DEBUG_TAG, "out of if");}
                 }
@@ -184,8 +195,6 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener{
         @Override
         protected String doInBackground(String... params) {
             InputStream is = null;
-            // Only display the first 500 characters of the retrieved
-            // web page content.
             int len = 10;
 
             String postData = "idcode="+params[0];
@@ -238,7 +247,11 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener{
             char[] buffer = new char[len];
             reader.read(buffer);
             String str = new String(buffer);
-            str = str.replaceAll("[^\\d.]", "");
+            if(str.charAt(0) == '-') {
+                str = str.replaceAll("[^\\d.]", "");
+                str = "-" + str;
+            }else
+                str = str.replaceAll("[^\\d.]", "");
             return str;
         }
 

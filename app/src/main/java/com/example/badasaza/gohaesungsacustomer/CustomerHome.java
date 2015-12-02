@@ -1,10 +1,15 @@
 package com.example.badasaza.gohaesungsacustomer;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
 import android.content.Intent;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -16,6 +21,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,9 +42,12 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
     private final long	FINSH_INTERVAL_TIME    = 2000;
     private long		backPressedTime        = 0;
     public static final int PHOTO_REQUEST = 0;
+    public static final String ALBUMNUM_REQUEST = "req";
 
     private String idcode;
-    private int albumNum;
+    private int albumNum = 0;
+    private final String DEBUG_TAG = "CusHome";
+    private ArrayList<String> dateList;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -59,9 +68,50 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_home);
+        dateList = new ArrayList<>();
 
         idcode = getIntent().getStringExtra(LoginAct.IDCODE);
         albumNum = getIntent().getIntExtra(LoginAct.ALBUMNUM, -1);
+
+        File userDirectory = new File(Environment.getExternalStorageDirectory(), "GHSS/Users");
+        if(!userDirectory.exists()){
+            if(!userDirectory.mkdirs())
+                Log.e(DEBUG_TAG, "can't create directory");
+            else
+                Log.i(DEBUG_TAG, "User directory created");
+        }else
+            Log.i(DEBUG_TAG, "User directory already exists!");
+        File userLog = new File(userDirectory, idcode+".txt");
+        if(!userLog.exists())
+            try {
+                if (!userLog.createNewFile()) {
+                    albumNum = 0;
+                    Log.e(DEBUG_TAG, "can't create user log file");
+                }else
+                    Log.i(DEBUG_TAG, "UserLog successfully created");
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        else{
+            /* Check: read from log, array the dates*/
+            Log.i(DEBUG_TAG, "checking & "+userLog.getAbsolutePath());
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(userLog));
+                String lineFeed = br.readLine();
+                String date = null;
+                while(lineFeed != null){
+                    if(lineFeed.indexOf("/") != -1) {
+                        date = lineFeed.split("/")[1];
+                        dateList.add(date);
+                    }
+                    lineFeed = br.readLine();
+                }
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+            Log.i(DEBUG_TAG, "Date list length - " +dateList.size());
+        }
+        Log.i(DEBUG_TAG, albumNum+"");
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
@@ -153,6 +203,8 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
 
     public void fabClick(View v){
         Intent i = new Intent(this, TakePhoto.class);
+        i.putExtra(LoginAct.IDCODE, idcode);
+        i.putExtra(ALBUMNUM_REQUEST, albumNum);
         startActivityForResult(i, PHOTO_REQUEST);
     }
 
@@ -172,6 +224,7 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == PHOTO_REQUEST && resultCode == RESULT_OK && data != null && mViewPager.getCurrentItem() == 0) {
+            albumNum++;
             ArrayList<String> als = data.getStringArrayListExtra(TakePhoto.FILE_PATHS);
             String date = data.getStringExtra(TakePhoto.DATE_STRING);
             PlaceholderFragment phf = (PlaceholderFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + mViewPager.getCurrentItem());
@@ -282,11 +335,6 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
             }
             else if(position == 2) {
                 rootView = inflater.inflate(R.layout.fragment_customer_rec, container, false);
-
-                /*ListView lis = (ListView) rootView.findViewById(R.id.rec_list);
-                Integer[] temp = {R.drawable.rec1, R.drawable.rec2, R.drawable.rec3};
-                RecListAdapter rla = new RecListAdapter(getActivity(), Arrays.asList(temp));
-                lis.setAdapter(rla);*/
 
                 /* ToDo: get server working here! (Get thumb image and recimage)*/
                 LinearLayout cont = (LinearLayout) rootView.findViewById(R.id.rec_hair_container);
