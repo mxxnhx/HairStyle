@@ -5,7 +5,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-from flask import Flask,  request, session, send_from_directory
+from flask import Flask,  request, session, send_from_directory, make_response
 from sqlalchemy import create_engine, Column, Integer, String, Text, DateTime, ForeignKey, desc
 from sqlalchemy.orm import scoped_session, sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
@@ -114,16 +114,14 @@ def signup():
         print(img.shape)
         face, eyes = ha.detectFace()
         if (len(eyes)<2):
-            #os.remove(pn)
+            os.remove(pn)
             return "-3"
 
         area = ha.getHairArea(face)
-        print "aaa"
         for i in range(img.shape[0]):
             for j in range(img.shape[1]):
                 if area[i][j] == 1:
                     img[i][j]=numpy.array([255,255,255])
-        print "bbb"
         cv2.imwrite(os.path.join(app.config['FACE_FOLDER'], str(_id) + '_face.jpg'), img)
 
         facedata = img_face(_id, str(_id) +"_face.jpg")
@@ -247,7 +245,9 @@ def send_home(filename):
 def send_test(catenum):
     filename = CF.select_random_item_with_category(int(catenum))
     if os.path.isfile(os.path.join(app.config['REC_FOLDER'], filename)):
-        return send_from_directory(app.config['REC_FOLDER'], filename)
+        response = make_response(send_from_directory(app.config['REC_FOLDER'], filename))
+        response.headers['Content-Disposition'] = "attachment; filename=" + filename
+        return response
     else:
         return "-2"
 
@@ -256,7 +256,9 @@ def send_rec(idcode):
     filename = CF.recommend(idcode)
     filename = filename + "_a.png"
     if os.path.isfile(os.path.join(app.config['REC_FOLDER'], filename)):
-        return send_from_directory(app.config['REC_FOLDER'], filename)
+        response = make_response(send_from_directory(app.config['REC_FOLDER'], filename))
+        response.headers['Content-Disposition'] = "attachment; filename=" + filename
+        return response
     else:
         return "-2"
 
