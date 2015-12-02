@@ -21,8 +21,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.example.badasaza.gohaesungsaview.SignUpFragment;
-
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -58,6 +56,8 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
     private String idcode;
     private int count;
     private ProgressDialog pd;
+
+    /* ToDo: optional: save 1/2 and send 1/4 */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -257,7 +257,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         FileOutputStream out = null;
         try {
             out = new FileOutputStream(path);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 25, out);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -473,7 +473,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                 Log.i(DEBUG_TAG, "writing to file " + temp.getAbsolutePath());
                 try {
                     BufferedWriter bw = new BufferedWriter(new FileWriter(temp, true));
-                    bw.write((count + 1) + "/" + sdf.format(now));
+                    bw.write((count + 1) + "&" + sdf.format(now));
                     bw.newLine();
                     bw.close();
                 } catch (IOException e) {

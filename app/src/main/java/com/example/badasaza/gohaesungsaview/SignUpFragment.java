@@ -43,6 +43,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     private final String DEBUG_TAG = "SignUpFragment";
     private TestTask tt;
     private RatingBar rtb;
+    private ImageView img;
     private String fileName;
     private String idcode;
 
@@ -67,24 +68,17 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         Button b = (Button) rootView.findViewById(R.id.signup_to_next2);
         b.setText((pageNum < 4 ? getText(R.string.signup_next) : getText(R.string.signup_end)));
         b.setOnClickListener(this);
-        /* Check: Communicate with server and get damn pictures showing!*/
-        ImageView img = (ImageView) rootView.findViewById(R.id.signup_sample_image);
-        /* Ver1 */
-        img.setImageResource(R.drawable.ex);
-        /* Ver 2
+        img = (ImageView) rootView.findViewById(R.id.signup_sample_image);
         tt = new TestTask();
-        tt.execute((pageNum+1).toString());
-        img.setImageBitmap(tt.result);
-         */
+        tt.execute(pageNum + "");
+
         return rootView;
     }
 
     @Override
     public void onClick(View v) {
-        /* Check: send ratings! */
         if(pageNum < 4) {
-            /* Ver 2
-            new Thread(new RatingSender()).start(); */
+            new Thread(new RatingSender()).start();
             FragmentManager fm = getFragmentManager();
             SignUpFragment suf = new SignUpFragment();
             Bundle a = new Bundle();
@@ -92,6 +86,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
             suf.setArguments(a);
             fm.beginTransaction().replace(R.id.signup_frag_container, suf).addToBackStack(null).commit();
         }else{
+            new Thread(new RatingSender()).start();
             SignUpAct sua = (SignUpAct) getActivity();
             sua.finisherDialog().create().show();
         }
@@ -118,6 +113,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                 Log.d(DEBUG_TAG, "The response is: " + response);
                 is = conn.getInputStream();
                 String raw = conn.getHeaderField("Content-Disposition");
+                //String raw = conn.getHeaderField(0);
+                //String raw = conn.getHeaderField("filename");
+                Log.i(DEBUG_TAG, (raw==null? "sdfsdf" : raw));
                 if(raw != null && raw.indexOf('=') != -1)
                     fileName = raw.split("=")[1];
                 else
@@ -148,6 +146,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         protected void onPostExecute(Bitmap result){
             Log.i(DEBUG_TAG, "got "+result.getByteCount()+" amount of data");
             this.result = result;
+            img.setImageBitmap(result);
+            Log.i(DEBUG_TAG, img.getLayoutParams().width + "");
+            img.invalidate();
         }
     }
 
@@ -157,7 +158,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
         @Override
         public void run() {
-
             String sending = "idcode="+idcode+"&rate="+rtb.getRating()+"&filename="+fileName;
             InputStream is = null;
             try {
