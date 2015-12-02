@@ -228,7 +228,7 @@ def upload():
                 if area1[i][j] == 0:
                     img1[i][j]=numpy.array([255,255,255])
         
-        cv2.imwrite(os.path.join(app.config['REC_FOLDER'], pn1)) 
+        cv2.imwrite(os.path.join(app.config['REC_FOLDER'], pn1), img1) 
         # To add recomend code
         return str(idcode)
     else:
@@ -251,8 +251,8 @@ def send_test(catenum):
     else:
         return "-2"
 
-@app.route('/sendrec/<idcode>', methods=['GET', 'POST'])
-def send_rec(idcode):
+@app.route('/sendrec2/<idcode>', methods=['GET', 'POST'])
+def send_rec2(idcode):
     filename = CF.recommend(idcode)
     filename = filename + "_a.png"
     if os.path.isfile(os.path.join(app.config['REC_FOLDER'], filename)):
@@ -261,6 +261,17 @@ def send_rec(idcode):
         return response
     else:
         return "-2"
+
+@app.route('/sendrec1/<idcode>', methods=['GET', 'POST'])
+def send_rec1(idcode):
+    filename = CF.recommend(idcode)
+    if os.path.isfile(os.path.join(app.config['REC_FOLDER'], filename)):
+        response = make_response(send_from_directory(app.config['REC_FOLDER'], filename))
+        response.headers['Content-Disposition'] = "attachment; filename=" + filename
+        return response
+    else:
+        return "-2"
+
 
 @app.route('/sendface/<idcode>', methods=['GET', 'POST'])
 def send_face(idcode):
