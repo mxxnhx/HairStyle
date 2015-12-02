@@ -16,6 +16,8 @@ import numpy
 import random
 import CF
 
+CF.make_DB()
+
 engine = create_engine('mysql://root:qlqjs1@127.0.0.1/hairstyle?charset=utf8',
         convert_unicode=True)
 db_session = scoped_session(
@@ -30,8 +32,6 @@ class User(Base):
     name = Column(String(50), unique=False)
     idcode = Column(Integer, unique=True, nullable=False)
     tel = Column(String(100), unique=True)
- 
-   # posts = relationship('Post', backref='user', lazy='dynamic')
 
     def __init__(self, name=None, idcode=None, tel=None):
         self.name = name
@@ -108,29 +108,31 @@ def signup():
         else:
             _id = idcode['idcode'] + 1
         result.close()
-        '''
+        
         pn = os.path.join(app.config['FACE_FOLDER'], str(_id) + ".jpg")
         face.save(pn)
         ha = HairAnalyzer.HairAnalyzer(pn)
         img = ha.getImage()
+        print(img.shape)
         face, eyes = ha.detectFace()
         if (len(eyes)<2):
-            os.remove(pn)
+            #os.remove(pn)
             return "-3"
 
         area = ha.getHairArea(face)
+        print "aaa"
         for i in range(img.shape[0]):
             for j in range(img.shape[1]):
                 if area[i][j] == 1:
                     img[i][j]=numpy.array([255,255,255])
+        print "bbb"
         cv2.imwrite(os.path.join(app.config['FACE_FOLDER'], str(_id) + '_face.jpg'), img)
 
         facedata = img_face(_id, str(_id) +"_face.jpg")
         user = User(name,_id,tel)
         db_session.add(user)
         db_session.add(facedata)
-        db_session.commit()
-        '''
+        db_session.commit() 
         CF.add_user(str(_id), [], [])
         CF.show_DB()
         return str(_id)
@@ -147,7 +149,7 @@ def login():
         if(user == None):
             return "-2"
         else:
-            result = engine.execute("select * from imgs where idcode = %s", _id)
+            result = engine.execute("select * from imgs where idcode = %s order by albumnum desc", _id)
             album = result.fetchone()
             if (album==None):
                 return "0"
@@ -243,8 +245,17 @@ def send_home(filename):
     else:
         return "-2"
 
-@app.route('/sendrec/<filename>', methods=['GET', 'POST'])
-def send_rec(filename):
+@app.route('/sendtest/<catenum>', methods=['GET', 'POST'])
+def send_test(catenum):
+    filename = CF.select_random_item_with_category(int(catenum))
+    if os.path.isfile(os.path.join(app.config['REC_FOLDER'], filename)):
+        return send_from_directory(app.config['REC_FOLDER'], filename)
+    else:
+        return "-2"
+
+@app.route('/sendrec/<idcode>', methods=['GET', 'POST'])
+def send_rec(idcode):
+    filename = CF.recommend(idcode)
     if os.path.isfile(os.path.join(app.config['REC_FOLDER'], filename)):
         return send_from_directory(app.config['REC_FOLDER'], filename)
     else:
