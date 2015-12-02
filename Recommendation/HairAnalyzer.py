@@ -5,7 +5,7 @@ import sqlite3
 
 db=sqlite3.connect("DB")
 # parameter for compare function
-diff=30
+diff=35
 # Get first index of an integer from matrix.
 # m : matrix
 # n : an integer
