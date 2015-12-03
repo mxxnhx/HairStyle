@@ -10,7 +10,6 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -32,24 +31,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.badasaza.gohaesungsamodel.ItemModel;
-import com.example.badasaza.gohaesungsaview.AlbumRecyclerAdapter;
-import com.example.badasaza.gohaesungsaview.DragListener;
-import com.example.badasaza.gohaesungsaview.LongClickDragListener;
+import com.example.badasaza.gohaesungsaview.PlaceholderFragment;
 
 public class CustomerHome extends AppCompatActivity implements ActionBar.TabListener{
 
@@ -58,13 +47,13 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
     public static final int PHOTO_REQUEST = 0;
     public static final String ALBUMNUM_REQUEST = "req";
 
-    private static String idcode;
+    private String idcode;
     private int albumNum = 0;
     private final String DEBUG_TAG = "CusHome";
     private ArrayList<String> dateList;
     private BlockingQueue<Runnable> threadQueue;
     private ThreadPoolExecutor exec;
-    private static ArrayList<ItemModel> als;
+    private ArrayList<ItemModel> als;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -90,7 +79,7 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
         idcode = getIntent().getStringExtra(LoginAct.IDCODE);
         albumNum = getIntent().getIntExtra(LoginAct.ALBUMNUM, -1);
 
-        threadQueue = new ArrayBlockingQueue<Runnable>(30, true);
+        threadQueue = new ArrayBlockingQueue<>(30, true);
         exec = new ThreadPoolExecutor(
                 10,
                 30,
@@ -150,6 +139,13 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
         }
 
         Collections.reverse(als);
+
+        String faceName = idcode+"_face.jpg";
+
+        File userFace = new File(userDirectory, faceName);
+        FaceTask ft = new FaceTask();
+        if(!userFace.exists())
+            ft.execute(faceName);
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
@@ -312,8 +308,6 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
             return PlaceholderFragment.newInstance(position + 1);
         }
 
@@ -351,90 +345,13 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
         }
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
+    public ArrayList<ItemModel> getAls(){
+        return als;
+    }
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        int position;
-
-        private View rootView;
-
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            position = (this.getArguments() == null ? 0 : this.getArguments().getInt(ARG_SECTION_NUMBER));
-            if(position == 1) {
-                rootView = inflater.inflate(R.layout.fragment_customer_home, container, false);
-
-                RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.album_list);
-                //LayoutManager
-                GridLayoutManager glm = new GridLayoutManager(getActivity(), 2);
-                glm.setOrientation(GridLayoutManager.VERTICAL);
-                rv.setLayoutManager(glm);
-
-                als.add(new ItemModel(Arrays.asList("ddcut1","ddcut2","ddcut3"), "2015-07-22", true));
-                als.add(new ItemModel(Arrays.asList("rgcut1","rgcut2","rgcut3"), "2015-05-02", true));
-                als.add(new ItemModel(Arrays.asList("tblock1","tblock2","tblock3"), "2015-02-15", true));
-                AlbumRecyclerAdapter ara = new AlbumRecyclerAdapter(als);
-                rv.setAdapter(ara);
-            }
-            else if(position == 2) {
-                rootView = inflater.inflate(R.layout.fragment_customer_rec, container, false);
-
-                RecImageTask rit = new RecImageTask();
-                rit.execute(idcode);
-                LinearLayout cont = (LinearLayout) rootView.findViewById(R.id.rec_hair_container);
-                ImageView imgV = new ImageView(getActivity());
-                imgV.setImageBitmap(rit.result);
-                imgV.setLayoutParams(new ViewGroup.LayoutParams(dpToPx(140), dpToPx(140)));
-                imgV.setOnLongClickListener(new LongClickDragListener());
-                cont.addView(imgV);
-                cont.setOnDragListener(new DragListener());
-
-                FrameLayout bu = (FrameLayout) rootView.findViewById(R.id.bald_user);
-                bu.setOnDragListener(new DragListener());
-
-                ImageView userPhoto = (ImageView) rootView.findViewById(R.id.user_photo);
-            }
-            else if(position == 3)
-                rootView = inflater.inflate(R.layout.fragment_customer_settings, container, false);
-            return rootView;
-        }
-
-        public int dpToPx(int dp) {
-            DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
-            int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-            return px;
-        }
-
-        public void addItemToRecycler(ItemModel item){
-            if(rootView != null) {
-                AlbumRecyclerAdapter ara = (AlbumRecyclerAdapter) ((RecyclerView) rootView.findViewById(R.id.album_list)).getAdapter();
-                ara.addItem(item);
-                ara.notifyDataSetChanged();
-            }
-        }
+    public String getIdcode(){
+        Log.i(DEBUG_TAG, idcode);
+        return idcode;
     }
 
     private class Task implements Runnable{
@@ -480,17 +397,17 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
         }
     }
 
-    private static class RecImageTask extends AsyncTask<String, Void, Bitmap>{
+    private class FaceTask extends AsyncTask<String, Void, Bitmap>{
 
-        public String fileName;
-        public Bitmap result;
+        private String fileName;
 
         @Override
         protected Bitmap doInBackground(String... params) {
             InputStream is = null;
             Bitmap btm = null;
+            fileName = params[0];
             try {
-                URL url = new URL("http://143.248.57.222:80/sendrec/"+params[0]);
+                URL url = new URL("http://143.248.57.222:80/sendface/" + idcode);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(10000);
                 conn.setConnectTimeout(15000);
@@ -499,19 +416,13 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
                 conn.setDoOutput(false);
                 conn.connect();
                 int response = conn.getResponseCode();
-                Log.d("CusHome", "The response is: " + response);
+                Log.d(DEBUG_TAG, "The response is: " + response);
                 is = conn.getInputStream();
-                String raw = conn.getHeaderField("Content-Disposition");
-                if(raw != null && raw.indexOf('=') != -1)
-                    fileName = raw.split("=")[1];
-                else
-                    Log.i("CusHome", "not found file name");
                 btm = BitmapFactory.decodeStream(is);
 
                 return btm;
-
             }catch(SocketTimeoutException e){
-                Log.i("CusHome", "Socket Timeout Exception");
+                Log.i(DEBUG_TAG, "Socket Timeout Exception");
                 cancel(true);
                 return null;
             }
@@ -530,7 +441,18 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
 
         @Override
         protected void onPostExecute(Bitmap result){
-            this.result = result;
+            FileOutputStream out = null;
+            File file = new File(Environment.getExternalStorageDirectory() ,"GHSS/Image/"+fileName);
+            Log.i(DEBUG_TAG, file.getAbsolutePath());
+            try {
+                out = new FileOutputStream(file);
+                result.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                Log.i(DEBUG_TAG, "face file created");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(DEBUG_TAG, "face file not created");
+            }
         }
     }
+
 }

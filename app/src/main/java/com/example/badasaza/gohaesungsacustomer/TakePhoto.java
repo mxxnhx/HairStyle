@@ -473,7 +473,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                 Log.i(DEBUG_TAG, "writing to file " + temp.getAbsolutePath());
                 try {
                     BufferedWriter bw = new BufferedWriter(new FileWriter(temp, true));
-                    bw.write((count + 1) + "&" + sdf.format(now));
+                    bw.write((count + 1) + "/" + sdf.format(now));
                     bw.newLine();
                     bw.close();
                 } catch (IOException e) {

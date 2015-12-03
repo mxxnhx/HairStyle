@@ -1,7 +1,6 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/gray_background"
     tools:context=".CustomerHome$PlaceholderFragment">
 
@@ -14,47 +13,74 @@
         android:paddingLeft="@dimen/activity_vertical_margin"
         android:paddingBottom="@dimen/activity_horizontal_margin"
         android:background="@color/b300"
+        android:layout_alignParentTop="true"
         android:text = "@string/rec_top"/>
 
-
-    <LinearLayout
+    <LinearLayout android:id="@+id/rec_static"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-        
-        <FrameLayout
-            android:id="@+id/bald_user"
-            android:layout_height="match_parent"
-            android:layout_width="0dp"
-            android:layout_weight="0.7">
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/user_photo"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                android:layout_gravity="center" />
+        <RatingBar
+            android:id="@+id/rec_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="0.5"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="@dimen/activity_content_margin"/>
 
-            <RatingBar
-                android:id="@+id/rec_rate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:numStars="5"
-                android:stepSize="0.5"
-                android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginBottom="@dimen/activity_content_margin"/>
+        <Button android:id="@+id/rec_accept"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/interval"
+            android:layout_marginBottom="@dimen/activity_content_margin"
+            android:layout_marginLeft="@dimen/activity_content_margin"
+            android:layout_marginRight="@dimen/activity_content_margin"
+            android:textSize="@dimen/subheading_text"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:background="@color/b800"
+            android:text="@string/rec_accept1"/>
 
-        </FrameLayout>
+        <Button android:id="@+id/rec_reject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/interval"
+            android:textSize="@dimen/subheading_text"
+            android:layout_marginBottom="@dimen/activity_content_margin"
+            android:layout_marginLeft="@dimen/activity_content_margin"
+            android:layout_marginRight="@dimen/activity_content_margin"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:background="@color/b800"
+            android:text="@string/rec_reject"/>
 
-        <LinearLayout
-            android:id="@+id/rec_hair_container"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.3"
-            android:orientation="vertical"
-            android:background="@color/b100"
-            android:padding="@dimen/activity_content_margin"/>
 
     </LinearLayout>
+        
+    <FrameLayout
+        android:id="@+id/bald_user"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_below="@id/section_rec"
+        android:layout_above="@id/rec_static">
+
+        <ImageView
+            android:id="@+id/user_photo"
+            android:layout_height="200dp"
+            android:layout_width="200dp"
+            android:layout_gravity="center" />
+
+        <FrameLayout android:id="@+id/rec_canvas"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:background="@color/transparent" />
 
 
-</LinearLayout>
+
+    </FrameLayout>
+
+
+</RelativeLayout>

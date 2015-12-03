@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.badasaza.gohaesungsacustomer.R;
 import com.example.badasaza.gohaesungsacustomer.SignUpAct;
+import com.example.badasaza.gohaesungsamodel.RatingSender;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -78,7 +78,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if(pageNum < 4) {
-            new Thread(new RatingSender()).start();
+            new Thread(new RatingSender(idcode, rtb, fileName)).start();
             FragmentManager fm = getFragmentManager();
             SignUpFragment suf = new SignUpFragment();
             Bundle a = new Bundle();
@@ -86,7 +86,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
             suf.setArguments(a);
             fm.beginTransaction().replace(R.id.signup_frag_container, suf).addToBackStack(null).commit();
         }else{
-            new Thread(new RatingSender()).start();
+            new Thread(new RatingSender(idcode, rtb, fileName)).start();
             SignUpAct sua = (SignUpAct) getActivity();
             sua.finisherDialog().create().show();
         }
@@ -152,60 +152,5 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private class RatingSender implements Runnable {
 
-        public String result;
-
-        @Override
-        public void run() {
-            String sending = "idcode="+idcode+"&rate="+rtb.getRating()+"&filename="+fileName;
-            InputStream is = null;
-            try {
-                URL url = new URL("http://143.248.57.222:80/rating_signup");
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(10000);
-                conn.setConnectTimeout(15000);
-                conn.setRequestMethod("POST");
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-                conn.setUseCaches(false);
-                OutputStream output = conn.getOutputStream();
-                output.write(sending.getBytes("euc-kr"));
-                conn.connect();
-                int response = conn.getResponseCode();
-                Log.d(DEBUG_TAG, "The response is: " + response);
-                is = conn.getInputStream();
-
-                result = readIt(is, 10);
-
-            }catch(SocketTimeoutException e){
-                Log.i(DEBUG_TAG, "Socket Timeout Exception");
-            }
-            catch(IOException e){e.printStackTrace();}
-            finally {
-                if (is != null) {
-                    try {
-                        is.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            /* ToDo: error case */
-        }
-
-        private String readIt(InputStream stream, int len) throws IOException {
-            Reader reader = null;
-            reader = new InputStreamReader(stream, "euc-kr");
-            char[] buffer = new char[len];
-            reader.read(buffer);
-            String str = new String(buffer);
-            if(str.charAt(0) == '-') {
-                str = str.replaceAll("[^\\d.]", "");
-                str = "-" + str;
-            }else
-                str = str.replaceAll("[^\\d.]", "");
-            return str;
-        }
-    }
 }

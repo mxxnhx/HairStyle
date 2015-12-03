@@ -20,4 +20,6 @@
     <color name="b100">#FFE0B2</color>
     -->
 
+    <color name="transparent">#00000000</color>
+
 </resources>
