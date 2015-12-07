@@ -9,11 +9,13 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,6 +41,7 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener{
     private LoginTask lt;
     private EditText et;
     private final Context cxt = this;
+    private final int PERMISSION_REQUEST = 0;
 
     protected String DEBUG_TAG = "LoginAct";
 
@@ -54,25 +57,33 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener{
         Button login = (Button) findViewById(R.id.login_button);
         Button signUp = (Button) findViewById(R.id.signup_button);
         et = (EditText) findViewById(R.id.id_input);
+        et.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(keyCode == KeyEvent.KEYCODE_ENTER)
+                    login();
+                return false;
+            }
+        });
 
-        File imageDirectory = new File(Environment.getExternalStorageDirectory(), "GHSS/Image/");
-        if(!imageDirectory.exists()){
-            if(!imageDirectory.mkdirs())
-                Log.e(DEBUG_TAG, "can't create directory");
-            else
-                Log.i(DEBUG_TAG, "Image directory created!");
-        }else{
-            Log.i(DEBUG_TAG, "Image directory exists!");
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE )!= PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE )!= PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST);
+        else {
+            File imageDirectory = new File(Environment.getExternalStorageDirectory(), "GHSS/Image/");
+            if (!imageDirectory.exists()) {
+                if (!imageDirectory.mkdirs())
+                    Log.e(DEBUG_TAG, "can't create directory");
+                else
+                    Log.i(DEBUG_TAG, "Image directory created!");
+            } else {
+                Log.i(DEBUG_TAG, "Image directory exists!");
+            }
         }
 
         login.setOnClickListener(this);
         signUp.setOnClickListener(this);
 
         getSupportActionBar().hide();
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            boolean permissionGranted = (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE )== PackageManager.PERMISSION_GRANTED);
-        }
     }
 
     @Override
@@ -80,6 +91,26 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener{
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_login, menu);
         return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults){
+        if(requestCode == PERMISSION_REQUEST){
+            if(grantResults.length > 0){
+                if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    File imageDirectory = new File(Environment.getExternalStorageDirectory(), "GHSS/Image/");
+                    if (!imageDirectory.exists()) {
+                        if (!imageDirectory.mkdirs())
+                            Log.e(DEBUG_TAG, "can't create directory");
+                        else
+                            Log.i(DEBUG_TAG, "Image directory created!");
+                    } else {
+                        Log.i(DEBUG_TAG, "Image directory exists!");
+                    }
+                }else
+                    Toast.makeText(this, "Permissions not granted. App may explode anytime", Toast.LENGTH_SHORT);
+            }
+        }
     }
 
     @Override
@@ -100,30 +131,56 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.login_button) {
-            lt = new LoginTask();
-            final String str = et.getText().toString();
-            if(str != null)
-                lt.execute(str);
-            final AppCompatActivity a = this;
-            final ProgressDialog pd = ProgressDialog.show(this, getText(R.string.signup_wait_title), getText(R.string.signup_wait_text), true, false);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (!taskFinished() && !lt.isCancelled()){
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+            login();
+        }else if(v.getId() == R.id.signup_button){
+            Intent i = new Intent(this, SignUpAct.class);
+            startActivity(i);
+        }
+    }
+
+    private void login(){
+        lt = new LoginTask();
+        final String str = et.getText().toString();
+        if(str != null)
+            lt.execute(str);
+        final AppCompatActivity a = this;
+        final ProgressDialog pd = ProgressDialog.show(this, getText(R.string.signup_wait_title), getText(R.string.signup_wait_text), true, false);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (!taskFinished() && !lt.isCancelled()){
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                    pd.dismiss();
-                    if(lt.isCancelled()){
-                        Log.i(DEBUG_TAG, "in task cancelled");
+                }
+                pd.dismiss();
+                if(lt.isCancelled()){
+                    Log.i(DEBUG_TAG, "in task cancelled");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            AlertDialog.Builder ab = new AlertDialog.Builder(cxt);
+                            ab.setTitle(R.string.error).setMessage(R.string.server_connection_error).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            ab.create().show();
+                        }
+                    });
+                }else if(taskFinished()) {
+                    int res = lt.resultCode;
+                    Log.i(DEBUG_TAG, "in task finished" + res);
+                    if (res == -2) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 AlertDialog.Builder ab = new AlertDialog.Builder(cxt);
-                                ab.setTitle(R.string.error).setMessage(R.string.server_connection_error).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                ab.setTitle(R.string.error).setMessage(R.string.invalid_idcode);
+                                ab.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
@@ -132,54 +189,32 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener{
                                 ab.create().show();
                             }
                         });
-                    }else if(taskFinished()) {
-                        int res = lt.resultCode;
-                        Log.i(DEBUG_TAG, "in task finished" + res);
-                        if (res == -2) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    AlertDialog.Builder ab = new AlertDialog.Builder(cxt);
-                                    ab.setTitle(R.string.error).setMessage(R.string.invalid_idcode);
-                                    ab.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    });
-                                    ab.create().show();
-                                }
-                            });
-                        } else if (res == -1) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    AlertDialog.Builder ab = new AlertDialog.Builder(cxt);
-                                    ab.setTitle(R.string.error).setMessage(R.string.server_internal_error);
-                                    ab.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    });
-                                    ab.create().show();
-                                }
-                            });
-                        } else{
-                            Intent i = new Intent(a, CustomerHome.class);
-                            i.putExtra(IDCODE, str);
-                            i.putExtra(ALBUMNUM, res);
-                            startActivity(i);
-                            finish();
-                        }
-                    }else { Log.i(DEBUG_TAG, "out of if");}
-                }
-            }).start();
+                    } else if (res == -1) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                AlertDialog.Builder ab = new AlertDialog.Builder(cxt);
+                                ab.setTitle(R.string.error).setMessage(R.string.server_internal_error);
+                                ab.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                ab.create().show();
+                            }
+                        });
+                    } else{
+                        Intent i = new Intent(a, CustomerHome.class);
+                        i.putExtra(IDCODE, str);
+                        i.putExtra(ALBUMNUM, res);
+                        startActivity(i);
+                        finish();
+                    }
+                }else { Log.i(DEBUG_TAG, "out of if");}
+            }
+        }).start();
 
-        }else if(v.getId() == R.id.signup_button){
-            Intent i = new Intent(this, SignUpAct.class);
-            startActivity(i);
-        }
     }
 
     public boolean taskFinished(){
@@ -260,7 +295,7 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener{
             try{
                 resultCode = Integer.parseInt(s);
             }catch(NumberFormatException e){
-                resultCode = 0;
+                resultCode = -1;
             }
         }
 

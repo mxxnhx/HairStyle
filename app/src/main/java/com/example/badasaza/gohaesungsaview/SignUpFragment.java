@@ -1,12 +1,9 @@
 package com.example.badasaza.gohaesungsaview;
 
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -22,12 +19,8 @@ import com.example.badasaza.gohaesungsacustomer.R;
 import com.example.badasaza.gohaesungsacustomer.SignUpAct;
 import com.example.badasaza.gohaesungsamodel.RatingSender;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;

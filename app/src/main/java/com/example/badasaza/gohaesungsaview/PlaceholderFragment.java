@@ -1,5 +1,7 @@
 package com.example.badasaza.gohaesungsaview;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -10,12 +12,12 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -51,10 +53,11 @@ public class PlaceholderFragment extends Fragment implements View.OnClickListene
     private RecImageTask rit;
     private String currentRecFile;
     private RatingBar rtb;
-    private Button accept;
+    private ImageButton accept;
     private FrameLayout bu;
     private ImageView temp;
     private FrameLayout canvas;
+    private final int ANIMATION_DURATION = 200;
 
     private View rootView;
 
@@ -85,9 +88,9 @@ public class PlaceholderFragment extends Fragment implements View.OnClickListene
             rv.setLayoutManager(glm);
 
             /* ToDo: changjo gyeung jae */
-            als.add(new ItemModel(Arrays.asList("ddcut1", "ddcut2", "ddcut3"), "2015-07-22", true));
+            /*als.add(new ItemModel(Arrays.asList("ddcut1", "ddcut2", "ddcut3"), "2015-07-22", true));
             als.add(new ItemModel(Arrays.asList("rgcut1","rgcut2","rgcut3"), "2015-05-02", true));
-            als.add(new ItemModel(Arrays.asList("tblock1","tblock2","tblock3"), "2015-02-15", true));
+            als.add(new ItemModel(Arrays.asList("tblock1","tblock2","tblock3"), "2015-02-15", true));*/
             AlbumRecyclerAdapter ara = new AlbumRecyclerAdapter(als);
             rv.setAdapter(ara);
         }
@@ -108,12 +111,13 @@ public class PlaceholderFragment extends Fragment implements View.OnClickListene
             canvas.setOnDragListener(listen);
 
             rtb = (RatingBar) rootView.findViewById(R.id.rec_rate);
+            rtb.setVisibility(View.GONE);
 
             userPhoto = (ImageView) rootView.findViewById(R.id.user_photo);
             userPhoto.setOnDragListener(listen);
 
-            accept = (Button) rootView.findViewById(R.id.rec_accept);
-            Button reject = (Button) rootView.findViewById(R.id.rec_reject);
+            accept = (ImageButton) rootView.findViewById(R.id.rec_accept);
+            ImageButton reject = (ImageButton) rootView.findViewById(R.id.rec_reject);
 
             accept.setTag(true);
 
@@ -160,13 +164,15 @@ public class PlaceholderFragment extends Fragment implements View.OnClickListene
                     toTryMode();
                     RecHairTask rht = new RecHairTask();
                     rht.execute(idcode);
+                    ratingBarShow();
                     v.setTag(false);
-                    ((TextView) v).setText(R.string.rec_accept2);
+                    ((ImageView) v).setImageResource(R.drawable.ic_check_black_36dp);
                     v.invalidate();
                 }else{
                     toSpectatorMode(true);
                     v.setTag(true);
-                    ((TextView) v).setText(R.string.rec_accept1);
+                    ratingBarShow();
+                    ((ImageView) v).setImageResource(R.drawable.ic_arrow_forward_black_36dp);
                     v.invalidate();
                     if(temp != null){
                         canvas.removeView(temp);
@@ -176,8 +182,9 @@ public class PlaceholderFragment extends Fragment implements View.OnClickListene
                 break;
             case R.id.rec_reject:
                 toSpectatorMode(false);
+                ratingBarHide();
                 accept.setTag(true);
-                accept.setText(R.string.rec_accept1);
+                accept.setImageResource(R.drawable.ic_arrow_forward_black_36dp);
                 accept.invalidate();
                 if(temp != null){
                     canvas.removeView(temp);
@@ -185,6 +192,21 @@ public class PlaceholderFragment extends Fragment implements View.OnClickListene
                 }
                 break;
         }
+    }
+
+    private void ratingBarShow(){
+        rtb.setAlpha(0.0f);
+        rtb.setVisibility(View.VISIBLE);
+        rtb.animate().alpha(1f).setDuration(ANIMATION_DURATION).setListener(null);
+    }
+
+    private void ratingBarHide(){
+        rtb.animate().alpha(0f).setDuration(ANIMATION_DURATION).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                rtb.setVisibility(View.GONE);
+            }
+        });
     }
 
     private class RecImageTask extends AsyncTask<String, Void, Bitmap> {
@@ -214,7 +236,6 @@ public class PlaceholderFragment extends Fragment implements View.OnClickListene
                 else
                     Log.i(DEBUG_TAG, "not found file name");
                 btm = BitmapFactory.decodeStream(is);
-
                 return btm;
 
             }catch(SocketTimeoutException e){

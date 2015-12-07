@@ -17,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/subheading_text"
+        android:singleLine="true"
         android:layout_below="@id/signup_name_text"/>
 
     <TextView android:id="@+id/signup_tel_text"
@@ -30,6 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/subheading_text"
+        android:singleLine="true"
         android:layout_below="@id/signup_tel_text"/>
 
     <Button android:id="@+id/signup_to_next1"

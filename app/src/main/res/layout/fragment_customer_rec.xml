@@ -30,7 +30,7 @@
             android:stepSize="0.5"
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginBottom="@dimen/activity_content_margin"/>
-
+<!--
         <Button android:id="@+id/rec_accept"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,7 +56,30 @@
             android:textAlignment="center"
             android:background="@color/b800"
             android:text="@string/rec_reject"/>
+-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingRight="@dimen/activity_content_margin"
+            android:paddingLeft="@dimen/activity_content_margin"
+            android:paddingBottom="@dimen/activity_content_margin">
 
+            <ImageButton android:id="@+id/rec_accept"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:src="@drawable/ic_arrow_forward_black_36dp"/>
+
+            <ImageButton android:id="@+id/rec_reject"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:src="@drawable/ic_cancel_black_36dp"/>
+
+        </LinearLayout>
 
     </LinearLayout>
         

@@ -117,7 +117,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
     private View addPlus(int code){
         imV = new ImageView(this);
         imV.setImageResource(R.drawable.plus_button);
-        imV.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        imV.setLayoutParams(new LinearLayout.LayoutParams(488, 488));
         imV.setOnClickListener(this);
         imV.setTag(new Integer(code));
         return imV;
@@ -185,7 +185,8 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
 
     private View addImage(Bitmap res){
         ImageView temp = new ImageView(this);
-        temp.setImageBitmap(res);        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        temp.setImageBitmap(res);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(488, 488);
         int leftMargin = Math.round(8 * this.getResources().getDisplayMetrics().density);
         lp.setMargins(0, 0, leftMargin, 0);
         temp.setLayoutParams(lp);
@@ -227,8 +228,8 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
     }
 
     private Bitmap setPic(String path) {
-        int targetW = 256;
-        int targetH = 256;
+        int targetW = 488;
+        int targetH = 488;
 
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;
@@ -250,7 +251,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
 
         bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = 4;
+        bmOptions.inSampleSize = 2;
         bmOptions.inPurgeable = true;
 
         Bitmap bitmap = BitmapFactory.decodeFile(path, bmOptions);

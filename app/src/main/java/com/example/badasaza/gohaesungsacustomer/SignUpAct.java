@@ -43,7 +43,7 @@ public class SignUpAct extends AppCompatActivity{
 
         FragmentManager fm = getSupportFragmentManager();
         SignUpHomeFrag suhf = new SignUpHomeFrag();
-        fm.beginTransaction().add(R.id.signup_frag_container, suhf).addToBackStack(null).commit();
+        fm.beginTransaction().add(R.id.signup_frag_container, suhf).addToBackStack("SUHF").commit();
     }
 
     @Override
@@ -61,6 +61,12 @@ public class SignUpAct extends AppCompatActivity{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onBackPressed(){
+        String s = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+        if(s == "SUHF")
+            finish();
     }
 
     public void initTask(String... param){
@@ -110,7 +116,7 @@ public class SignUpAct extends AppCompatActivity{
                         }
                     });
                 }else if(taskFinished()) {
-                    if(sut.result.matches("-1")) {
+                    if(sut.result.matches("-1") || sut.result == null) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
