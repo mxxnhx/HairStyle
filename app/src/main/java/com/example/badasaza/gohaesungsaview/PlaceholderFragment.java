@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.PointF;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,13 +15,16 @@ import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.badasaza.gohaesungsacustomer.CustomerHome;
@@ -38,7 +43,7 @@ import java.util.Arrays;
 /**
  * Created by Badasaza on 2015-12-03.
  */
-public class PlaceholderFragment extends Fragment implements View.OnClickListener{
+public class PlaceholderFragment extends Fragment implements View.OnClickListener, View.OnTouchListener{
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     private final String DEBUG_TAG = "PlaceholderFragment";
@@ -58,8 +63,23 @@ public class PlaceholderFragment extends Fragment implements View.OnClickListene
     private ImageView temp;
     private FrameLayout canvas;
     private final int ANIMATION_DURATION = 200;
+    private CustomerHome csh;
 
     private View rootView;
+
+    private Matrix matrix = new Matrix();
+    private Matrix savedMatrix = new Matrix();
+    private static final int NONE = 0;
+    private static final int DRAG = 1;
+    private static final int ZOOM = 2;
+    private int mode = NONE;
+    private PointF start = new PointF();
+    private PointF mid = new PointF();
+    private float oldDist = 1f;
+    private float d = 0f;
+    private float newRot = 0f;
+    private float[] lastEvent = null;
+    private View.OnTouchListener f = this;
 
     public static PlaceholderFragment newInstance(int sectionNumber) {
         PlaceholderFragment fragment = new PlaceholderFragment();
@@ -87,24 +107,17 @@ public class PlaceholderFragment extends Fragment implements View.OnClickListene
             glm.setOrientation(GridLayoutManager.VERTICAL);
             rv.setLayoutManager(glm);
 
-            /* ToDo: changjo gyeung jae */
-            /*als.add(new ItemModel(Arrays.asList("ddcut1", "ddcut2", "ddcut3"), "2015-07-22", true));
-            als.add(new ItemModel(Arrays.asList("rgcut1","rgcut2","rgcut3"), "2015-05-02", true));
-            als.add(new ItemModel(Arrays.asList("tblock1","tblock2","tblock3"), "2015-02-15", true));*/
             AlbumRecyclerAdapter ara = new AlbumRecyclerAdapter(als);
             rv.setAdapter(ara);
         }
         else if(position == 2) {
+            csh = (CustomerHome) getActivity();
             rootView = inflater.inflate(R.layout.fragment_customer_rec, container, false);
 
             DragListener listen = new DragListener();
             idcode = ((CustomerHome) getActivity()).getIdcode();
             rit = new RecImageTask();
             rit.execute(idcode);
-            ImageView imgV = new ImageView(getActivity());
-            imgV.setImageBitmap(rit.result);
-            imgV.setLayoutParams(new ViewGroup.LayoutParams(dpToPx(140), dpToPx(140)));
-            imgV.setOnLongClickListener(new LongClickDragListener());
 
             canvas = (FrameLayout) rootView.findViewById(R.id.rec_canvas);
             bu = (FrameLayout) rootView.findViewById(R.id.bald_user);
@@ -145,6 +158,8 @@ public class PlaceholderFragment extends Fragment implements View.OnClickListene
 
     private void toSpectatorMode(boolean doRating){
         /* ToDo : gotta check rit before finished */
+        matrix = new Matrix();
+        savedMatrix = new Matrix();
         rit = new RecImageTask();
         rit.execute(idcode);
         if(doRating)
@@ -171,7 +186,7 @@ public class PlaceholderFragment extends Fragment implements View.OnClickListene
                 }else{
                     toSpectatorMode(true);
                     v.setTag(true);
-                    ratingBarShow();
+                    ratingBarHide();
                     ((ImageView) v).setImageResource(R.drawable.ic_arrow_forward_black_36dp);
                     v.invalidate();
                     if(temp != null){
@@ -311,17 +326,102 @@ public class PlaceholderFragment extends Fragment implements View.OnClickListene
         protected void onPostExecute(Bitmap result){
             this.result = result;
             temp = new ImageView(getContext());
-            temp.setImageBitmap(result);
-            ViewGroup.LayoutParams flp = canvas.getLayoutParams();
-            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(flp.width/2 - lp.width/2 , flp.height/2 - lp.height/2 , 0, 0);
+            ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            lp.setMargins((canvas.getWidth() / 2) - lp.width / 2, (canvas.getHeight() / 2) - lp.height / 2, 0, 0);
             temp.setLayoutParams(lp);
-            temp.setOnLongClickListener(new LongClickDragListener());
+            temp.setImageBitmap(result);
+            //temp.setAdjustViewBounds(true);
+            temp.setClickable(true);
+            temp.setFocusable(true);
+            temp.setFocusableInTouchMode(true);
+            temp.setScaleType(ImageView.ScaleType.MATRIX);
+            temp.setOnTouchListener(f);
             temp.setAlpha(1.0f);
             canvas.addView(temp);
             temp.bringToFront();
             canvas.invalidate();
             temp.invalidate();
         }
+    }
+
+    public boolean onTouch(View v, MotionEvent event) {
+        ImageView view = (ImageView) v;
+        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_DOWN:
+                savedMatrix.set(matrix);
+                start.set(event.getX(), event.getY());
+                mode = DRAG;
+                lastEvent = null;
+                //csh.mViewPager.disableSwipe();
+                break;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                oldDist = spacing(event);
+                if (oldDist > 10f) {
+                    savedMatrix.set(matrix);
+                    midPoint(mid, event);
+                    mode = ZOOM;
+                }
+                lastEvent = new float[4];
+                lastEvent[0] = event.getX(0);
+                lastEvent[1] = event.getX(1);
+                lastEvent[2] = event.getY(0);
+                lastEvent[3] = event.getY(1);
+                d = rotation(event);
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_POINTER_UP:
+                mode = NONE;
+                lastEvent = null;
+                //csh.mViewPager.enableSwipe();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (mode == DRAG) {
+                    matrix.set(savedMatrix);
+                    float dx = event.getX() - start.x;
+                    float dy = event.getY() - start.y;
+                    matrix.postTranslate(dx, dy);
+                } else if (mode == ZOOM) {
+                    float newDist = spacing(event);
+                    if (newDist > 10f) {
+                        matrix.set(savedMatrix);
+                        float scale = (newDist / oldDist);
+                        matrix.postScale(scale, scale, mid.x, mid.y);
+                    }
+                    if (lastEvent != null && event.getPointerCount() == 3) {
+                        newRot = rotation(event);
+                        float r = newRot - d;
+                        float[] values = new float[9];
+                        matrix.getValues(values);
+                        float tx = values[2];
+                        float ty = values[5];
+                        float sx = values[0];
+                        float xc = (view.getWidth() / 2) * sx;
+                        float yc = (view.getHeight() / 2) * sx;
+                        matrix.postRotate(r, tx + xc, ty + yc);
+                    }
+                }
+                break;
+        }
+        view.setImageMatrix(matrix);
+        return true;
+    }
+
+    private float spacing(MotionEvent event) {
+        float x = event.getX(0) - event.getX(1);
+        float y = event.getY(0) - event.getY(1);
+        return (float) Math.sqrt(x * x + y * y);
+    }
+
+    private void midPoint(PointF point, MotionEvent event) {
+        float x = event.getX(0) + event.getX(1);
+        float y = event.getY(0) + event.getY(1);
+        point.set(x / 2, y / 2);
+    }
+
+    private float rotation(MotionEvent event) {
+        double delta_x = (event.getX(0) - event.getX(1));
+        double delta_y = (event.getY(0) - event.getY(1));
+        double radians = Math.atan2(delta_y, delta_x);
+        return (float) Math.toDegrees(radians);
     }
 }

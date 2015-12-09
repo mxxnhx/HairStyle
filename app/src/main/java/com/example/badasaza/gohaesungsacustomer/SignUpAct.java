@@ -67,6 +67,8 @@ public class SignUpAct extends AppCompatActivity{
         String s = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
         if(s == "SUHF")
             finish();
+        else
+            super.onBackPressed();
     }
 
     public void initTask(String... param){
@@ -89,6 +91,7 @@ public class SignUpAct extends AppCompatActivity{
         return sut.result;
     }
 
+    /* ToDo: Optional: move to asynctask */
     public void notifyFinished(){
         final ProgressDialog pd = ProgressDialog.show(this, getText(R.string.signup_wait_title), getText(R.string.signup_wait_text), true, false);
         new Thread(new Runnable() {
@@ -181,7 +184,6 @@ public class SignUpAct extends AppCompatActivity{
     private class SignUpTask extends AsyncTask<String, Void, String> {
 
         public String result;
-        /* ToDo: consider while loop here */
         @Override
         protected String doInBackground(String... params) {
             InputStream is = null;
@@ -281,8 +283,10 @@ public class SignUpAct extends AppCompatActivity{
 
         @Override
         protected void onPostExecute(String str){
-            Log.i(DEBUG_TAG, str);
-            result = str;
+            result = (str == null? "-1" : str);
+            Log.i(DEBUG_TAG, result);
         }
+
+
     }
 }

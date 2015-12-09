@@ -87,7 +87,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
     private class TestTask extends AsyncTask<String, Void, Bitmap> {
         public Bitmap result;
-        /* ToDo: consider while loop here */
         @Override
         protected Bitmap doInBackground(String... params) {
             InputStream is = null;

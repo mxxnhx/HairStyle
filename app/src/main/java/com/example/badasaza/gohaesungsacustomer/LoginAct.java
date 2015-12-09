@@ -42,6 +42,7 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener{
     private EditText et;
     private final Context cxt = this;
     private final int PERMISSION_REQUEST = 0;
+    private ProgressDialog pd;
 
     protected String DEBUG_TAG = "LoginAct";
 
@@ -141,100 +142,25 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener{
     private void login(){
         lt = new LoginTask();
         final String str = et.getText().toString();
+        final AppCompatActivity a = this;
+        pd = ProgressDialog.show(this, getText(R.string.signup_wait_title), getText(R.string.signup_wait_text), true, false);
         if(str != null)
             lt.execute(str);
-        final AppCompatActivity a = this;
-        final ProgressDialog pd = ProgressDialog.show(this, getText(R.string.signup_wait_title), getText(R.string.signup_wait_text), true, false);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (!taskFinished() && !lt.isCancelled()){
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                pd.dismiss();
-                if(lt.isCancelled()){
-                    Log.i(DEBUG_TAG, "in task cancelled");
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            AlertDialog.Builder ab = new AlertDialog.Builder(cxt);
-                            ab.setTitle(R.string.error).setMessage(R.string.server_connection_error).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                            ab.create().show();
-                        }
-                    });
-                }else if(taskFinished()) {
-                    int res = lt.resultCode;
-                    Log.i(DEBUG_TAG, "in task finished" + res);
-                    if (res == -2) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                AlertDialog.Builder ab = new AlertDialog.Builder(cxt);
-                                ab.setTitle(R.string.error).setMessage(R.string.invalid_idcode);
-                                ab.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                                ab.create().show();
-                            }
-                        });
-                    } else if (res == -1) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                AlertDialog.Builder ab = new AlertDialog.Builder(cxt);
-                                ab.setTitle(R.string.error).setMessage(R.string.server_internal_error);
-                                ab.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                                ab.create().show();
-                            }
-                        });
-                    } else{
-                        Intent i = new Intent(a, CustomerHome.class);
-                        i.putExtra(IDCODE, str);
-                        i.putExtra(ALBUMNUM, res);
-                        startActivity(i);
-                        finish();
-                    }
-                }else { Log.i(DEBUG_TAG, "out of if");}
-            }
-        }).start();
-
     }
 
-    public boolean taskFinished(){
-        if(lt.getStatus() == AsyncTask.Status.FINISHED)
-            return true;
-        return false;
-    }
-
-    private class LoginTask extends AsyncTask<String, Void, String>{
+    private class LoginTask extends AsyncTask<String, Void, String> {
 
         public int resultCode;
+        private String str;
 
         @Override
         protected String doInBackground(String... params) {
+            str = params[0];
             InputStream is = null;
             int len = 10;
 
-            String postData = "idcode="+params[0];
+            String postData = "idcode=" + params[0];
 
-            /* ToDo: consider while loop here */
             try {
                 URL url = new URL("http://143.248.57.222:80/login");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -258,13 +184,13 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener{
                 Log.i(DEBUG_TAG, contentAsString);
                 return contentAsString;
 
-            }catch(SocketTimeoutException e){
+            } catch (SocketTimeoutException e) {
                 Log.e(DEBUG_TAG, "Socket Timeout Exception");
                 cancel(true);
                 return null;
-            }
-            catch(IOException e){e.printStackTrace();}
-            finally {
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
                 if (is != null) {
                     try {
                         is.close();
@@ -282,27 +208,72 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener{
             char[] buffer = new char[len];
             reader.read(buffer);
             String str = new String(buffer);
-            if(str.charAt(0) == '-') {
+            if (str.charAt(0) == '-') {
                 str = str.replaceAll("[^\\d.]", "");
                 str = "-" + str;
-            }else
+            } else
                 str = str.replaceAll("[^\\d.]", "");
             return str;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            try{
+            try {
                 resultCode = Integer.parseInt(s);
-            }catch(NumberFormatException e){
+            } catch (NumberFormatException e) {
                 resultCode = -1;
+            }
+            pd.dismiss();
+            if (resultCode == -2) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        AlertDialog.Builder ab = new AlertDialog.Builder(cxt);
+                        ab.setTitle(R.string.error).setMessage(R.string.invalid_idcode);
+                        ab.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        ab.create().show();
+                    }
+                });
+            } else if (resultCode == -1) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        AlertDialog.Builder ab = new AlertDialog.Builder(cxt);
+                        ab.setTitle(R.string.error).setMessage(R.string.server_internal_error);
+                        ab.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        ab.create().show();
+                    }
+                });
+            } else{
+                Intent i = new Intent(cxt, CustomerHome.class);
+                i.putExtra(IDCODE, str);
+                i.putExtra(ALBUMNUM, resultCode);
+                startActivity(i);
+                finish();
             }
         }
 
         @Override
         protected void onCancelled() {
-            super.onCancelled();
             resultCode = 99;
+            pd.dismiss();
+            AlertDialog.Builder ab = new AlertDialog.Builder(cxt);
+            ab.setTitle(R.string.error).setMessage(R.string.server_connection_error).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
         }
     }
 }

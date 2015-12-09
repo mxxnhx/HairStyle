@@ -85,7 +85,7 @@ public class SignUpWarnFrag extends Fragment implements View.OnClickListener {
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
 
         bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = 2;
+        bmOptions.inSampleSize = 4;
         bmOptions.inPurgeable = true;
 
         Bitmap bitmap = BitmapFactory.decodeFile(path, bmOptions);

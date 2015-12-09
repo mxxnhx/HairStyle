@@ -38,6 +38,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.badasaza.gohaesungsamodel.ItemModel;
+import com.example.badasaza.gohaesungsaview.GViewPager;
 import com.example.badasaza.gohaesungsaview.PlaceholderFragment;
 
 public class CustomerHome extends AppCompatActivity implements ActionBar.TabListener{
@@ -68,7 +69,7 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
     /**
      * The {@link ViewPager} that will host the section contents.
      */
-    ViewPager mViewPager;
+    public GViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,7 +157,7 @@ public class CustomerHome extends AppCompatActivity implements ActionBar.TabList
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager = (GViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         // When swiping between different sections, select the corresponding

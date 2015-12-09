@@ -16,7 +16,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -56,8 +55,8 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
     private String idcode;
     private int count;
     private ProgressDialog pd;
-
-    /* ToDo: optional: save 1/2 and send 1/4 */
+    private boolean success = false;
+    private AppCompatActivity act = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,21 +133,11 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                 if(filePaths[0] != null && filePaths[1] != null && filePaths[2] !=null) {
                     /* Check: write to log file */
                     ut = new UploadTask();
-                    ut.execute(idcode, fileNames[0], fileNames[1], fileNames[2], filePaths[0], filePaths[1], filePaths[2]);
                     pd = ProgressDialog.show(this, getText(R.string.signup_wait_title), getText(R.string.signup_wait_text), true, false);
-                    new Thread(new FRunnable()).start();
-                    Date now = new Date();
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    Intent b = new Intent();
-                    ArrayList<String> dummy = new ArrayList<>();
-                    dummy.addAll(Arrays.asList(filePaths));
-                    b.putStringArrayListExtra(FILE_PATHS, dummy);
-                    b.putExtra(DATE_STRING, sdf.format(now));
-                    this.setResult(RESULT_OK, b);
-                    finish();
-                }else{
-                    /* ToDo: make it 2 instead of 3 */
+                    ut.execute(idcode, fileNames[0], fileNames[1], fileNames[2], filePaths[0], filePaths[1], filePaths[2]);
+                    if (success) {
 
+                    }
                 }
                 break;
             case R.id.cancel_button:
@@ -210,8 +199,6 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         }
         File storageDir = Environment.getExternalStorageDirectory();
 
-
-        /* ToDo: optional: runtime permissions for Android 6.0+ */
         File image = new File(storageDir, "GHSS/Image/"+imageFileName);
         Log.d(DEBUG_TAG, image.getAbsolutePath());
         try{
@@ -320,7 +307,7 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
         public String result;
 
         private int response;
-        /* ToDo: consider while loop here */
+
         @Override
         protected String doInBackground(String... params) {
             InputStream is = null;
@@ -481,60 +468,59 @@ public class TakePhoto extends AppCompatActivity implements View.OnClickListener
                     e.printStackTrace();
                 }
             }
+            pd.dismiss();
+            if (result.matches("-1")) {
+                success =false;
+                quickBuilder(R.string.error, R.string.server_internal_error, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
+            } else if (result.matches("-2")) {
+                success =false;
+                quickBuilder(R.string.error, R.string.upload_failed, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
+            }else {
+                Date now = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Intent b = new Intent();
+                ArrayList<String> dummy = new ArrayList<>();
+                dummy.addAll(Arrays.asList(filePaths));
+                b.putStringArrayListExtra(FILE_PATHS, dummy);
+                b.putExtra(DATE_STRING, sdf.format(now));
+                act.setResult(RESULT_OK, b);
+                act.finish();
+            }
         }
-    }
-
-    private class FRunnable implements Runnable{
 
         @Override
-        public void run() {
-
-            while (ut.getStatus() != AsyncTask.Status.FINISHED && !ut.isCancelled())
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            pd.dismiss();
-            if (ut.isCancelled()) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        AlertDialog.Builder ab = new AlertDialog.Builder(getApplicationContext());
-                        ab.setTitle(R.string.error).setMessage(R.string.server_connection_error).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                        ab.create().show();
-                    }
-                });
-            } else if (ut.result.matches("-1")) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        quickBuilder(R.string.error, R.string.server_internal_error, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).create().show();
-                    }
-                });
-            } else if (ut.result.matches("-2")) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        quickBuilder(R.string.error, R.string.upload_failed, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).create().show();
-                    }
-                });
+        protected void onCancelled(){
+            success = false;
+            Date now = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            File temp = new File(Environment.getExternalStorageDirectory(), "GHSS/Users/" + idcode + ".txt");
+            try {
+                BufferedWriter bw = new BufferedWriter(new FileWriter(temp, true));
+                bw.write((count + 1) + "/" + sdf.format(now));
+                bw.newLine();
+                bw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            pd.dismiss();
+            AlertDialog.Builder ab = new AlertDialog.Builder(getApplicationContext());
+            ab.setTitle(R.string.error).setMessage(R.string.server_connection_error).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            ab.create().show();
         }
     }
 
