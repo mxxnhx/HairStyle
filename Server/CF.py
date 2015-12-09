@@ -118,6 +118,7 @@ def add_user(user, list_of_item, list_of_rating) :
 
 #ADD OR UPDATE user's item rating 
 def update_rating(user, item, rating) :
+        print user, item, rating
 	if(is_user(user) and is_item(item)) :
 		cursor = db.cursor()
 		if(not is_rated(user, item)) :
@@ -207,7 +208,7 @@ def recommend(user) :
 		#(user_name, similarity) sorted list
 		sim = [(tup[0], cosine_similarity(tup[0], user)) for tup in d]
 		sim.sort(key = lambda item:item[1], reverse = True)
-		print "Similiarity : ", sim
+		#print "Similiarity : ", sim
 
 		#grouping by similarity
 		it = itertools.groupby(sim, operator.itemgetter(1))
@@ -232,7 +233,8 @@ def recommend(user) :
 
 #PICK SOME ITEM WITH SMALLEST used in item_list
 def pick_less_item(item_list) :
-	it = "("+",".join(item_list)+")"
+	it = "(\'"+"\',\'".join(item_list)+"\')"
+        print it
 	cursor = db.cursor()
 	cursor.execute("SELECT item_name,used FROM item WHERE item_name IN %s" % (it))
 	d = cursor.fetchall()
@@ -259,8 +261,9 @@ def pick_highest_rating_item(item_list) :
 #RETURN RANDOM ITEM WITH category_num
 def select_random_item_with_category(category_num) :
 	cursor = db.cursor()
-	cursor.execute("SELECT item_name FROM item WHERE type != ?", (category_num,))
+	cursor.execute("SELECT item_name FROM item WHERE type = ?", (category_num,))
 	d = map(lambda x : x[0],list(cursor.fetchall()))
+        print d, category_num
 	if(len(d) > 0) :
 		return pick_less_item(d)
 
