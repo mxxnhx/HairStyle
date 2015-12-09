@@ -5,7 +5,7 @@ import sqlite3
 
 db=sqlite3.connect("DB")
 # parameter for compare function
-diff=35
+diff=36
 # Get first index of an integer from matrix.
 # m : matrix
 # n : an integer
@@ -66,8 +66,8 @@ class HairAnalyzer:
     def getHairArea(self,face):
         scale=float(self.img.shape[1])/400
         (segmented,labels,n)=pms.segment(self.img,spatial_radius=int(scale*6),
-                              range_radius=scale*5, min_density=300)
-        #cv2.imshow('segmented',segmented)
+                              range_radius=6, min_density=300)
+        cv2.imshow('segmented',segmented)
         mv = cv2.split(self.img)
         hair = []
         x=face[0]+face[2]/2
@@ -86,12 +86,23 @@ class HairAnalyzer:
                         hair_new.append(j)
                         not_hair.remove(j)
         #print(hair)
+        bg_new=[labels[30][30]]
+        not_hair.remove(labels[30][30])
+        
         area_hair=np.zeros(shape=labels.shape,dtype=np.int)
-        #print('making array of hair area...')
+        flag_start=0
+        print('making array of hair area...')
+        flag=0
         for i in range(area_hair.shape[0]):
+            flag=0
             for j in range(area_hair.shape[1]):
                 if labels[i][j] in hair:
+                    flag_start=1
+                    flag=1
                     area_hair[i][j]=1
+            if flag==0 and flag_start==1:
+                break
+        
         return area_hair
 
     def getHairArea_side(self,face_front,img_front):
