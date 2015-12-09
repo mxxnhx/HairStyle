@@ -15,6 +15,7 @@ import HairAnalyzer
 import numpy
 import random
 import CF
+from PIL import Image
 
 engine = create_engine('mysql://root:qlqjs1@127.0.0.1/hairstyle?charset=utf8',
         convert_unicode=True)
@@ -254,13 +255,31 @@ def send_test(catenum):
 @app.route('/sendrec2/<idcode>', methods=['GET', 'POST'])
 def send_rec2(idcode):
     filename = CF.recommend(idcode)
-    filename = filename + "_a.png"
-    if os.path.isfile(os.path.join(app.config['REC_FOLDER'], filename)):
-        response = make_response(send_from_directory(app.config['REC_FOLDER'], filename))
-        response.headers['Content-Disposition'] = "attachment; filename=" + filename
+    filename1 = filename + "_b.png"
+    filename2 = filename + "_a.png"
+    if os.path.isfile(os.path.join(app.config['REC_FOLDER'], filename1)):
+        response = make_response(send_from_directory(app.config['REC_FOLDER'], filename1))
+        response.headers['Content-Disposition'] = "attachment; filename=" + filename1
         return response
     else:
-        return "-2"
+        if os.path.isfile(os.path.join(app.config['REC_FOLDER'], filename2)):
+            img_white=Image.open(os.path.join(app.config['REC_FOLDER'],filename2))
+            img_white=img_white.convert("RGBA")
+            iwdata=img_white.getdata()
+            niwdata=[]
+            for item in iwdata:
+                if item[0]==255 and item[1]==255 and item[2]==255:
+                    niwdata.append((255,255,255,0))
+                else:
+                    niwdata.append(item)
+            img_white.putdata(niwdata)
+            img_white.save(os.path.join(app.config['REC_FOLDER'],filename1),"PNG")
+
+            response = make_response(send_from_directory(app.config['REC_FOLDER'], filename1))
+            response.headers['Content-Disposition'] = "attachment; filename=" + filename1
+            return response           
+        else:
+            return "-2"
 
 @app.route('/sendrec1/<idcode>', methods=['GET', 'POST'])
 def send_rec1(idcode):
