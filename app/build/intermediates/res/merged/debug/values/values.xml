@@ -111,6 +111,7 @@
     <color name="switch_thumb_normal_material_light">#fff1f1f1</color>
     <!-- From: file:/C:/Users/Badasaza/AndroidStudioProjects/GoHaeSungSaCustomer/app/src/main/res/values/colors.xml -->
     <eat-comment/>
+    <color name="transparent">#00000000</color>
     <color name="white">#FFFFFF</color>
     <declare-styleable name="ActionBar"><attr name="navigationMode"><enum name="normal" value="0"/><enum name="listMode" value="1"/><enum name="tabMode" value="2"/></attr><attr name="displayOptions"><flag name="none" value="0"/><flag name="useLogo" value="0x1"/><flag name="showHome" value="0x2"/><flag name="homeAsUp" value="0x4"/><flag name="showTitle" value="0x8"/><flag name="showCustom" value="0x10"/><flag name="disableHome" value="0x20"/></attr><attr name="title"/><attr format="string" name="subtitle"/><attr format="reference" name="titleTextStyle"/><attr format="reference" name="subtitleTextStyle"/><attr format="reference" name="icon"/><attr format="reference" name="logo"/><attr format="reference" name="divider"/><attr format="reference" name="background"/><attr format="reference|color" name="backgroundStacked"/><attr format="reference|color" name="backgroundSplit"/><attr format="reference" name="customNavigationLayout"/><attr name="height"/><attr format="reference" name="homeLayout"/><attr format="reference" name="progressBarStyle"/><attr format="reference" name="indeterminateProgressStyle"/><attr format="dimension" name="progressBarPadding"/><attr name="homeAsUpIndicator"/><attr format="dimension" name="itemPadding"/><attr format="boolean" name="hideOnContentScroll"/><attr format="dimension" name="contentInsetStart"/><attr format="dimension" name="contentInsetEnd"/><attr format="dimension" name="contentInsetLeft"/><attr format="dimension" name="contentInsetRight"/><attr format="dimension" name="elevation"/><attr format="reference" name="popupTheme"/></declare-styleable>
     <declare-styleable name="ActionBarLayout"><attr name="android:layout_gravity"/></declare-styleable>
@@ -355,8 +356,11 @@
     <string name="num_of_photo">앨범 내 사진: </string>
     <string name="ok">확인</string>
     <string name="pw_hint">Password</string>
+    <string name="rec_accept1">이 스타일 도전!</string>
+    <string name="rec_accept2">평가하고 다른거 받아보기</string>
     <string name="rec_bottom">Recommendation Image comes here</string>
     <string name="rec_middle">Recommendation comments</string>
+    <string name="rec_reject">이 머리 싫은데...</string>
     <string name="rec_tab">추천</string>
     <string name="rec_top">이런 머리는 \n 어떠세요?</string>
     <string name="save">저장</string>
@@ -381,6 +385,10 @@
     <string name="signup_title">신규 등록</string>
     <string name="signup_wait_text">연결중</string>
     <string name="signup_wait_title">잠시만요...</string>
+    <string name="signup_warning_re">다시 찍어주세요.</string>
+    <string name="signup_warning_tel">이미 있는 전화번호 입니다.</string>
+    <string name="signup_warning_text">지금 찍는 사진으로 머리스타일을 추천해 드립니다.\n다음을 유의해 주세요!\n • 배경이 머리색과 다르게 해주세요\n • 머리에 빛이 비치게 하지 말아주세요\n • 안경을 벗어 주세요.</string>
+    <string name="signup_warning_title">사진을 찍어 볼까요...</string>
     <!-- From: file:/C:/Users/Badasaza/AndroidStudioProjects/GoHaeSungSaCustomer/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <string name="status_bar_notification_info_overflow">999+</string>
@@ -394,6 +402,7 @@
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
+    <string name="upload_failed">업로드 실패</string>
     <!-- From: file:/C:/Users/Badasaza/AndroidStudioProjects/GoHaeSungSaCustomer/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <style name="AlertDialog.AppCompat" parent="Base.AlertDialog.AppCompat"/>
