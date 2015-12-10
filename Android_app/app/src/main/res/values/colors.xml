@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="b200">#81D4FA</color>
+    <color name="b500">#03A9F4</color>
+    <color name="b800">#0277BD</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gray_background">#DBDBDB</color>
+    <color name="hint">#DDDDDD</color>
+    <color name="b300">#4FC3F7</color>
+    <color name="b100">#B3E5FC</color>
+
+    <!--
+    <color name="b200">#FFCC80</color>
+    <color name="b500">#FF9800</color>
+    <color name="b800">#EF6C00</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gray_background">#DBDBDB</color>
+    <color name="hint">#DDDDDD</color>
+    <color name="b300">#FFB74D</color>
+    <color name="b100">#FFE0B2</color>
+    -->
+
+    <color name="transparent">#00000000</color>
+
+</resources>
