@@ -252,9 +252,8 @@ def send_test(catenum):
     else:
         return "-2"
 
-@app.route('/sendrec2/<idcode>', methods=['GET', 'POST'])
-def send_rec2(idcode):
-    filename = CF.recommend(idcode)
+@app.route('/sendrec2/<filename>', methods=['GET', 'POST'])
+def send_rec2(filename):
     filename1 = filename + "_b.png"
     filename2 = filename + "_a.png"
     if os.path.isfile(os.path.join(app.config['REC_FOLDER'], filename1)):
