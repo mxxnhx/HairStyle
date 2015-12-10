@@ -118,7 +118,7 @@ def add_user(user, list_of_item, list_of_rating) :
 
 #ADD OR UPDATE user's item rating 
 def update_rating(user, item, rating) :
-        print user, item, rating
+        print "c", user, item, rating
 	if(is_user(user) and is_item(item)) :
 		cursor = db.cursor()
 		if(not is_rated(user, item)) :
@@ -134,7 +134,7 @@ def update_rating(user, item, rating) :
 		else :
 			cursor.execute("SELECT rate FROM rating WHERE item_name = ? AND user_name = ?", (item, user))
 			previous_rating = cursor.fetchall()[0][0]
-			print previous_rating
+			print "d", previous_rating
 
 			cursor.execute("UPDATE rating SET rate = ? WHERE item_name = ? AND user_name = ?", (rating, item, user))
 
@@ -219,6 +219,7 @@ def recommend(user) :
 			#get item with highest rating
 			for (u,v) in i[1]:
 				l.extend(get_high_rated_item(u))
+                        print "a", l
 			#filter user used item 
 			item_list = filter(lambda x : not is_rated(user, x), l)
 			print "Highest Rated item :",item_list
@@ -234,7 +235,6 @@ def recommend(user) :
 #PICK SOME ITEM WITH SMALLEST used in item_list
 def pick_less_item(item_list) :
 	it = "(\'"+"\',\'".join(item_list)+"\')"
-        print it
 	cursor = db.cursor()
 	cursor.execute("SELECT item_name,used FROM item WHERE item_name IN %s" % (it))
 	d = cursor.fetchall()
@@ -263,7 +263,7 @@ def select_random_item_with_category(category_num) :
 	cursor = db.cursor()
 	cursor.execute("SELECT item_name FROM item WHERE type = ?", (category_num,))
 	d = map(lambda x : x[0],list(cursor.fetchall()))
-        print d, category_num
+        print "b", d, category_num
 	if(len(d) > 0) :
 		return pick_less_item(d)
 
@@ -276,14 +276,17 @@ def show_DB() :
 	item_select = cursor.execute("SELECT * from item")
        	for row in item_select :
 		print "|   ",row
+         
 	print("| --- user ---")
 	user_select = cursor.execute("SELECT * from user")
        	for row in user_select :
 		print "|   ",row
+        
 	print("| ---rating---")
 	rating_select = cursor.execute("SELECT * from rating")
        	for row in rating_select :
 		print "|   ",row
+        
 	print("--------END DB--------")
 
 """

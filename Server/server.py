@@ -162,7 +162,6 @@ def rating_signup():
         rate = request.form['rate']
         filename = request.form['filename']
         CF.update_rating(idcode, filename, float(rate))
-        CF.show_DB()
         return "1"
     else:
         return "-1"
@@ -174,7 +173,6 @@ def rating_rec():
         rate = request.form['rate']
         filename = request.form['filename']
         CF.update_rating(idcode, filename, float(rate))
-        CF.show_DB()
         return "1"
     else:
         return "-1"
