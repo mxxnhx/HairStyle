@@ -119,10 +119,11 @@ def signup():
             return "-3"
 
         area = ha.getHairArea(face)
+        face_color=ha.getFaceColor(face,eyes)
         for i in range(img.shape[0]):
             for j in range(img.shape[1]):
                 if area[i][j] == 1:
-                    img[i][j]=numpy.array([255,255,255])
+                    img[i][j]=face_color
         cv2.imwrite(os.path.join(app.config['FACE_FOLDER'], str(_id) + '_face.jpg'), img)
 
         facedata = img_face(_id, str(_id) +"_face.jpg")
@@ -221,11 +222,12 @@ def upload():
         face, eyes = ha1.detectFace()
         area1 = ha1.getHairArea(face)
         area2 = ha2.getHairArea_side(face, img1)
-        
+
+        face_color=numpy.array([255,255,255])
         for i in range(img1.shape[0]):
             for j in range(img1.shape[1]):
                 if area1[i][j] == 0:
-                    img1[i][j]=numpy.array([255,255,255])
+                    img1[i][j]=face_color
         
         cv2.imwrite(os.path.join(app.config['REC_FOLDER'], pn1), img1) 
         # To add recomend code

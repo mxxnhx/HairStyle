@@ -34,7 +34,7 @@ class HairAnalyzer:
     # Detects face from an image.
     # elements in faces : [x,y,width,height]
     def detectFace(self):
-        cc = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
+        cc = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
         if(cc.empty()):
             print("!")
         gray = cv2.cvtColor(self.img,cv2.COLOR_RGB2GRAY)
@@ -61,6 +61,30 @@ class HairAnalyzer:
                 eyes.append(eye)
         return np.asarray(eyes)
 
+    def getFaceColor(self,face,eyes):
+        c=np.array([0,0,0])
+        cnt=0
+        # under eyes
+        for eye in eyes:
+            (x,y)=(eye[0]+eye[2]/2,eye[1]+eye[3]*3/2)
+            print(self.img[y][x])
+            c=c+self.img[y][x]
+            cnt=cnt+1
+        # middle points
+        if len(eyes)>=2:
+            (x,y)=(0,0)
+            for eye in eyes:
+                (x,y)=(x+eye[0]+eye[2]/2,y+eye[1]+eye[3]/2)
+            (x,y)=(x/len(eyes),y/len(eyes))
+            c=c+self.img[y][x]
+            plus=0
+            for eye in eyes:
+                plus=plus+eye[3]
+            y=y+plus/len(eyes)
+            c=c+self.img[y][x]
+            cnt=cnt+2
+        c=c/cnt
+        return c
     # Returns hair area from an image.
     # area_hair[i][j]=1 if img[i][j] is a part of hair area, 0 otherwise
     def getHairArea(self,face):
